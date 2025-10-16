@@ -1,41 +1,47 @@
 <template>
   <div class="input-container" :class="{ loading: isLoading }">
-    <ion-input
-      ref="inputRef"
-      v-model="input"
-      v-maskito="maskitoOptions"
-      :class="model.className"
-      :clear-input="true"
-      :fill="model.fill ?? 'solid'"
-      :label-placement="model.labelPlacement ?? 'stacked'"
-      :type="type ?? 'text'"
-      :required="model.required"
-      :error-text="model.error"
-      :autofocus="model.autoFocus"
-      :placeholder="isLoading ? 'Loading...' : (maskitoOptions?.placeholder ?? model.placeholder)"
-      :disabled="model.disabled || isLoading"
-      :counter="model.counter"
-      :min="model.min"
-      :max="model.max"
-      :max-length="model.maxLength"
-      :min-length="model.minLength"
-      :pattern="model.pattern"
-      style="width: 100%"
-      @ionFocus="onFocus"
-      @ionChange="onValueUpdate"
-      @ion-blur="onValueUpdate"
-    >
-      <InputLabel :model="model" slot-name="label" />
-      <ion-label v-if="model.prefix" slot="start">{{ model.prefix }}</ion-label>
-      <ion-label v-if="model.suffix" slot="end">{{ model.suffix }} </ion-label>
-      <ion-input-password-toggle slot="end" v-if="type === 'password'" />
-      <ion-spinner v-if="isLoading" slot="end" name="crescent" class="loading-spinner" />
-    </ion-input>
+    <InputLabel :model="model" />
+    <span class="p-input-icon-left p-input-icon-right" style="width: 100%">
+      <i v-if="model.prefix" class="prefix-text">{{ model.prefix }}</i>
+      <InputText
+        ref="inputRef"
+        v-model="input"
+        v-maskito="maskitoOptions"
+        :class="[model.className, { 'p-invalid': model.error }]"
+        :type="type === 'password' ? (showPassword ? 'text' : 'password') : (type ?? 'text')"
+        :required="model.required"
+        :autofocus="model.autoFocus"
+        :placeholder="isLoading ? 'Loading...' : (maskitoOptions?.placeholder ?? model.placeholder)"
+        :disabled="model.disabled || isLoading"
+        :min="model.min"
+        :max="model.max"
+        :maxlength="model.maxLength"
+        :minlength="model.minLength"
+        :pattern="model.pattern"
+        style="width: 100%"
+        @focus="onFocus"
+        @change="onValueUpdate"
+        @blur="onValueUpdate"
+      />
+      <i
+        v-if="type === 'password'"
+        :class="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"
+        class="password-toggle"
+        @click="showPassword = !showPassword"
+      ></i>
+      <i v-if="model.suffix" class="suffix-text">{{ model.suffix }}</i>
+      <i v-if="isLoading" class="pi pi-spin pi-spinner loading-spinner"></i>
+      <i v-if="input && !isLoading" class="pi pi-times clear-icon" @click="handleClear"></i>
+    </span>
+    <small v-if="model.error" class="p-error">{{ model.error }}</small>
+    <small v-if="model.counter && model.maxLength" class="counter-text">
+      {{ input.length }} / {{ model.maxLength }}
+    </small>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { IonInput, IonLabel, IonInputPasswordToggle, IonSpinner } from '@ionic/vue';
+import InputText from 'primevue/inputtext';
 import { FormField, FormSchema, BaseFieldTypes } from '@/types';
 import { generateMaskitoOptions } from '@/utils';
 import { ComponentPublicInstance, computed, PropType, ref, watch } from 'vue';
@@ -47,6 +53,7 @@ const props = defineProps<{ schema?: FormSchema; type?: BaseFieldTypes }>();
 const model = defineModel({ type: Object as PropType<FormField>, default: {} });
 const inputRef = ref<ComponentPublicInstance | null>(null);
 const schema = computed(() => props.schema);
+const showPassword = ref(false);
 
 // Use form field value resolution
 const { resolvedValue, isLoading, error: valueError } = useFormFieldValue(model);
@@ -80,6 +87,11 @@ const maskitoOptions = computed(() => {
   return undefined;
 });
 
+const handleClear = () => {
+  input.value = '';
+  onValueUpdate();
+};
+
 // Enhanced getErrors to include value resolution errors
 const getErrorsWithValueErrors = () => {
   const validationErrors = getErrors();
@@ -100,8 +112,8 @@ defineExpose({
 </script>
 
 <style scoped>
+/* Minimal overrides - use PrimeVue defaults */
 .input-container {
-  position: relative;
   width: 100%;
 }
 
@@ -109,13 +121,15 @@ defineExpose({
   opacity: 0.8;
 }
 
-.loading-spinner {
-  width: 20px;
-  height: 20px;
-  margin-right: 8px;
+.password-toggle,
+.clear-icon {
+  cursor: pointer;
 }
 
-.loading-spinner::part(native) {
-  color: var(--ion-color-primary, #3880ff);
+.counter-text {
+  display: block;
+  text-align: right;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
 }
 </style>

@@ -21,7 +21,6 @@ import {
   FormValue,
   Option,
 } from '@/types';
-export * from './maskito';
 
 /**
  * Resolves a FormFieldValue to its actual FormValue.

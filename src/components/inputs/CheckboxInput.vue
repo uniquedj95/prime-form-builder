@@ -1,30 +1,31 @@
 <template>
-  <div class="checkbox-container" :class="{ loading: isLoading }">
-    <ion-checkbox
-      v-model="input"
+  <div class="checkbox-container">
+    <Checkbox
+      :id="model.id || model.name"
       ref="inputRef"
-      justify="start"
-      :class="model.className"
+      v-model="input"
+      :class="[model.className, { 'p-invalid': model.error }]"
       :required="model.required"
-      :error-text="model.error"
-      :disabled="model.disabled || isLoading"
-      @ionFocus="onFocus"
-      @ionChange="onValueUpdate"
-      @ion-blur="onValueUpdate"
-      style="width: 100%"
-    >
-      {{ isLoading ? 'Loading...' : labelTextWithAsterisk }}
-      <ion-spinner v-if="isLoading" name="crescent" class="loading-spinner" />
-    </ion-checkbox>
+      :disabled="model.disabled"
+      :binary="true"
+      @focus="onFocus"
+      @change="onValueUpdate"
+      @blur="onValueUpdate"
+    />
+    <label :for="model.id || model.name" class="checkbox-label">
+      {{ labelTextWithAsterisk }}
+    </label>
+    <small v-if="model.error" class="p-error" style="display: block; margin-top: 0.25rem">{{
+      model.error
+    }}</small>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { IonCheckbox, IonSpinner } from '@ionic/vue';
+import Checkbox from 'primevue/checkbox';
 import { FormField, FormSchema } from '@/types';
 import { ComponentPublicInstance, PropType, ref, watch, computed } from 'vue';
 import { useInputValidation } from '@/composables/useInputValidation';
-import { useFormFieldValue } from '@/composables/useFormFieldValue';
 import { getLabelText } from '@/utils';
 
 const props = defineProps<{ schema?: FormSchema }>();
@@ -32,29 +33,22 @@ const model = defineModel({ type: Object as PropType<FormField>, default: {} });
 const inputRef = ref<ComponentPublicInstance | null>(null);
 const schema = computed(() => props.schema);
 
-// Use form field value resolution
-const { resolvedValue, isLoading, error: valueError } = useFormFieldValue(model);
-
-// Initialize input with resolved value
+// Initialize input
 const input = ref<boolean>(false);
 
-// Watch for resolved value changes and update input
+// Watch for model value changes
 watch(
-  resolvedValue,
+  () => model.value.value,
   newValue => {
-    if (newValue !== undefined && newValue !== null) {
-      input.value = Boolean(newValue);
-    } else {
-      input.value = false;
-    }
+    input.value = Boolean(newValue);
   },
   { immediate: true }
 );
 
-// Use checkbox label text composable
+// Checkbox label text with asterisk if required
 const labelTextWithAsterisk = computed(() => getLabelText(model.value));
 
-// Use input validation composable with custom default value for checkbox
+// Use input validation composable
 const { onValueUpdate, onFocus, getErrors } = useInputValidation(inputRef, model, input, schema);
 
 // Custom onReset for checkbox (default to false)
@@ -64,41 +58,22 @@ function onReset() {
   model.value.value = false;
 }
 
-// Enhanced getErrors to include value resolution errors
-const getErrorsWithValueErrors = () => {
-  const validationErrors = getErrors();
-  if (valueError.value) {
-    return [...validationErrors, valueError.value];
-  }
-  return validationErrors;
-};
-
 defineExpose({
   onValueUpdate,
   onReset,
-  getErrors: getErrorsWithValueErrors,
-  isLoading,
-  valueError,
+  getErrors,
 });
 </script>
 
 <style scoped>
 .checkbox-container {
-  position: relative;
-  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.checkbox-container.loading {
-  opacity: 0.8;
-}
-
-.loading-spinner {
-  width: 16px;
-  height: 16px;
-  margin-left: 8px;
-}
-
-.loading-spinner::part(native) {
-  color: var(--ion-color-primary, #3880ff);
+.checkbox-label {
+  cursor: pointer;
+  user-select: none;
 }
 </style>

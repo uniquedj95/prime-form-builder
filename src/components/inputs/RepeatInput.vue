@@ -5,18 +5,14 @@
     :class="model.className"
     :key="index"
   >
-    <ion-row class="repeat-row">
-      <ion-col size="11" class="form-fields-column">
-        <ion-row class="fields-row">
+    <div class="repeat-row">
+      <div class="form-fields-column">
+        <div class="fields-row">
           <template v-for="formId of Object.keys(child)">
-            <IonCol
+            <div
               :key="`${index}-${formId}`"
-              :size="child[formId].grid?.xs ?? '12'"
-              :size-sm="child[formId].grid?.sm"
-              :size-md="child[formId].grid?.md"
-              :size-lg="child[formId].grid?.lg"
-              :size-xl="child[formId].grid?.xl"
-              class="ion-margin-bottom"
+              :class="getGridClasses(child[formId])"
+              class="field-col"
               v-if="canRenderField(child[formId], data, computedData)"
             >
               <component
@@ -27,41 +23,58 @@
                 ref="dynamicRefs"
                 style="width: 100%"
               />
-            </IonCol>
+            </div>
           </template>
-        </ion-row>
-      </ion-col>
-      <ion-col size="1" class="button-column">
-        <div class="button-container">
-          <ion-button
-            @click="addSet"
-            color="primary"
-            size="small"
-            v-if="index === childrens.length - 1"
-          >
-            <ion-icon slot="icon-only" :icon="add"></ion-icon>
-          </ion-button>
-          <ion-button
-            @click="removeSet(index)"
-            color="warning"
-            size="small"
-            v-if="childrens.length > 1"
-          >
-            <ion-icon slot="icon-only" :icon="remove"></ion-icon>
-          </ion-button>
         </div>
-      </ion-col>
-    </ion-row>
+      </div>
+      <div class="button-column">
+        <div class="button-container">
+          <Button
+            @click="addSet"
+            severity="success"
+            size="small"
+            icon="pi pi-plus"
+            rounded
+            v-if="index === childrens.length - 1"
+          />
+          <Button
+            @click="removeSet(index)"
+            severity="danger"
+            size="small"
+            icon="pi pi-minus"
+            rounded
+            v-if="childrens.length > 1"
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ComputedData, FormData, FormField, FormSchema, Option } from '@/types';
-import { IonRow, IonCol, IonButton, IonIcon } from '@ionic/vue';
+import Button from 'primevue/button';
 import { canRenderField, deepClone, isFormField, resetFormInputsWithCustomResolver } from '@/utils';
 import { useFormValidation } from '@/composables/useFormValidation';
 import { computed, onMounted, PropType, ref, watch } from 'vue';
-import { add, remove } from 'ionicons/icons';
+
+// Helper function to generate grid classes
+const getGridClasses = (field: FormField) => {
+  const classes = [];
+  const xs = field.grid?.xs ?? '12';
+  const sm = field.grid?.sm;
+  const md = field.grid?.md;
+  const lg = field.grid?.lg;
+  const xl = field.grid?.xl;
+
+  classes.push(`p-col-${xs}`);
+  if (sm) classes.push(`p-sm-${sm}`);
+  if (md) classes.push(`p-md-${md}`);
+  if (lg) classes.push(`p-lg-${lg}`);
+  if (xl) classes.push(`p-xl-${xl}`);
+
+  return classes.join(' ');
+};
 
 interface PropsI {
   schema?: FormSchema;
@@ -152,42 +165,112 @@ defineExpose({
 </script>
 
 <style scoped>
-.repeat-input-wrapper {
-  margin-bottom: var(--form-margin-bottom, 10px);
-}
-
+/* Minimal overrides - use PrimeVue defaults */
 .repeat-row {
+  display: flex;
   width: 100%;
-  margin: 0;
-  align-items: center; /* Aligns children vertically center */
+  gap: 0.5rem;
+  align-items: flex-start;
 }
 
 .form-fields-column {
-  padding-right: 0;
-  display: flex; /* Enable flexbox */
-  align-items: center; /* Center vertically */
+  flex: 1;
 }
 
 .fields-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -0.5rem;
+}
+
+.field-col {
+  padding: 0.5rem;
+}
+
+/* Grid classes for responsive layout */
+.p-col-12 {
   width: 100%;
-  margin-top: 0;
+}
+.p-col-6 {
+  width: 50%;
+}
+.p-col-4 {
+  width: 33.3333%;
+}
+.p-col-3 {
+  width: 25%;
+}
+
+@media (min-width: 576px) {
+  .p-sm-12 {
+    width: 100%;
+  }
+  .p-sm-6 {
+    width: 50%;
+  }
+  .p-sm-4 {
+    width: 33.3333%;
+  }
+  .p-sm-3 {
+    width: 25%;
+  }
+}
+
+@media (min-width: 768px) {
+  .p-md-12 {
+    width: 100%;
+  }
+  .p-md-6 {
+    width: 50%;
+  }
+  .p-md-4 {
+    width: 33.3333%;
+  }
+  .p-md-3 {
+    width: 25%;
+  }
+}
+
+@media (min-width: 992px) {
+  .p-lg-12 {
+    width: 100%;
+  }
+  .p-lg-6 {
+    width: 50%;
+  }
+  .p-lg-4 {
+    width: 33.3333%;
+  }
+  .p-lg-3 {
+    width: 25%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .p-xl-12 {
+    width: 100%;
+  }
+  .p-xl-6 {
+    width: 50%;
+  }
+  .p-xl-4 {
+    width: 33.3333%;
+  }
+  .p-xl-3 {
+    width: 25%;
+  }
 }
 
 .button-column {
-  padding: 0 var(--form-button-padding, 10px);
-  display: flex;
-  align-items: center; /* Changed from flex-start to center for better vertical alignment */
-}
-
-.action-button {
-  margin: 0;
+  flex-shrink: 0;
+  width: 60px;
 }
 
 .button-container {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.5rem;
   align-items: center;
-  padding-top: 10px; /* Added padding to align with form content */
+  padding-top: 1.5rem;
 }
 </style>

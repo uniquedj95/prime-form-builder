@@ -1,22 +1,13 @@
 <template>
-  <IonCol
-    :size="section.grid?.xs ?? '12'"
-    :size-sm="section.grid?.sm"
-    :size-md="section.grid?.md"
-    :size-lg="section.grid?.lg"
-    :size-xl="section.grid?.xl"
-    class="form-section-container"
-    :class="section.className"
-  >
+  <div :class="['form-section-container', section.className, getGridClasses()]">
     <div class="form-section-header">
       <h3 class="form-section-title">{{ section.title }}</h3>
       <p v-if="section.subtitle" class="form-section-subtitle">{{ section.subtitle }}</p>
     </div>
-  </IonCol>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { IonCol } from '@ionic/vue';
 import type { FormField, FormSchema } from '@/types';
 
 interface SectionTitleProps {
@@ -31,9 +22,28 @@ const props = defineProps<SectionTitleProps>();
 
 // Extract the section data from modelValue (which contains the FormSection)
 const section = props.modelValue!;
+
+// Helper function to generate grid classes
+const getGridClasses = () => {
+  const classes = [];
+  const xs = section.grid?.xs ?? '12';
+  const sm = section.grid?.sm;
+  const md = section.grid?.md;
+  const lg = section.grid?.lg;
+  const xl = section.grid?.xl;
+
+  classes.push(`p-col-${xs}`);
+  if (sm) classes.push(`p-sm-${sm}`);
+  if (md) classes.push(`p-md-${md}`);
+  if (lg) classes.push(`p-lg-${lg}`);
+  if (xl) classes.push(`p-xl-${xl}`);
+
+  return classes.join(' ');
+};
 </script>
 
 <style scoped>
+/* Minimal overrides - use PrimeVue defaults */
 .form-section-container {
   padding: 0 !important;
 }
@@ -41,21 +51,19 @@ const section = props.modelValue!;
 .form-section-header {
   margin: 1.5rem 0 1rem 0;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--ion-color-primary);
+  border-bottom: 2px solid;
 }
 
 .form-section-title {
   margin: 0 0 0.25rem 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--ion-color-primary);
   line-height: 1.2;
 }
 
 .form-section-subtitle {
   margin: 0;
   font-size: 0.875rem;
-  color: var(--ion-color-medium);
   line-height: 1.3;
 }
 

@@ -4,14 +4,14 @@
 
 <img src="https://img.icons8.com/color/96/000000/form.png" alt="vForm Logo"/>
 
-A dynamic form builder for Vue.js with Ionic components
+A dynamic form builder for Vue.js with PrimeVue components
 
 [![Version](https://img.shields.io/badge/version-3.8.1-blue.svg)](https://github.com/uniquedj95/vform/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Vue Version](https://img.shields.io/badge/vue-3.5+-brightgreen.svg)](https://vuejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue)](https://www.typescriptlang.org/)
 [![Downloads](https://img.shields.io/npm/dt/@uniquedj95/vform.svg)](https://www.npmjs.com/package/@uniquedj95/vform)
-[![Ionic Vue](https://img.shields.io/badge/Ionic-8.2+-blue)](https://ionicframework.com/)
+[![PrimeVue](https://img.shields.io/badge/PrimeVue-4.2+-blue)](https://primevue.org/)
 [![Bundle Size](https://img.shields.io/bundlephobia/min/@uniquedj95/vform)](https://bundlephobia.com/package/@uniquedj95/vform)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/uniquedj95/vform/pulls)
 
@@ -55,7 +55,9 @@ A dynamic form builder for Vue.js with Ionic components
 
 ## Overview
 
-vForm is a Vue.js component that dynamically generates forms based on a provided schema. It leverages Ionic components for a responsive and mobile-friendly design, supporting complex forms with conditional rendering and validation logic. It provides a robust and flexible form-building solution for Vue.js applications, allowing for a high degree of customization and control over the form behavior and appearance.
+vForm is a Vue.js component that dynamically generates forms based on a provided schema. It leverages PrimeVue components for a modern, responsive, and feature-rich design, supporting complex forms with conditional rendering and validation logic. It provides a robust and flexible form-building solution for Vue.js applications, allowing for a high degree of customization and control over the form behavior and appearance.
+
+> **Note:** vForm has been migrated from Ionic Vue to PrimeVue! The API remains the same, but you now benefit from PrimeVue's rich component ecosystem, modern theming, and better web support.
 
 ## Demo
 
@@ -102,17 +104,18 @@ npm run demo:update
 - **Input Masking**: Built-in support for input masking using Maskito for consistent data entry formatting.
 - **Conditional Field Rendering**: Fields can be shown or hidden based on other form values.
 - **Dependent Options**: Load options for select inputs based on the values of other fields.
-- **Responsive Grid Layout**: Utilizes Ionic Grid for a responsive design that works across different screen sizes.
-- **Enhanced Date Input Field**: Built-in date and datetime picker support with Ionic components.
-- **Multiple Selection Interfaces**: Three different interfaces for select inputs (popover, action sheet, alert).
+- **Responsive Grid Layout**: Custom flex-based grid system for responsive design that works across different screen sizes.
+- **Enhanced Date Input Field**: Built-in date and datetime picker support.
+- **Advanced Selection Components**: Dropdown and MultiSelect with filtering and search capabilities.
 - **Repeatable Field Groups**: Create dynamic, repeatable sets of form fields.
 - **Advanced Validation**: Built-in validation with support for custom validation functions and step-by-step validation.
 - **Computed Values**: Generate and transform values based on other form fields.
-- **Customizable Styling**: Complete control over appearance with `className` property support across all input components and sections.
+- **Customizable Styling**: Complete control over appearance with `className` property support and PrimeVue theming.
 - **Form Actions**: Customizable buttons with support for additional custom actions.
-- **Rich Text Areas**: Textarea inputs with auto-grow capability and character counting.
+- **Rich Text Areas**: Textarea inputs with auto-resize capability and character counting.
 - **Form Field Dependencies**: Create relationships between fields that react to changes.
-- **Option Descriptions**: Add helpful descriptions to select and checkbox options.
+- **Option Descriptions**: Add helpful descriptions to select and radio button options.
+- **Modern UI**: Beautiful, modern components powered by PrimeVue with extensive theming options.
 
 ## Installation
 
@@ -129,23 +132,50 @@ npm run demo:update
 2. Make sure you have the required peer dependencies:
 
    ```bash
-   npm install vue@^3.5.10 @ionic/vue@^8.2.5 ionicons@^8.0.9
+   npm install vue@^3.5.10 primevue@^4.2.6
+   ```
+
+3. Install PrimeVue and its dependencies if not already installed:
+
+   ```bash
+   npm install primeicons@^7.0.0 @primevue/themes@^4.2.6
    ```
 
 ## Usage
 
-1. Register `VForm` component in your Vue.js application:
+1. Setup PrimeVue in your Vue.js application (in `main.ts` or `main.js`):
 
    ```typescript
    import { createApp } from 'vue';
+   import PrimeVue from 'primevue/config';
+   import Aura from '@primevue/themes/aura';
+   import 'primeicons/primeicons.css';
+
+   const app = createApp({});
+
+   app.use(PrimeVue, {
+     theme: {
+       preset: Aura,
+       options: {
+         darkModeSelector: '.dark-mode',
+         cssLayer: false,
+       },
+     },
+   });
+
+   app.mount('#app');
+   ```
+
+2. Register `VForm` component in your application:
+
+   ```typescript
    import VForm from '@uniquedj95/vform';
    import '@uniquedj95/vform/vform.css';
 
-   const app = createApp({});
    app.use(VForm);
    ```
 
-2. Use the component in your template:
+3. Use the component in your template:
 
    ```vue
    <template>

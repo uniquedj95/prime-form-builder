@@ -1,44 +1,62 @@
 <template>
   <div class="textarea-container" :class="{ loading: isLoading }">
-    <ion-textarea
+    <IftaLabel v-if="model.label">
+      <Textarea
+        :id="model.id"
+        ref="inputRef"
+        v-model="input"
+        :class="[model.className, { 'p-invalid': model.error }]"
+        :required="model.required"
+        :autofocus="model.autoFocus"
+        :placeholder="isLoading ? 'Loading...' : model.placeholder"
+        :disabled="model.disabled || isLoading"
+        :rows="model.rows ?? 3"
+        :cols="model.cols"
+        :autoResize="model.autoGrow"
+        :maxlength="model.maxLength"
+        :minlength="model.minLength"
+        fluid
+        @focus="onFocus"
+        @input="onValueUpdate"
+        @blur="onValueUpdate"
+      />
+      <label :for="model.id">{{ model.label }}</label>
+    </IftaLabel>
+    <Textarea
+      v-else
+      :id="model.id"
       ref="inputRef"
       v-model="input"
-      :class="model.className"
-      :clear-input="true"
-      :fill="model.fill ?? 'solid'"
-      :label-placement="model.labelPlacement ?? 'stacked'"
+      :class="[model.className, { 'p-invalid': model.error }]"
       :required="model.required"
-      :error-text="model.error"
       :autofocus="model.autoFocus"
       :placeholder="isLoading ? 'Loading...' : model.placeholder"
       :disabled="model.disabled || isLoading"
-      :counter="model.counter"
-      :min="model.min"
-      :max="model.max"
-      :rows="model.rows"
+      :rows="model.rows ?? 3"
       :cols="model.cols"
-      :auto-grow="model.autoGrow"
-      :max-length="model.maxLength"
-      :min-length="model.minLength"
-      :pattern="model.pattern"
-      @ionFocus="onFocus"
-      @ionChange="onValueUpdate"
-      @ion-blur="onValueUpdate"
-      style="width: 100%"
-    >
-      <InputLabel :model="model" slot-name="label" />
-      <ion-spinner v-if="isLoading" slot="end" name="crescent" class="loading-spinner" />
-    </ion-textarea>
+      :autoResize="model.autoGrow"
+      :maxlength="model.maxLength"
+      :minlength="model.minLength"
+      fluid
+      @focus="onFocus"
+      @input="onValueUpdate"
+      @blur="onValueUpdate"
+    />
+    <small v-if="model.error" class="p-error">{{ model.error }}</small>
+    <small v-if="model.counter && model.maxLength" class="counter-text">
+      {{ input.length }} / {{ model.maxLength }}
+    </small>
+    <i v-if="isLoading" class="pi pi-spin pi-spinner loading-spinner"></i>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { IonTextarea, IonSpinner } from '@ionic/vue';
+import Textarea from 'primevue/textarea';
+import IftaLabel from 'primevue/iftalabel';
 import { FormField, FormSchema } from '@/types';
 import { ComponentPublicInstance, PropType, ref, watch, computed } from 'vue';
 import { useInputValidation } from '@/composables/useInputValidation';
 import { useFormFieldValue } from '@/composables/useFormFieldValue';
-import InputLabel from '../shared/InputLabel.vue';
 
 const props = defineProps<{ schema?: FormSchema }>();
 const model = defineModel({ type: Object as PropType<FormField>, default: {} });
@@ -91,8 +109,8 @@ defineExpose({
 </script>
 
 <style scoped>
+/* Minimal overrides - use PrimeVue defaults */
 .textarea-container {
-  position: relative;
   width: 100%;
 }
 
@@ -101,12 +119,12 @@ defineExpose({
 }
 
 .loading-spinner {
-  width: 20px;
-  height: 20px;
-  margin-right: 8px;
+  cursor: wait;
 }
 
-.loading-spinner::part(native) {
-  color: var(--ion-color-primary, #3880ff);
+.counter-text {
+  display: block;
+  text-align: right;
+  font-size: 0.875rem;
 }
 </style>

@@ -1,15 +1,8 @@
 <template>
-  <ion-page>
-    <ion-header>
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-menu-button />
-        </ion-buttons>
-        <ion-title>Async Field Values Demo</ion-title>
-      </ion-toolbar>
-    </ion-header>
+  <div class="demo-page">
+    <h1 class="demo-title">Async Field Values Demo</h1>
 
-    <ion-content>
+    <div class="demo-content">
       <div class="demo-container">
         <!-- Form Section -->
         <v-form
@@ -20,25 +13,25 @@
         />
 
         <!-- Results Section -->
-        <ion-card v-if="submittedData">
-          <ion-card-header>
-            <ion-card-title>Submitted Data</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
+        <Card v-if="submittedData">
+          <template #header>
+            <h3 class="card-title">Submitted Data</h3>
+          </template>
+          <template #content>
             <pre>{{ JSON.stringify(submittedData, null, 2) }}</pre>
-          </ion-card-content>
-        </ion-card>
+          </template>
+        </Card>
 
         <!-- Documentation Section -->
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Async Field Values</ion-card-title>
+        <Card>
+          <template #header>
+            <h3 class="card-title">Async Field Values</h3>
             <ion-card-subtitle
               >Supporting functions and Promises for field values</ion-card-subtitle
             >
-          </ion-card-header>
+          </template>
 
-          <ion-card-content>
+          <template #content>
             <p>This demo showcases the new <code>FormFieldValue</code> type that supports:</p>
 
             <ion-list>
@@ -178,32 +171,16 @@
               <strong>Type Safety:</strong> All FormFieldValue types are fully typed in TypeScript,
               ensuring compile-time validation and excellent developer experience.
             </p>
-          </ion-card-content>
-        </ion-card>
+          </template>
+        </Card>
       </div>
-    </ion-content>
-  </ion-page>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import {
-  IonButtons,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
-  IonContent,
-  IonHeader,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonMenuButton,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from '@ionic/vue';
+import Card from 'primevue/card';
 import type { FormData, ComputedData, FormSchema } from '@uniquedj95/vform';
 
 const submittedData = ref<any>(null);

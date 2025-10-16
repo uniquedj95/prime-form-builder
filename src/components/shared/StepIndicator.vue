@@ -85,6 +85,7 @@ function handleStepClick(stepIndex: number) {
 </script>
 
 <style scoped>
+/* Minimal overrides - use PrimeVue defaults */
 .step-indicator {
   display: flex;
   flex-direction: column;
@@ -174,22 +175,8 @@ function handleStepClick(stepIndex: number) {
   font-weight: 600;
   font-size: 0.875rem;
   transition: all 0.3s ease;
-  background: var(--ion-color-light);
-  border: 2px solid var(--ion-color-medium);
-  color: var(--ion-color-light-contrast);
+  border: 2px solid;
   position: relative;
-}
-
-.step-indicator__step--active .step-indicator__step-marker {
-  background: var(--ion-color-primary);
-  border-color: var(--ion-color-primary);
-  color: var(--ion-color-primary-contrast);
-}
-
-.step-indicator__step--completed .step-indicator__step-marker {
-  background: var(--ion-color-success);
-  border-color: var(--ion-color-success);
-  color: var(--ion-color-primary-contrast);
 }
 
 .step-indicator__step-info {
@@ -204,24 +191,17 @@ function handleStepClick(stepIndex: number) {
 .step-indicator__step-title {
   font-weight: 600;
   font-size: 0.875rem;
-  color: var(--ion-color-dark);
   margin: 0;
-}
-
-.step-indicator__step--active .step-indicator__step-title {
-  color: var(--ion-color-primary);
 }
 
 .step-indicator__step-subtitle {
   font-size: 0.75rem;
-  color: var(--ion-color-medium);
   margin: 0;
   margin-top: 0.25rem;
 }
 
 .step-indicator__connector {
   height: 2px;
-  background: var(--ion-color-light);
   flex: 1;
   margin: 0 1rem;
   transition: background-color 0.3s ease;
@@ -238,17 +218,13 @@ function handleStepClick(stepIndex: number) {
 }
 
 .step-indicator--left .step-indicator__connector {
-  left: 1.25rem; /* Center of the marker */
+  left: 1.25rem;
   transform: translateX(-50%);
 }
 
 .step-indicator--right .step-indicator__connector {
-  right: 1.25rem; /* Center of the marker from right */
+  right: 1.25rem;
   transform: translateX(50%);
-}
-
-.step-indicator__connector--completed {
-  background: var(--ion-color-success);
 }
 
 .step-indicator__progress {
@@ -259,21 +235,18 @@ function handleStepClick(stepIndex: number) {
 
 .step-indicator__progress-bar {
   height: 4px;
-  background: var(--ion-color-light);
   border-radius: 2px;
   overflow: hidden;
 }
 
 .step-indicator__progress-fill {
   height: 100%;
-  background: var(--ion-color-primary);
   border-radius: 2px;
   transition: width 0.3s ease;
 }
 
 .step-indicator__progress-text {
   font-size: 0.75rem;
-  color: var(--ion-color-medium);
   text-align: center;
 }
 

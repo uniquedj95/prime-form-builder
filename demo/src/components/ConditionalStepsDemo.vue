@@ -1,15 +1,8 @@
 <template>
-  <ion-page>
-    <ion-header>
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-menu-button></ion-menu-button>
-        </ion-buttons>
-        <ion-title>Conditional Steps Demo</ion-title>
-      </ion-toolbar>
-    </ion-header>
+  <div class="demo-page">
+    <h1 class="demo-title">Conditional Steps Demo</h1>
 
-    <ion-content>
+    <div class="demo-content">
       <div class="container ion-padding">
         <h1>Conditional Steps Demo</h1>
         <p>
@@ -17,30 +10,30 @@
           based on the values entered in previous steps.
         </p>
 
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Demo Form</ion-card-title>
+        <Card>
+          <template #header>
+            <h3 class="card-title">Demo Form</h3>
             <ion-card-subtitle
               >Try changing the form options to see steps appear/disappear</ion-card-subtitle
             >
-          </ion-card-header>
+          </template>
 
-          <ion-card-content>
+          <template #content>
             <v-form
               :multi-step-config="multiStepConfig"
               @multi-step-submit="handleSubmit"
               @step-change="handleStepChange"
             />
-          </ion-card-content>
-        </ion-card>
+          </template>
+        </Card>
 
         <!-- Submit Results -->
-        <ion-card v-if="submittedData">
-          <ion-card-header>
-            <ion-card-title>Form Submission Data</ion-card-title>
-          </ion-card-header>
+        <Card v-if="submittedData">
+          <template #header>
+            <h3 class="card-title">Form Submission Data</h3>
+          </template>
 
-          <ion-card-content>
+          <template #content>
             <ion-accordion-group>
               <ion-accordion value="data">
                 <ion-item slot="header">
@@ -51,33 +44,16 @@
                 </div>
               </ion-accordion>
             </ion-accordion-group>
-          </ion-card-content>
-        </ion-card>
+          </template>
+        </Card>
       </div>
-    </ion-content>
-  </ion-page>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, reactive } from 'vue';
-import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonButtons,
-  IonMenuButton,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
-  IonCardContent,
-  IonAccordionGroup,
-  IonAccordion,
-  IonItem,
-  IonLabel,
-} from '@ionic/vue';
+import Card from 'primevue/card';
 import type { MultiStepConfig, MultiStepFormData, Option } from '@uniquedj95/vform';
 
 const submittedData = ref<MultiStepFormData | null>(null);
@@ -144,8 +120,7 @@ const multiStepConfig = reactive<MultiStepConfig>({
         },
       },
       // Condition: Only show if accountType is 'business'
-      condition: formData =>
-        (formData['basic-info']?.accountType as Option)?.value === 'business',
+      condition: formData => (formData['basic-info']?.accountType as Option)?.value === 'business',
     },
     // Step 3: Educational Information (Conditional - only show if account type is educational)
     {

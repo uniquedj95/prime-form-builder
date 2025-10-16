@@ -40,7 +40,7 @@ export const DEFAULT_ICON_SIZE = 24;
 export const FORM_CSS_CLASSES = {
   FLEX_END: 'flex-end-buttons',
   FLEX_BETWEEN: 'flex-between',
-  MARGIN_VERTICAL: 'ion-margin-vertical',
-  MARGIN_BOTTOM: 'ion-margin-bottom',
-  MARGIN_END: 'ion-margin-end',
+  MARGIN_VERTICAL: 'margin-vertical',
+  MARGIN_BOTTOM: 'margin-bottom',
+  MARGIN_END: 'margin-end',
 } as const;

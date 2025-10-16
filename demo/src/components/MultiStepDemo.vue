@@ -1,31 +1,18 @@
 <template>
-  <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-menu-button color="primary"></ion-menu-button>
-        </ion-buttons>
-        <ion-title>Multi-Step Form Demo</ion-title>
-      </ion-toolbar>
-    </ion-header>
+  <div class="demo-page">
+    <h1 class="demo-title">Multi-Step Form Demo</h1>
 
-    <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Multi-Step Form Demo</ion-title>
-        </ion-toolbar>
-      </ion-header>
-
+    <div class="demo-content">
       <div class="demo-container">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>User Registration - Multi-Step</ion-card-title>
+        <Card>
+          <template #header>
+            <h3 class="card-title">User Registration - Multi-Step</h3>
             <ion-card-subtitle
               >A comprehensive registration form with multiple steps</ion-card-subtitle
             >
-          </ion-card-header>
+          </template>
 
-          <ion-card-content>
+          <template #content>
             <div class="demo-controls">
               <ion-segment v-model="stepPosition" @ion-change="handleSegmentChange">
                 <ion-segment-button value="top">
@@ -64,15 +51,15 @@
               next-button-text="Continue"
               button-placement="end"
             />
-          </ion-card-content>
-        </ion-card>
+          </template>
+        </Card>
 
-        <ion-card v-if="submittedData">
-          <ion-card-header>
-            <ion-card-title>Multi-Step Form Submission Result</ion-card-title>
-          </ion-card-header>
+        <Card v-if="submittedData">
+          <template #header>
+            <h3 class="card-title">Multi-Step Form Submission Result</h3>
+          </template>
 
-          <ion-card-content>
+          <template #content>
             <ion-accordion-group>
               <ion-accordion value="combined-form-data">
                 <ion-item slot="header">
@@ -91,50 +78,30 @@
                 </div>
               </ion-accordion>
             </ion-accordion-group>
-          </ion-card-content>
-        </ion-card>
+          </template>
+        </Card>
 
-        <ion-card v-if="currentStepInfo">
-          <ion-card-header>
-            <ion-card-title>Current Step Info</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
+        <Card v-if="currentStepInfo">
+          <template #header>
+            <h3 class="card-title">Current Step Info</h3>
+          </template>
+          <template #content>
             <p>
               <strong>Step:</strong> {{ currentStepInfo.index + 1 }} of
               {{ multiStepConfig.steps.length }}
             </p>
             <p><strong>Step ID:</strong> {{ currentStepInfo.id }}</p>
             <p><strong>Step Title:</strong> {{ currentStepInfo.title }}</p>
-          </ion-card-content>
-        </ion-card>
+          </template>
+        </Card>
       </div>
-    </ion-content>
-  </ion-page>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, reactive } from 'vue';
-import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
-  IonCardContent,
-  IonButtons,
-  IonMenuButton,
-  IonSegment,
-  IonSegmentButton,
-  IonLabel,
-  IonCheckbox,
-  IonAccordionGroup,
-  IonAccordion,
-  IonItem,
-} from '@ionic/vue';
+import Card from 'primevue/card';
 import type { MultiStepConfig, MultiStepFormData, StepPosition } from '@uniquedj95/vform';
 
 const submittedData = ref<any>(null);

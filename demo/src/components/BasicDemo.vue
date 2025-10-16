@@ -1,29 +1,28 @@
 <template>
-  <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-menu-button color="primary"></ion-menu-button>
-        </ion-buttons>
-        <ion-title>Basic Form Demo</ion-title>
-      </ion-toolbar>
-    </ion-header>
+  <div class="demo-page">
+    <div class="page-header">
+      <h1 class="demo-title">
+        <i class="pi pi-file"></i>
+        Basic Form Demo
+      </h1>
+      <p class="demo-description">
+        Create beautiful forms with common input types including text, email, password, date, and
+        number fields with built-in validation.
+      </p>
+    </div>
 
-    <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Basic Form Demo</ion-title>
-        </ion-toolbar>
-      </ion-header>
-
+    <div class="demo-content">
       <div class="demo-container">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>User Registration</ion-card-title>
-            <ion-card-subtitle>Basic form with common input types</ion-card-subtitle>
-          </ion-card-header>
+        <Card class="p-4">
+          <template #header>
+            <h3 class="card-title">
+              <i class="pi pi-user"></i>
+              User Registration
+            </h3>
+            <p class="card-subtitle">Fill out the form below to create a new account</p>
+          </template>
 
-          <ion-card-content>
+          <template #content>
             <VForm
               :schema="formSchema"
               @submit="handleSubmit"
@@ -33,39 +32,34 @@
               submit-button-text="Register"
               clear-button-text="Reset Form"
             />
-          </ion-card-content>
-        </ion-card>
+          </template>
+        </Card>
 
-        <ion-card v-if="submittedData">
-          <ion-card-header>
-            <ion-card-title>Form Submission Result</ion-card-title>
-          </ion-card-header>
+        <Card v-if="submittedData" class="result-card">
+          <template #header>
+            <h3 class="card-title">
+              <i class="pi pi-check-circle"></i>
+              Form Submission Result
+            </h3>
+            <p class="card-subtitle">Here's the data that was submitted</p>
+          </template>
 
-          <ion-card-content>
+          <template #content>
+            <div class="success-message">
+              <i class="pi pi-check"></i>
+              <span>Form submitted successfully!</span>
+            </div>
             <pre>{{ JSON.stringify(submittedData, null, 2) }}</pre>
-          </ion-card-content>
-        </ion-card>
+          </template>
+        </Card>
       </div>
-    </ion-content>
-  </ion-page>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import {
-  IonButtons,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonContent,
-  IonHeader,
-  IonMenuButton,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from '@ionic/vue';
+import Card from 'primevue/card';
 import type { FormData, ComputedData, FormSchema } from '@uniquedj95/vform';
 
 const submittedData = ref<any>(null);
@@ -198,7 +192,6 @@ function handleCancel() {
 <style scoped>
 .demo-container {
   padding: 20px;
-  max-width: 800px;
   margin: 0 auto;
 }
 

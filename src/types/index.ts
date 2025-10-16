@@ -241,6 +241,20 @@ export interface GridSize {
  */
 export interface FormField {
   /**
+   * The unique identifier for the form field.
+   *
+   * @type string
+   */
+  id?: string;
+
+  /**
+   * The name of the form field.
+   *
+   * @type string
+   */
+  name?: string;
+
+  /**
    * The type of input for the form input field, or form section for section headers.
    *
    * @type InputType

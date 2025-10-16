@@ -1,6 +1,25 @@
 import { vi, expect } from 'vitest';
 
 /**
+ * Mock matchMedia for components that use it (like PrimeVue Select)
+ */
+export const mockMatchMedia = () => {
+  Object.defineProperty(globalThis, 'matchMedia', {
+    writable: true,
+    value: vi.fn().mockImplementation(query => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  });
+};
+
+/**
  * Common Ionic component mocks for testing
  * Reduces duplication across test files
  */
@@ -194,7 +213,47 @@ export const getTestGlobals = () => ({
       unmounted: vi.fn(),
     },
   },
-  stubs: ionicComponentStubs,
+  provide: {
+    globalConfig: {
+      ripple: false,
+      inputStyle: null,
+      locale: {
+        startsWith: 'Starts with',
+        contains: 'Contains',
+        notContains: 'Not contains',
+        endsWith: 'Ends with',
+        equals: 'Equals',
+        notEquals: 'Not equals',
+      },
+      filterMatchModeOptions: {},
+      config: {
+        ripple: false,
+        inputStyle: null,
+        theme: {
+          preset: {},
+        },
+      },
+    },
+  },
+  mocks: {
+    $primevue: {
+      config: {
+        ripple: false,
+        inputStyle: null,
+        locale: {},
+        filterMatchModeOptions: {},
+        theme: {
+          preset: {},
+        },
+      },
+    },
+  },
+  stubs: {
+    ...ionicComponentStubs,
+    IftaLabel: {
+      template: '<div class="ifta-label"><slot></slot></div>',
+    },
+  },
 });
 
 /**

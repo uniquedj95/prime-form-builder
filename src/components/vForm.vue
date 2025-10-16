@@ -1,209 +1,51 @@
 <template>
   <div class="v-form-container">
-    <!-- Multi-step form with step indicator -->
-    <div v-if="isMultiStep" class="multi-step-form">
-      <!-- Step Indicator -->
-      <StepIndicator
-        v-if="multiStepConfig && multiStepConfig.stepPosition === 'top'"
-        :steps="visibleSteps"
-        :active-step-index="currentStepIndex"
-        :position="multiStepConfig.stepPosition || 'top'"
-        :show-progress="multiStepConfig.showProgress"
-        :allow-navigation="multiStepConfig.allowStepNavigation"
-        @step-click="handleStepClick"
-      />
-
-      <div
-        class="multi-step-content"
-        :class="`multi-step-content--${multiStepConfig?.stepPosition || 'top'}`"
-      >
-        <!-- Left Step Indicator -->
-        <StepIndicator
-          v-if="multiStepConfig && multiStepConfig.stepPosition === 'left'"
-          :steps="visibleSteps"
-          :active-step-index="currentStepIndex"
-          :position="multiStepConfig.stepPosition ?? 'top'"
-          :show-progress="multiStepConfig.showProgress"
-          :allow-navigation="multiStepConfig.allowStepNavigation"
-          @step-click="handleStepClick"
-          class="multi-step-sidebar"
-        />
-
-        <!-- Form Content -->
-        <div class="multi-step-form-content">
-          <!-- Custom Component if provided -->
-          <component
-            v-if="currentStep?.component"
-            :is="currentStep.component"
-            v-bind="currentStep.componentProps || {}"
-            @update:data="handleCustomComponentDataUpdate"
-            ref="customComponentRef"
-          />
-          <!-- Regular schema-based form -->
-          <IonGrid v-else>
-            <IonRow>
-              <template v-for="formId of Object.keys(activeSchema)" :key="formId">
-                <IonCol
-                  :size="activeSchema[formId].grid?.xs ?? '12'"
-                  :size-sm="activeSchema[formId].grid?.sm"
-                  :size-md="activeSchema[formId].grid?.md"
-                  :size-lg="activeSchema[formId].grid?.lg"
-                  :size-xl="activeSchema[formId].grid?.xl"
-                  class="ion-margin-vertical"
-                  v-if="canRenderField(activeSchema[formId], data, computedData)"
-                >
-                  <component
-                    :is="activeSchema[formId].type"
-                    v-model="activeSchema[formId]"
-                    :schema="activeSchema"
-                    :form-id="formId"
-                    ref="dynamicRefs"
-                    :ref-key="formId"
-                  />
-                </IonCol>
-              </template>
-            </IonRow>
-          </IonGrid>
-
-          <!-- Multi-step buttons -->
-          <IonRow v-if="!hideButtons">
-            <IonCol size="12" style="display: flex" :style="{ justifyContent: buttonPlacement }">
-              <ActionButton
-                type="previous"
-                :label="previousButtonText"
-                @click="handlePreviousStep"
-                v-if="canGoPrevious"
-              />
-              <ActionButton
-                type="cancel"
-                :label="cancelButtonText"
-                @click="handleCancelAction"
-                v-if="showCancelButton"
-              />
-              <ActionButton
-                type="clear"
-                :label="clearButtonText"
-                @click="handleClearAction"
-                v-if="showClearButton"
-              />
-              <CustomButton :button="btn" v-for="btn of customButtons" :key="btn.label" />
-              <ActionButton
-                type="next"
-                :label="nextButtonText"
-                @click="handleNextStep"
-                v-if="canGoNext"
-              />
-              <ActionButton
-                type="submit"
-                :label="submitButtonText"
-                @click="submitForm"
-                v-if="isLastStep"
-              />
-            </IonCol>
-          </IonRow>
-
-          <!-- Progress for left/right positioned step indicators -->
-          <div
-            v-if="
-              multiStepConfig &&
-              (multiStepConfig.stepPosition === 'left' ||
-                multiStepConfig.stepPosition === 'right') &&
-              multiStepConfig.showProgress
-            "
-            class="step-progress-bottom"
-          >
-            <div class="step-progress-bar">
-              <div class="step-progress-fill" :style="{ width: `${progressPercentage}%` }"></div>
-            </div>
-            <div class="step-progress-text">
-              Step {{ currentStepIndex + 1 }} of {{ visibleSteps.length }}
-            </div>
-          </div>
-        </div>
-
-        <!-- Right Step Indicator -->
-        <StepIndicator
-          v-if="multiStepConfig && multiStepConfig.stepPosition === 'right'"
-          :steps="visibleSteps"
-          :active-step-index="currentStepIndex"
-          :position="multiStepConfig.stepPosition"
-          :show-progress="multiStepConfig.showProgress"
-          :allow-navigation="multiStepConfig.allowStepNavigation"
-          @step-click="handleStepClick"
-          class="multi-step-sidebar"
-        />
-      </div>
-
-      <!-- Bottom Step Indicator -->
-      <StepIndicator
-        v-if="multiStepConfig && multiStepConfig.stepPosition === 'bottom'"
-        :steps="visibleSteps"
-        :active-step-index="currentStepIndex"
-        :position="multiStepConfig.stepPosition"
-        :show-progress="multiStepConfig.showProgress"
-        :allow-navigation="multiStepConfig.allowStepNavigation"
-        @step-click="handleStepClick"
-      />
-    </div>
-
-    <!-- Single-step form -->
-    <IonGrid v-else>
-      <IonRow>
-        <template v-for="formId of Object.keys(activeSchema)" :key="formId">
-          <IonCol
-            :size="activeSchema[formId].grid?.xs ?? '12'"
-            :size-sm="activeSchema[formId].grid?.sm"
-            :size-md="activeSchema[formId].grid?.md"
-            :size-lg="activeSchema[formId].grid?.lg"
-            :size-xl="activeSchema[formId].grid?.xl"
-            class="ion-margin-vertical"
-            v-if="canRenderField(activeSchema[formId], data, computedData)"
-          >
-            <component
-              :is="activeSchema[formId].type"
-              v-model="activeSchema[formId]"
-              :schema="activeSchema"
-              :form-id="formId"
-              ref="dynamicRefs"
-              :ref-key="formId"
-              style="width: 100%"
-            />
-          </IonCol>
-        </template>
-      </IonRow>
-      <IonRow v-if="!hideButtons">
-        <IonCol size="12" style="display: flex" :style="{ justifyContent: buttonPlacement }">
-          <ActionButton
-            type="cancel"
-            :label="cancelButtonText"
-            @click="handleCancelAction"
-            v-if="showCancelButton"
-          />
-          <ActionButton
-            type="clear"
-            :label="clearButtonText"
-            @click="handleClearAction"
-            v-if="showClearButton"
-          />
-          <CustomButton :button="btn" v-for="btn of customButtons" :key="btn.label" />
-          <ActionButton type="submit" :label="submitButtonText" @click="submitForm" />
-        </IonCol>
-      </IonRow>
-    </IonGrid>
+    <!-- Route to MultiStepForm or SingleStepForm based on config -->
+    <MultiStepForm
+      v-if="isMultiStep"
+      ref="formRef"
+      :multi-step-config="multiStepConfig!"
+      :show-labels="showLabels"
+      :show-clear-button="showClearButton"
+      :show-cancel-button="showCancelButton"
+      :hide-buttons="hideButtons"
+      :button-placement="buttonPlacement"
+      :submit-button-text="submitButtonText"
+      :clear-button-text="clearButtonText"
+      :cancel-button-text="cancelButtonText"
+      :next-button-text="nextButtonText"
+      :previous-button-text="previousButtonText"
+      :custom-buttons="customButtons"
+      @submit="handleMultiStepSubmit"
+      @step-change="handleStepChange"
+      @clear="emit('clear')"
+      @cancel="emit('cancel')"
+    />
+    <SingleStepForm
+      v-else
+      ref="formRef"
+      :schema="schema!"
+      :show-labels="showLabels"
+      :show-clear-button="showClearButton"
+      :show-cancel-button="showCancelButton"
+      :hide-buttons="hideButtons"
+      :button-placement="buttonPlacement"
+      :submit-button-text="submitButtonText"
+      :clear-button-text="clearButtonText"
+      :cancel-button-text="cancelButtonText"
+      :custom-buttons="customButtons"
+      @submit="handleSingleStepSubmit"
+      @clear="emit('clear')"
+      @cancel="emit('cancel')"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, computed } from 'vue';
-import { IonGrid, IonRow, IonCol } from '@ionic/vue';
+import { ref, computed } from 'vue';
 import type { FormData, ComputedData, MultiStepFormData, FormProps } from '@/types';
-import { canRenderField, isFormField, resetFormInputsWithFieldCheck } from '@/utils';
-import { useFormValidation } from '@/composables/useFormValidation';
-import { useDataTransformation } from '@/composables/useDataTransformation';
-import { useMultiStepForm } from '@/composables/useMultiStepForm';
-import StepIndicator from '@/components/shared/StepIndicator.vue';
-import ActionButton from './buttons/ActionButton.vue';
-import CustomButton from './buttons/CustomButton.vue';
+import SingleStepForm from './SingleStepForm.vue';
+import MultiStepForm from './MultiStepForm.vue';
 
 interface FormEmits {
   (e: 'submit', formData: FormData, computedFormData: ComputedData): void;
@@ -223,395 +65,151 @@ const props = withDefaults(defineProps<FormProps>(), {
 
 const emit = defineEmits<FormEmits>();
 
-// Computed properties for multi-step detection
+// Computed property for multi-step detection
 const isMultiStep = computed(() => !!props.multiStepConfig);
-const activeSchema = ref(props.schema || {});
 
-// Multi-step form logic
-const multiStepForm = props.multiStepConfig ? useMultiStepForm(props.multiStepConfig) : null;
+// Reference to the active form component (either SingleStepForm or MultiStepForm)
+const formRef = ref<
+  InstanceType<typeof SingleStepForm> | InstanceType<typeof MultiStepForm> | null
+>(null);
 
-// Single-step form logic
-const { dynamicRefs, isFormValid } = useFormValidation();
-const { formData: data, computedData } = useDataTransformation(activeSchema);
-const customComponentRef = ref<any>(null);
-
-// Multi-step computed properties
-const currentStepIndex = computed(() => multiStepForm?.currentStepIndex.value ?? 0);
-const currentStep = computed(() => multiStepForm?.currentStep.value);
-const visibleSteps = computed(() => multiStepForm?.visibleSteps.value ?? []);
-const isLastStep = computed(() => multiStepForm?.isLastStep.value ?? true);
-const canGoNext = computed(() => multiStepForm?.canGoNext.value ?? false);
-const canGoPrevious = computed(() => multiStepForm?.canGoPrevious.value ?? false);
-
-// Progress percentage for left/right indicators
-const progressPercentage = computed(() => {
-  if (!isMultiStep.value || !multiStepForm) return 0;
-  return multiStepForm.progressPercentage.value;
-});
-
-// Update active schema when step changes
-watch(
-  () => currentStep.value,
-  newStep => {
-    if (newStep && isMultiStep.value) {
-      activeSchema.value = newStep.schema || {};
-    }
-  },
-  { immediate: true }
-);
-
-// Update multi-step data when form data changes
-watch(
-  [data, computedData],
-  ([newData, newComputedData]) => {
-    if (isMultiStep.value && multiStepForm && currentStep.value) {
-      multiStepForm.updateStepData(currentStep.value.id, newData);
-      multiStepForm.updateStepComputedData(currentStep.value.id, newComputedData);
-    }
-  },
-  { deep: true }
-);
-
-// Initialize single-step form if no multi-step config
-watch(
-  () => props.schema,
-  newSchema => {
-    if (!isMultiStep.value && newSchema) {
-      activeSchema.value = newSchema;
-      for (const [key, field] of Object.entries(newSchema)) {
-        // Only process FormField items, not FormSection items
-        if (isFormField(field) && 'value' in field && field.value !== undefined) {
-          (activeSchema.value[key] as any).value = field.value;
-        }
-      }
-    }
-  },
-  { deep: true, immediate: true }
-);
-
-async function submitForm() {
-  if (isMultiStep.value && multiStepForm) {
-    // Multi-step form submission
-
-    // Handle validation for the current step if it has a custom component
-    if (currentStep.value?.component && customComponentRef.value) {
-      if (typeof customComponentRef.value.validate === 'function') {
-        const isValid = await customComponentRef.value.validate();
-        if (!isValid) return;
-      }
-    }
-
-    // Validate all steps
-    const isValid = await multiStepForm.validateAllSteps();
-    if (!isValid) return;
-
-    const multiStepData = multiStepForm.getMultiStepFormData();
-    emit('multi-step-submit', multiStepData);
-  } else {
-    // Single-step form submission
-    if (!(await isFormValid())) return;
-    emit('submit', data.value, computedData.value);
-  }
+// Event handlers
+function handleSingleStepSubmit(formData: FormData, computedFormData: ComputedData) {
+  emit('submit', formData, computedFormData);
 }
 
-function resetFormWithFieldCheck() {
-  // Use the utility function to reset form inputs while respecting field states
-  resetFormInputsWithFieldCheck(
-    dynamicRefs.value,
-    activeSchema.value,
-    data.value,
-    computedData.value
-  );
+function handleMultiStepSubmit(data: MultiStepFormData) {
+  emit('multi-step-submit', data);
 }
 
-function handleClearAction() {
-  if (isMultiStep.value && multiStepForm && currentStep.value) {
-    multiStepForm.clearStepData(currentStep.value.id);
-    resetFormWithFieldCheck();
-  } else {
-    resetFormWithFieldCheck();
-  }
-  emit('clear');
+function handleStepChange(stepIndex: number, stepId: string) {
+  emit('step-change', stepIndex, stepId);
 }
 
-function handleCancelAction() {
-  if (isMultiStep.value && multiStepForm) {
-    multiStepForm.resetForm();
-  } else {
-    resetFormWithFieldCheck();
-  }
-  emit('cancel');
-}
-
-async function handleNextStep() {
-  if (isMultiStep.value && multiStepForm) {
-    // First validate the current step's form inputs
-    let isCurrentStepValid = true;
-
-    if (currentStep.value?.component && customComponentRef.value) {
-      // If custom component has a validate method, use it
-      if (typeof customComponentRef.value.validate === 'function') {
-        isCurrentStepValid = await customComponentRef.value.validate();
-      }
-    } else {
-      // Otherwise use regular form validation
-      isCurrentStepValid = await isFormValid();
-    }
-
-    if (!isCurrentStepValid) {
-      // Show validation errors - they're already displayed by the form inputs
-      return;
-    }
-
-    const success = await multiStepForm.nextStep();
-    if (success && currentStep.value) {
-      emit('step-change', currentStepIndex.value, currentStep.value.id);
-    }
-  }
-}
-
-async function handlePreviousStep() {
-  if (multiStepForm) {
-    const success = await multiStepForm.previousStep();
-    if (success && currentStep.value) {
-      emit('step-change', currentStepIndex.value, currentStep.value.id);
-    }
-  }
-}
-
-async function handleStepClick(stepIndex: number) {
-  if (multiStepForm) {
-    // If moving forward, validate current step first
-    if (stepIndex > currentStepIndex.value) {
-      let isCurrentStepValid = true;
-
-      if (currentStep.value?.component && customComponentRef.value) {
-        // If custom component has a validate method, use it
-        if (typeof customComponentRef.value.validate === 'function') {
-          isCurrentStepValid = await customComponentRef.value.validate();
-        }
-      } else {
-        // Otherwise use regular form validation
-        isCurrentStepValid = await isFormValid();
-      }
-
-      if (!isCurrentStepValid) {
-        // Show validation errors - they're already displayed by the form inputs
-        return;
-      }
-    }
-
-    const success = await multiStepForm.goToStep(stepIndex);
-    if (success && currentStep.value) {
-      emit('step-change', stepIndex, currentStep.value.id);
-    }
-  }
-}
-
-// Field visibility logic
-watch(
-  data,
-  async () => {
-    for (const [k, f] of Object.entries(activeSchema.value)) {
-      if (!canRenderField(f, data.value, computedData.value)) {
-        // Reset the value of the field if it's not rendered
-        const originalSchema =
-          isMultiStep.value && currentStep.value && currentStep.value.schema
-            ? currentStep.value.schema[k]
-            : props.schema?.[k];
-        if (originalSchema && isFormField(originalSchema) && 'value' in originalSchema) {
-          f.value = originalSchema.value;
-        } else {
-          f.value = undefined;
-        }
-      }
-    }
-  },
-  {
-    deep: true,
-    immediate: true,
-  }
-);
-
-// Handle data updates from custom components
-function handleCustomComponentDataUpdate(data: any) {
-  if (isMultiStep.value && multiStepForm && currentStep.value) {
-    multiStepForm.updateStepData(currentStep.value.id, data);
-  }
-}
-
+// Expose methods for parent component (maintains backward compatibility)
 defineExpose({
-  isLastStep,
-  canGoNext,
-  canGoPrevious,
-  computedData,
-  formData: data,
-  resetForm: handleClearAction,
-  submitForm,
-  isFormValid,
+  // Common properties/methods
+  computedData: computed(() => formRef.value?.computedData),
+  formData: computed(() => formRef.value?.formData),
+  resetForm: () => formRef.value?.resetForm(),
+  submitForm: () => formRef.value?.submitForm(),
+  isFormValid: () => formRef.value?.isFormValid(),
+
+  // Multi-step specific methods
+  isLastStep: computed(() =>
+    formRef.value && 'isLastStep' in formRef.value ? formRef.value.isLastStep : true
+  ),
+  canGoNext: computed(() =>
+    formRef.value && 'canGoNext' in formRef.value ? formRef.value.canGoNext : false
+  ),
+  canGoPrevious: computed(() =>
+    formRef.value && 'canGoPrevious' in formRef.value ? formRef.value.canGoPrevious : false
+  ),
+  nextStep: () =>
+    formRef.value && 'nextStep' in formRef.value ? formRef.value.nextStep() : undefined,
+  previousStep: () =>
+    formRef.value && 'previousStep' in formRef.value ? formRef.value.previousStep() : undefined,
+  goToStep: (stepIndex: number) =>
+    formRef.value && 'goToStep' in formRef.value ? formRef.value.goToStep(stepIndex) : undefined,
+  getCurrentStep: () =>
+    formRef.value && 'getCurrentStep' in formRef.value ? formRef.value.getCurrentStep() : undefined,
+  getCurrentStepIndex: () =>
+    formRef.value && 'getCurrentStepIndex' in formRef.value
+      ? formRef.value.getCurrentStepIndex()
+      : undefined,
+
+  // Backward compatibility method
   resolveData: () => {
-    if (isMultiStep.value && multiStepForm) {
-      return multiStepForm.getMultiStepFormData();
+    if (isMultiStep.value && formRef.value && 'getMultiStepFormData' in formRef.value) {
+      return formRef.value.getMultiStepFormData();
     }
     return {
-      formData: data.value,
-      computedData: computedData.value,
+      formData: formRef.value?.formData,
+      computedData: formRef.value?.computedData,
     };
   },
-  // Multi-step specific methods
-  nextStep: handleNextStep,
-  previousStep: handlePreviousStep,
-  goToStep: handleStepClick,
-  getCurrentStep: () => currentStep.value,
-  getCurrentStepIndex: () => currentStepIndex.value,
 });
 </script>
 
-<style scoped>
-.input-label {
-  font-size: large;
-  font-weight: bold;
-}
-
-/* Multi-step form styles */
+<style>
 .v-form-container {
   width: 100%;
 }
 
-.multi-step-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  width: 100%;
+.input-wrapper {
+  position: relative;
+  transition: transform 0.2s ease;
+  margin-bottom: 1rem;
 }
 
-.multi-step-content {
-  display: flex;
-  gap: 1.5rem;
-  align-items: flex-start;
-  width: 100%;
+.input-wrapper:focus-within {
+  transform: translateY(-1px);
 }
 
-.multi-step-content--top,
-.multi-step-content--bottom {
-  flex-direction: column;
+.p-error {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--hospital-danger, #dc2626);
+  font-weight: 500;
 }
 
-.multi-step-content--left {
-  flex-direction: row;
+.p-help {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: var(--hospital-text-muted, #94a3b8);
+  font-style: italic;
 }
 
-.multi-step-content--right {
-  flex-direction: row;
+.p-invalid {
+  border-color: var(--hospital-danger, #dc2626) !important;
 }
 
-.multi-step-sidebar {
-  flex-shrink: 0;
-  min-width: 250px;
+.hospital-required {
+  color: var(--hospital-danger, #dc2626);
+  font-weight: bold;
 }
 
-.multi-step-form-content {
-  flex: 1;
-  min-width: 0;
+.hospital-primary {
+  color: var(--hospital-primary, #2563eb) !important;
 }
 
-.multi-step-buttons {
-  margin-top: 2rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--ion-color-light);
+:deep(.p-iftalabel label) {
+  font-weight: 600;
+  color: var(--hospital-text-secondary, #64748b);
+  font-size: 0.9rem;
+  background: var(--hospital-bg-card, #ffffff);
+  padding: 0 0.5rem;
 }
 
-.button-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
+:deep(.p-iftalabel:has(.p-focus) label) {
+  color: var(--hospital-primary, #2563eb);
+  font-weight: 700;
 }
 
-.step-nav-buttons {
-  min-width: 120px;
-  display: flex;
-  justify-content: flex-start;
+:deep(.p-inputtext),
+:deep(.p-inputnumber-input),
+:deep(.p-dropdown),
+:deep(.p-datepicker-input),
+:deep(.p-textarea),
+:deep(.p-inputmask) {
+  border: 2px solid var(--hospital-border, #e2e8f0);
+  border-radius: 8px;
+  padding: 0.875rem 1rem;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  background: var(--hospital-bg-card, #ffffff);
 }
 
-.step-nav-buttons:last-child {
-  justify-content: flex-end;
-}
-
-.step-action-buttons {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-  flex: 1;
-}
-
-.step-progress-bottom {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--ion-color-light);
-}
-
-.step-progress-bar {
-  height: 4px;
-  background: var(--ion-color-light);
-  border-radius: 2px;
-  overflow: hidden;
-  margin-bottom: 0.5rem;
-}
-
-.step-progress-fill {
-  height: 100%;
-  background: var(--ion-color-primary);
-  border-radius: 2px;
-  transition: width 0.3s ease;
-}
-
-.step-progress-text {
-  font-size: 0.75rem;
-  color: var(--ion-color-medium);
-  text-align: center;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .multi-step-content--left,
-  .multi-step-content--right {
-    flex-direction: column;
-  }
-
-  .multi-step-sidebar {
-    min-width: unset;
-    width: 100%;
-  }
-
-  .multi-step-buttons .button-container {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .step-nav-buttons,
-  .step-action-buttons {
-    min-width: unset;
-    width: 100%;
-    justify-content: center;
-  }
-
-  .step-nav-buttons:last-child {
-    justify-content: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .multi-step-form {
-    gap: 1rem;
-  }
-
-  .multi-step-content {
-    gap: 1rem;
-  }
-
-  .multi-step-buttons {
-    margin-top: 1rem;
-  }
+:deep(.p-inputtext:focus),
+:deep(.p-inputnumber-input:focus),
+:deep(.p-dropdown:focus),
+:deep(.p-datepicker-input:focus),
+:deep(.p-textarea:focus),
+:deep(.p-inputmask:focus) {
+  border-color: var(--hospital-primary, #2563eb);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  outline: none;
 }
 </style>

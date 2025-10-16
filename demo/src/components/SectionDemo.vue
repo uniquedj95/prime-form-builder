@@ -1,29 +1,16 @@
 <template>
-  <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-menu-button color="primary"></ion-menu-button>
-        </ion-buttons>
-        <ion-title>Section Demo</ion-title>
-      </ion-toolbar>
-    </ion-header>
+  <div class="demo-page">
+    <h1 class="demo-title">Section Demo</h1>
 
-    <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Section Demo</ion-title>
-        </ion-toolbar>
-      </ion-header>
-
+    <div class="demo-content">
       <div class="demo-container">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Employee Registration Form</ion-card-title>
-            <ion-card-subtitle>Demonstrates form sections with titles</ion-card-subtitle>
-          </ion-card-header>
+        <Card>
+          <template #header>
+            <h3 class="card-title">Employee Registration Form</h3>
+            <p class="card-subtitle">Demonstrates form sections with titles</p>
+          </template>
 
-          <ion-card-content>
+          <template #content>
             <VForm
               :schema="formSchema"
               @submit="handleSubmit"
@@ -33,39 +20,26 @@
               submit-button-text="Register Employee"
               clear-button-text="Reset Form"
             />
-          </ion-card-content>
-        </ion-card>
+          </template>
+        </Card>
 
-        <ion-card v-if="submittedData">
-          <ion-card-header>
-            <ion-card-title>Form Submission Result</ion-card-title>
-          </ion-card-header>
+        <Card v-if="submittedData">
+          <template #header>
+            <h3 class="card-title">Form Submission Result</h3>
+          </template>
 
-          <ion-card-content>
+          <template #content>
             <pre>{{ JSON.stringify(submittedData, null, 2) }}</pre>
-          </ion-card-content>
-        </ion-card>
+          </template>
+        </Card>
       </div>
-    </ion-content>
-  </ion-page>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import {
-  IonButtons,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonContent,
-  IonHeader,
-  IonMenuButton,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from '@ionic/vue';
+import Card from 'primevue/card';
 import type { FormData, ComputedData, FormSchema } from '@uniquedj95/vform';
 
 const submittedData = ref<any>(null);

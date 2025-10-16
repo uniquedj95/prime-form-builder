@@ -11,8 +11,15 @@ import RepeatInput from './components/inputs/RepeatInput.vue';
 import CheckboxInput from './components/inputs/CheckboxInput.vue';
 import RadioInput from './components/inputs/RadioInput.vue';
 import FormSection from './components/shared/SectionTitle.vue';
-import { maskito } from '@maskito/vue';
 import { GlobalConfig } from './types';
+
+import PrimeVue from 'primevue/config';
+import Lara from '@primeuix/themes/lara';
+
+import 'primeicons/primeicons.css';
+import 'primeflex/primeflex.css';
+import './assets/styles.scss';
+import './assets/tailwind.css';
 
 // Export composables
 export { useFormValidation } from './composables/useFormValidation';
@@ -31,6 +38,16 @@ export { resolveFormFieldValue } from './utils';
 export const VForm: Plugin = {
   install(app: App, opts?: GlobalConfig) {
     if (opts) app.provide('globalConfig', opts);
+    app.use(PrimeVue, {
+      theme: {
+        preset: Lara,
+        options: {
+          prefix: 'p',
+          darkModeSelector: '.dark-mode',
+          cssLayer: false,
+        },
+      },
+    });
     app.component('VForm', Form);
     app.component('TextInput', TextInput);
     app.component('DateInput', DateInput);
@@ -43,7 +60,6 @@ export const VForm: Plugin = {
     app.component('CheckboxInput', CheckboxInput);
     app.component('RadioInput', RadioInput);
     app.component('FormSection', FormSection);
-    app.directive('maskito', maskito);
   },
 };
 

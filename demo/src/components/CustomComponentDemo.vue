@@ -1,62 +1,35 @@
 <template>
-  <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-menu-button color="primary"></ion-menu-button>
-        </ion-buttons>
-        <ion-title>Custom Component Demo</ion-title>
-      </ion-toolbar>
-    </ion-header>
+  <div class="demo-page">
+    <h1 class="demo-title">Custom Component Demo</h1>
 
-    <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Custom Component Demo</ion-title>
-        </ion-toolbar>
-      </ion-header>
-
+    <div class="demo-content">
       <div class="demo-container">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Custom Component in Multi-Step Form</ion-card-title>
+        <Card>
+          <template #header>
+            <h3 class="card-title">Custom Component in Multi-Step Form</h3>
             <ion-card-subtitle
               >Using custom components in a multi-step form for an ANC workflow</ion-card-subtitle
             >
-          </ion-card-header>
+          </template>
 
-          <ion-card-content>
+          <template #content>
             <v-form
               :multi-step-config="multiStepConfig"
               @multi-step-submit="handleSubmit"
               @step-change="handleStepChange"
             />
-          </ion-card-content>
-        </ion-card>
+          </template>
+        </Card>
       </div>
-    </ion-content>
-  </ion-page>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import { MultiStepConfig } from '@uniquedj95/vform';
 import ANCHistoryComponent from './CustomComponent.vue';
-import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonButtons,
-  IonMenuButton,
-  IonTitle,
-  IonContent,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
-  IonCardContent,
-} from '@ionic/vue';
-
+import Card from 'primevue/card';
 const patientId = ref('P12345');
 const patientName = ref('Jane Doe');
 

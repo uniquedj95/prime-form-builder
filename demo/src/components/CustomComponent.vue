@@ -1,120 +1,106 @@
 <!-- ANCHistoryComponent.vue -->
 <template>
   <div class="anc-history-component">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Previous ANC Visits</ion-card-title>
-        <ion-card-subtitle>{{ patientName }}'s visit history</ion-card-subtitle>
-      </ion-card-header>
+    <Card>
+      <template #header>
+        <h3 class="card-title">Previous ANC Visits</h3>
+        <p class="card-subtitle">{{ patientName }}'s visit history</p>
+      </template>
 
-      <ion-card-content>
-        <ion-list>
-          <ion-item v-if="loading">
-            <ion-spinner name="dots"></ion-spinner>
-            <ion-label class="ion-padding-start">Loading visit history...</ion-label>
-          </ion-item>
+      <template #content>
+        <div class="visits-list">
+          <div v-if="loading" class="loading-state">
+            <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+            <p>Loading visit history...</p>
+          </div>
 
           <template v-else>
             <!-- No data message -->
-            <ion-item v-if="visits.length === 0" lines="none">
-              <ion-label class="ion-text-center">No previous visits recorded</ion-label>
-            </ion-item>
+            <div v-if="visits.length === 0" class="no-data">
+              <p>No previous visits recorded</p>
+            </div>
 
             <!-- Visits data -->
-            <ion-item v-for="visit in visits" :key="visit.id" button @click="selectVisit(visit)">
-              <ion-label>
-                <h2>{{ formatDate(visit.date) }}</h2>
+            <div
+              v-for="visit in visits"
+              :key="visit.id"
+              class="visit-item"
+              :class="{ selected: visit.id === selectedVisit?.id }"
+              @click="selectVisit(visit)"
+            >
+              <div class="visit-info">
+                <h4>{{ formatDate(visit.date) }}</h4>
                 <p>Week: {{ visit.week }}</p>
                 <p>BP: {{ visit.bloodPressure }}</p>
                 <p>Weight: {{ visit.weight }}kg</p>
-              </ion-label>
-              <ion-note slot="end" :color="visit.id === selectedVisit?.id ? 'primary' : ''">
-                {{ visit.id === selectedVisit?.id ? 'Selected' : 'Tap to select' }}
-              </ion-note>
-            </ion-item>
+              </div>
+              <div class="visit-status">
+                <span
+                  :class="visit.id === selectedVisit?.id ? 'status-selected' : 'status-default'"
+                >
+                  {{ visit.id === selectedVisit?.id ? 'Selected' : 'Tap to select' }}
+                </span>
+              </div>
+            </div>
           </template>
-        </ion-list>
-      </ion-card-content>
-    </ion-card>
+        </div>
+      </template>
+    </Card>
 
     <!-- Selected Visit Details -->
-    <ion-card v-if="selectedVisit">
-      <ion-card-header>
-        <ion-card-title>Visit Details</ion-card-title>
-        <ion-card-subtitle>{{ formatDate(selectedVisit.date) }}</ion-card-subtitle>
-      </ion-card-header>
+    <Card v-if="selectedVisit">
+      <template #header>
+        <h3 class="card-title">Visit Details</h3>
+        <p class="card-subtitle">{{ formatDate(selectedVisit.date) }}</p>
+      </template>
 
-      <ion-card-content>
-        <ion-list>
-          <ion-item>
-            <ion-label>
-              <h3>Gestational Age:</h3>
-              <p>{{ selectedVisit.week }} weeks</p>
-            </ion-label>
-          </ion-item>
+      <template #content>
+        <div class="visit-details">
+          <div class="detail-item">
+            <h4>Gestational Age:</h4>
+            <p>{{ selectedVisit.week }} weeks</p>
+          </div>
 
-          <ion-item>
-            <ion-label>
-              <h3>Blood Pressure:</h3>
-              <p>{{ selectedVisit.bloodPressure }}</p>
-            </ion-label>
-          </ion-item>
+          <div class="detail-item">
+            <h4>Blood Pressure:</h4>
+            <p>{{ selectedVisit.bloodPressure }}</p>
+          </div>
 
-          <ion-item>
-            <ion-label>
-              <h3>Weight:</h3>
-              <p>{{ selectedVisit.weight }}kg</p>
-            </ion-label>
-          </ion-item>
+          <div class="detail-item">
+            <h4>Weight:</h4>
+            <p>{{ selectedVisit.weight }}kg</p>
+          </div>
 
-          <ion-item>
-            <ion-label>
-              <h3>Fetal Heart Rate:</h3>
-              <p>{{ selectedVisit.fetalHeartRate }} bpm</p>
-            </ion-label>
-          </ion-item>
+          <div class="detail-item">
+            <h4>Fetal Heart Rate:</h4>
+            <p>{{ selectedVisit.fetalHeartRate }} bpm</p>
+          </div>
 
-          <ion-item lines="none">
-            <ion-label>
-              <h3>Notes:</h3>
-              <p>{{ selectedVisit.notes || 'No notes recorded' }}</p>
-            </ion-label>
-          </ion-item>
-        </ion-list>
-      </ion-card-content>
-    </ion-card>
+          <div class="detail-item">
+            <h4>Notes:</h4>
+            <p>{{ selectedVisit.notes || 'No notes recorded' }}</p>
+          </div>
+        </div>
+      </template>
+    </Card>
 
     <!-- Action Buttons -->
-    <div class="ion-padding ion-text-end">
-      <ion-button fill="outline" @click="refreshData">
-        <ion-icon slot="start" :icon="refreshOutline"></ion-icon>
-        Refresh Data
-      </ion-button>
+    <div class="action-buttons">
+      <Button label="Refresh Data" icon="pi pi-refresh" outlined @click="refreshData" />
 
-      <ion-button @click="continueToNextStep" :disabled="!selectedVisit && requireSelection">
-        Continue
-      </ion-button>
+      <Button
+        label="Continue"
+        @click="continueToNextStep"
+        :disabled="!selectedVisit && requireSelection"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import {
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
-  IonCardContent,
-  IonList,
-  IonItem,
-  IonLabel,
-  IonNote,
-  IonSpinner,
-  IonButton,
-  IonIcon,
-} from '@ionic/vue';
-import { refreshOutline } from 'ionicons/icons';
+import Card from 'primevue/card';
+import Button from 'primevue/button';
 
 // Define props
 const props = defineProps({
@@ -257,5 +243,116 @@ defineExpose({
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.visits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  gap: 1rem;
+  color: var(--text-color-secondary);
+}
+
+.no-data {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-color-secondary);
+}
+
+.visit-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.visit-item:hover {
+  background: var(--surface-hover);
+  border-color: var(--primary-color);
+}
+
+.visit-item.selected {
+  background: var(--primary-50);
+  border-color: var(--primary-color);
+}
+
+.visit-info h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.visit-info p {
+  margin: 0.25rem 0;
+  font-size: 0.875rem;
+  color: var(--text-color-secondary);
+}
+
+.visit-status {
+  display: flex;
+  align-items: center;
+}
+
+.status-selected {
+  color: var(--primary-color);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.status-default {
+  color: var(--text-color-secondary);
+  font-size: 0.875rem;
+}
+
+.visit-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.detail-item {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.detail-item h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.detail-item p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-color-secondary);
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 0;
 }
 </style>

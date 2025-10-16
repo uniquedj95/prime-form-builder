@@ -1,12 +1,11 @@
 <template>
-  <ion-label :slot="slotName" v-if="showLabel" class="input-label">
+  <label v-if="showLabel" class="input-label">
     {{ labelText }}
-    <ion-text color="danger" v-if="showRequired">*</ion-text>
-  </ion-label>
+    <span class="required-asterisk" v-if="showRequired">*</span>
+  </label>
 </template>
 
 <script lang="ts" setup>
-import { IonLabel, IonText } from '@ionic/vue';
 import type { FormField } from '@/types';
 import { useLabelTemplate } from '@/composables/useLabelTemplate';
 import { toRef } from 'vue';
@@ -18,3 +17,17 @@ const props = defineProps<{
 
 const { showLabel, showRequired, labelText } = useLabelTemplate(toRef(props, 'model'));
 </script>
+
+<style scoped>
+.input-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.required-asterisk {
+  color: var(--red-500);
+  margin-left: 0.25rem;
+}
+</style>

@@ -1,11 +1,20 @@
 import { createApp, Plugin } from 'vue';
-import { IonicVue } from '@ionic/vue';
-import { createRouter, createWebHistory } from '@ionic/vue-router';
+import PrimeVue from 'primevue/config';
+import ToastService from 'primevue/toastservice';
+import Lara from '@primevue/themes/lara';
+import { createRouter, createWebHistory } from 'vue-router';
 import App from './App.vue';
+
+// Import PrimeVue styles
+import 'primeicons/primeicons.css';
+import 'primeflex/primeflex.css';
 
 // Import VForm from the built package
 import VForm from '@uniquedj95/vform';
 import '@uniquedj95/vform/vform.css';
+
+// Import demo styles
+import './demo-styles.css';
 
 import BasicDemo from './components/BasicDemo.vue';
 import SectionDemo from './components/SectionDemo.vue';
@@ -57,7 +66,17 @@ const router = createRouter({
 
 const app = createApp(App);
 
-app.use(IonicVue);
+app.use(PrimeVue, {
+  theme: {
+    preset: Lara,
+    options: {
+      prefix: 'p',
+      darkModeSelector: '.dark-mode',
+      cssLayer: false,
+    },
+  },
+});
+app.use(ToastService);
 app.use(router);
 app.use(VForm as Plugin);
 

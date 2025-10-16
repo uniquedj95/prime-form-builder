@@ -1,18 +1,18 @@
 <template>
-  <IonButton
+  <Button
     @click="button.action"
-    :color="button.color ?? 'primary'"
-    :fill="button.fill ?? 'solid'"
-    :size="button.size ?? 'default'"
-    :expand="button.expand"
+    :severity="getSeverity(button.color ?? 'primary')"
+    :outlined="button.fill === 'outline'"
+    :size="button.size ?? 'small'"
+    :class="button.expand === 'block' ? 'w-full' : ''"
   >
     {{ button.label }}
-  </IonButton>
+  </Button>
 </template>
 
 <script setup lang="ts">
 import { CustomButton } from '@/types';
-import { IonButton } from '@ionic/vue';
+import Button from 'primevue/button';
 import { PropType } from 'vue';
 
 defineProps({
@@ -21,4 +21,18 @@ defineProps({
     required: true,
   },
 });
+
+const getSeverity = (color: string) => {
+  const colorMap: Record<string, string> = {
+    primary: 'primary',
+    secondary: 'secondary',
+    success: 'success',
+    danger: 'danger',
+    warning: 'warn',
+    info: 'info',
+    light: 'secondary',
+    dark: 'contrast',
+  };
+  return colorMap[color] || 'primary';
+};
 </script>

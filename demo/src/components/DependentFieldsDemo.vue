@@ -1,55 +1,42 @@
 <template>
-  <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-menu-button color="primary"></ion-menu-button>
-        </ion-buttons>
-        <ion-title>Dependent Fields</ion-title>
-      </ion-toolbar>
-    </ion-header>
+  <div class="demo-page">
+    <h1 class="demo-title">Dependent Fields</h1>
 
-    <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Dependent Fields</ion-title>
-        </ion-toolbar>
-      </ion-header>
-
+    <div class="demo-content">
       <div class="demo-container">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Dynamic Field Dependencies</ion-card-title>
+        <Card>
+          <template #header>
+            <h3 class="card-title">Dynamic Field Dependencies</h3>
             <ion-card-subtitle
               >Fields that show/hide and update based on other field values</ion-card-subtitle
             >
-          </ion-card-header>
+          </template>
 
-          <ion-card-content>
+          <template #content>
             <VForm
               :schema="formSchema"
               @submit="handleSubmit"
               submit-button-text="Submit Application"
             />
-          </ion-card-content>
-        </ion-card>
+          </template>
+        </Card>
 
-        <ion-card v-if="submittedData">
-          <ion-card-header>
-            <ion-card-title>Application Data</ion-card-title>
-          </ion-card-header>
+        <Card v-if="submittedData">
+          <template #header>
+            <h3 class="card-title">Application Data</h3>
+          </template>
 
-          <ion-card-content>
+          <template #content>
             <pre>{{ JSON.stringify(submittedData, null, 2) }}</pre>
-          </ion-card-content>
-        </ion-card>
+          </template>
+        </Card>
 
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>How Dependencies Work</ion-card-title>
-          </ion-card-header>
+        <Card>
+          <template #header>
+            <h3 class="card-title">How Dependencies Work</h3>
+          </template>
 
-          <ion-card-content>
+          <template #content>
             <ion-list>
               <ion-item>
                 <ion-label>
@@ -76,18 +63,18 @@
                 </ion-label>
               </ion-item>
             </ion-list>
-          </ion-card-content>
-        </ion-card>
+          </template>
+        </Card>
 
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Resetting Dependent Fields</ion-card-title>
+        <Card>
+          <template #header>
+            <h3 class="card-title">Resetting Dependent Fields</h3>
             <ion-card-subtitle
               >Best practices for clearing dependent field values</ion-card-subtitle
             >
-          </ion-card-header>
+          </template>
 
-          <ion-card-content>
+          <template #content>
             <p>
               When a dependency changes, you often want to reset the dependent field's value to
               prevent invalid combinations. The form library provides automatic reset functionality
@@ -134,32 +121,16 @@
               reset doesn't work properly, or when you need to reset multiple fields or perform
               additional logic when dependencies change.
             </p>
-          </ion-card-content>
-        </ion-card>
+          </template>
+        </Card>
       </div>
-    </ion-content>
-  </ion-page>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import {
-  IonButtons,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonContent,
-  IonHeader,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonMenuButton,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from '@ionic/vue';
+import Card from 'primevue/card';
 import type { FormData, ComputedData, FormSchema, Option } from '@uniquedj95/vform';
 
 const submittedData = ref<any>(null);

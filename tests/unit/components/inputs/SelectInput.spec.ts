@@ -1,11 +1,12 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeAll } from 'vitest';
 import { mount } from '@vue/test-utils';
 import {
   createVueRouterMock,
   createIonicMocks,
   createIonicIconsMock,
-  ionicComponentStubs,
+  getTestGlobals,
   expectStandardFormMethods,
+  mockMatchMedia,
 } from '../../../utils/testHelpers';
 
 // Mock dependencies
@@ -17,6 +18,11 @@ createIonicIconsMock();
 import SelectInput from '../../../../src/components/inputs/SelectInput.vue';
 
 describe('SelectInput', () => {
+  // Mock matchMedia before all tests
+  beforeAll(() => {
+    mockMatchMedia();
+  });
+
   it('renders the component properly', () => {
     const wrapper = mount(SelectInput, {
       props: {
@@ -29,9 +35,7 @@ describe('SelectInput', () => {
           ],
         },
       },
-      global: {
-        stubs: ionicComponentStubs,
-      },
+      global: getTestGlobals(),
     });
 
     expect(wrapper.exists()).toBeTruthy();
@@ -49,9 +53,7 @@ describe('SelectInput', () => {
           ],
         },
       },
-      global: {
-        stubs: ionicComponentStubs,
-      },
+      global: getTestGlobals(),
     });
 
     expect(wrapper.props().modelValue.label).toBe('Test Select');
@@ -70,9 +72,7 @@ describe('SelectInput', () => {
           ],
         },
       },
-      global: {
-        stubs: ionicComponentStubs,
-      },
+      global: getTestGlobals(),
     });
 
     // Use shared helper function to check standard methods

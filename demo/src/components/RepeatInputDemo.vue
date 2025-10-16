@@ -1,31 +1,16 @@
 <template>
-  <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-menu-button color="primary"></ion-menu-button>
-        </ion-buttons>
-        <ion-title>Repeat Input Demo</ion-title>
-      </ion-toolbar>
-    </ion-header>
+  <div class="demo-page">
+    <h1 class="demo-title">Repeat Input Demo</h1>
 
-    <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Repeat Input Demo</ion-title>
-        </ion-toolbar>
-      </ion-header>
-
+    <div class="demo-content">
       <div class="demo-container">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Inventory Items</ion-card-title>
-            <ion-card-subtitle
-              >Add multiple items with dynamically repeatable fields</ion-card-subtitle
-            >
-          </ion-card-header>
+        <Card>
+          <template #header>
+            <h3 class="card-title">Inventory Items</h3>
+            <h4 class="card-subtitle">Add multiple items with dynamically repeatable fields</h4>
+          </template>
 
-          <ion-card-content>
+          <template #content>
             <VForm
               :schema="formSchema"
               @submit="handleSubmit"
@@ -34,16 +19,16 @@
               :show-labels="true"
               button-placement="end"
             />
-          </ion-card-content>
-        </ion-card>
+          </template>
+        </Card>
 
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Contact List</ion-card-title>
-            <ion-card-subtitle>Complex repeatable fields with validation</ion-card-subtitle>
-          </ion-card-header>
+        <Card>
+          <template #header>
+            <h3 class="card-title">Contact List</h3>
+            <p class="card-subtitle">Complex repeatable fields with validation</p>
+          </template>
 
-          <ion-card-content>
+          <template #content>
             <VForm
               :schema="contactsSchema"
               @submit="handleContactsSubmit"
@@ -52,15 +37,15 @@
               :show-labels="true"
               button-placement="end"
             />
-          </ion-card-content>
-        </ion-card>
+          </template>
+        </Card>
 
-        <ion-card v-if="submittedData">
-          <ion-card-header>
-            <ion-card-title>Form Result</ion-card-title>
-          </ion-card-header>
+        <Card v-if="submittedData">
+          <template #header>
+            <h3 class="card-title">Form Result</h3>
+          </template>
 
-          <ion-card-content>
+          <template #content>
             <ion-segment v-model="activeTab">
               <ion-segment-button value="data">
                 <ion-label>Submitted Data</ion-label>
@@ -80,33 +65,17 @@
                 <pre>{{ JSON.stringify(computedDataValue, null, 2) }}</pre>
               </div>
             </div>
-          </ion-card-content>
-        </ion-card>
+          </template>
+        </Card>
       </div>
-    </ion-content>
-  </ion-page>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonButtons,
-  IonMenuButton,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
-  IonCardSubtitle,
-  IonSegment,
-  IonSegmentButton,
-  IonLabel,
-} from '@ionic/vue';
 import { FormSchema, FormData, ComputedData } from '@uniquedj95/vform';
+import Card from 'primevue/card';
 
 // Simple inventory items with repeatable fields
 const formSchema = ref<FormSchema>({
