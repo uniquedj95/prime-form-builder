@@ -216,23 +216,23 @@ export interface GridSize {
   /**
    * Grid size for extra-small screens (1-12 columns).
    */
-  xs?: number;
+  xs?: number | string;
   /**
    * Grid size for small screens (1-12 columns).
    */
-  sm?: number;
+  sm?: number | string;
   /**
    * Grid size for medium screens (1-12 columns).
    */
-  md?: number;
+  md?: number | string;
   /**
    * Grid size for large screens (1-12 columns).
    */
-  lg?: number;
+  lg?: number | string;
   /**
    * Grid size for extra-large screens (1-12 columns).
    */
-  xl?: number;
+  xl?: number | string;
 }
 
 /**
