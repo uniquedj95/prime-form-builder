@@ -11,7 +11,7 @@ import 'primeflex/primeflex.css';
 
 // Import VForm from the built package
 import VForm from 'pv-form';
-import 'pv-form/vform.css';
+import 'pv-form/style.css';
 
 // Import demo styles
 import './demo-styles.css';

@@ -6,7 +6,7 @@
   "main": "./dist/index.umd.js",
   "module": "./dist/index.es.js",
   "types": "./dist/index.d.ts",
-  "style": "./dist/vform.css",
+  "style": "./dist/pv-form.css",
   "sideEffects": [
     "*.css",
     "**/*.css"
@@ -20,7 +20,7 @@
       "import": "./dist/index.es.js",
       "require": "./dist/index.umd.js"
     },
-    "./vform.css": "./dist/vform.css"
+    "./style.css": "./dist/pv-form.css"
   },
   "scripts": {
     "build": "vite build",
