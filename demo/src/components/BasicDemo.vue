@@ -72,7 +72,7 @@ const formSchema: FormSchema = {
     placeholder: 'Enter your first name',
     required: true,
     grid: { xs: 12, md: 6 },
-    row: 'name',
+    row: 'first-row',
   },
   lastName: {
     type: 'TextInput',
@@ -81,7 +81,7 @@ const formSchema: FormSchema = {
     placeholder: 'Enter your last name',
     required: true,
     grid: { xs: 12, md: 6 },
-    row: 'name',
+    row: 'first-row',
   },
   email: {
     type: 'EmailInput',
@@ -89,8 +89,16 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: 'your.email@example.com',
     required: true,
-    grid: { xs: 12, md: 4 },
-    row: 'credentials',
+    grid: { xs: 12, md: 3 },
+    row: 'second-row',
+  },
+  phone: {
+    type: 'TextInput',
+    label: 'Phone Number',
+    value: '',
+    placeholder: 'Enter your phone number',
+    grid: { xs: 12, md: 3 },
+    row: 'second-row',
   },
   password: {
     type: 'PasswordInput',
@@ -98,8 +106,8 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: 'Enter a secure password',
     required: true,
-    grid: { xs: 12, md: 4 },
-    row: 'credentials', // Group with email and confirmPassword
+    grid: { xs: 12, md: 3 },
+    row: 'second-row',
   },
   confirmPassword: {
     type: 'PasswordInput',
@@ -107,8 +115,8 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: 'Confirm your password',
     required: true,
-    grid: { xs: 12, md: 4 },
-    row: 'credentials', // Group with email and password
+    grid: { xs: 12, md: 3 },
+    row: 'second-row',
   },
   birthDate: {
     type: 'DateInput',
@@ -116,7 +124,7 @@ const formSchema: FormSchema = {
     value: new Date().toISOString().split('T')[0],
     required: true,
     grid: { xs: 12, md: 6 },
-    row: 'dates', // Group with appointmentDateTime
+    row: 'dates',
   },
   appointmentDateTime: {
     type: 'DateInput',
@@ -126,7 +134,7 @@ const formSchema: FormSchema = {
     required: true,
     disabled: true,
     grid: { xs: 12, md: 6 },
-    row: 'dates', // Group with birthDate
+    row: 'dates',
   },
   age: {
     type: 'NumberInput',
@@ -135,7 +143,7 @@ const formSchema: FormSchema = {
     min: 13,
     max: 120,
     grid: { xs: 12, md: 6 },
-    row: 'demographic', // Group with gender
+    row: 'demographic',
   },
   gender: {
     type: 'SelectInput',
@@ -148,7 +156,7 @@ const formSchema: FormSchema = {
       { label: 'Prefer not to say', value: 'not_specified' },
     ],
     grid: { xs: 12, md: 6 },
-    row: 'demographic', // Group with age
+    row: 'demographic',
   },
   preferences: {
     type: 'SelectInput',
@@ -165,14 +173,14 @@ const formSchema: FormSchema = {
     ],
     placeholder: 'Select your preference',
     grid: { xs: 12, md: 6 },
-    row: 'preferences', // Group with notifications
+    row: 'preferences',
   },
   notifications: {
     type: 'CheckboxInput',
     label: 'Email Notifications',
     value: true,
     grid: { xs: 12, md: 6 },
-    row: 'preferences', // Group with preferences
+    row: 'preferences',
   },
   bio: {
     type: 'TextAreaInput',
