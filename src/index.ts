@@ -1,5 +1,5 @@
 import { App, Plugin } from 'vue';
-import Form from './components/vForm.vue';
+import Form from './components/Index.vue';
 import TextInput from './components/inputs/TextInput.vue';
 import DateInput from './components/inputs/DateInput.vue';
 import NumberInput from './components/inputs/NumberInput.vue';
@@ -18,7 +18,7 @@ import Lara from '@primeuix/themes/lara';
 
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
-// import './assets/styles.scss';
+import './assets/styles.scss';
 
 // Export composables
 export { useFormValidation } from './composables/useFormValidation';

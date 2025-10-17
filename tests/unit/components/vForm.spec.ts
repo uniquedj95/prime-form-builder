@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { createIonicMocks, ionicComponentStubs, formInputStubs } from '../../utils/testHelpers';
-import VForm from '../../../src/components/vForm.vue';
+import VForm from '../../../src/components/Index.vue';
 
 // Mock Ionic components
 createIonicMocks();

@@ -15,6 +15,8 @@ import 'pv-form/style.css';
 
 // Import demo styles
 import './demo-styles.css';
+import './assets/animations.css';
+import './assets/variables.css';
 
 import BasicDemo from './components/BasicDemo.vue';
 import SectionDemo from './components/SectionDemo.vue';

@@ -13,7 +13,7 @@
 
     <div class="demo-content">
       <div class="demo-container">
-        <Card class="p-4">
+        <Card class="p-4 slide-in-left">
           <template #header>
             <h3 class="card-title">
               <i class="pi pi-user"></i>
@@ -35,7 +35,7 @@
           </template>
         </Card>
 
-        <Card v-if="submittedData" class="result-card">
+        <Card v-if="submittedData" class="result-card slide-in-right success-bounce">
           <template #header>
             <h3 class="card-title">
               <i class="pi pi-check-circle"></i>
