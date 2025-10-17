@@ -1,15 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { mount } from '@vue/test-utils';
-import {
-  createBaseInputMock,
-  expectStandardFormMethods,
-  getTestGlobals,
-} from '../../../utils/testHelpers';
+import { expectStandardFormMethods, getTestGlobals } from '../../../utils/testHelpers';
 import EmailInput from '../../../../src/components/inputs/EmailInput.vue';
-import BaseInput from '../../../../src/components/inputs/BaseInput.vue';
-
-// Mock BaseInput component
-createBaseInputMock();
 
 describe('EmailInput', () => {
   let wrapper;
@@ -42,18 +34,11 @@ describe('EmailInput', () => {
     expectStandardFormMethods(wrapper);
   });
 
-  it('forwards props to base input', () => {
-    const baseInput = mount(BaseInput, {
-      props: {
-        modelValue: defaultProps.modelValue,
-        schema: {},
-        type: 'email',
-      },
-      global: getTestGlobals(),
-    });
-
-    expect(baseInput.props('type')).toBe('email');
-    expect(baseInput.props('modelValue')).toEqual(defaultProps.modelValue);
+  it('uses InputText with type email', () => {
+    // EmailInput now uses PrimeVue InputText component with type="email"
+    const inputText = wrapper.findComponent({ name: 'InputText' });
+    expect(inputText.exists()).toBe(true);
+    expect(inputText.attributes('type')).toBe('email');
   });
 
   it('propagates validation methods to parent', async () => {

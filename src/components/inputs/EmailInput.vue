@@ -17,7 +17,7 @@
         @change="onValueUpdate"
         @blur="onValueUpdate"
       />
-      <label :for="model.id">{{ model.label }}</label>
+      <InputLabel :model="model" />
     </IftaLabel>
     <InputText
       v-else
@@ -43,6 +43,7 @@
 <script lang="ts" setup>
 import InputText from 'primevue/inputtext';
 import IftaLabel from 'primevue/iftalabel';
+import InputLabel from '../shared/InputLabel.vue';
 import { FormField, FormSchema } from '@/types';
 import { ComponentPublicInstance, computed, PropType, ref, watch } from 'vue';
 import { useInputValidation } from '@/composables/useInputValidation';

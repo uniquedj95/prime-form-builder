@@ -11,11 +11,11 @@
         :required="model.required"
         :showIcon="true"
         :fluid="true"
-        :showOnFocus="false"
+        :showOnFocus="true"
         :showTime="!!model.enableTime"
         @update:modelValue="handleDateChange"
       />
-      <label :for="model.id">{{ model.label }}</label>
+      <InputLabel :model="model" />
     </IftaLabel>
     <DatePicker
       v-else
@@ -40,6 +40,7 @@
 import { ref, watch, PropType } from 'vue';
 import DatePicker from 'primevue/datepicker';
 import IftaLabel from 'primevue/iftalabel';
+import InputLabel from '../shared/InputLabel.vue';
 import { FormField, FormSchema } from '@/types';
 
 defineProps<{ schema?: FormSchema }>();

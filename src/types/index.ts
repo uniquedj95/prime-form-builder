@@ -208,30 +208,31 @@ export interface MultiStepFormData {
 
 /**
  * Defines responsive grid sizes for form fields across different viewport breakpoints.
+ * Values represent the number of columns (1-12) in a 12-column grid system.
  *
  * @interface GridSize
  */
 export interface GridSize {
   /**
-   * Grid size for extra-small screens.
+   * Grid size for extra-small screens (1-12 columns).
    */
-  xs?: string;
+  xs?: number;
   /**
-   * Grid size for small screens.
+   * Grid size for small screens (1-12 columns).
    */
-  sm?: string;
+  sm?: number;
   /**
-   * Grid size for medium screens.
+   * Grid size for medium screens (1-12 columns).
    */
-  md?: string;
+  md?: number;
   /**
-   * Grid size for large screens.
+   * Grid size for large screens (1-12 columns).
    */
-  lg?: string;
+  lg?: number;
   /**
-   * Grid size for extra-large screens.
+   * Grid size for extra-large screens (1-12 columns).
    */
-  xl?: string;
+  xl?: number;
 }
 
 /**
@@ -401,6 +402,19 @@ export interface FormField {
    * @type GridSize
    */
   grid?: GridSize;
+
+  /**
+   * Optional row identifier to group fields together on the same row.
+   * Fields with the same row value will be rendered in the same grid row.
+   * If not specified, each field will be in its own row.
+   *
+   * @type string | number
+   * @example
+   * // Group email and password on the same row
+   * email: { type: 'EmailInput', grid: { xs: 12, md: 6 }, row: 1 }
+   * password: { type: 'PasswordInput', grid: { xs: 12, md: 6 }, row: 1 }
+   */
+  row?: string | number;
 
   /**
    * The placeholder text for the form input field.

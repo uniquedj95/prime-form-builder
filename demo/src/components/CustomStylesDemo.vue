@@ -101,7 +101,7 @@ const formSchema: FormSchema = {
       { label: 'Mrs.', value: 'mrs' },
       { label: 'Dr.', value: 'dr' },
     ],
-    grid: { xs: '12', sm: '4', md: '3' },
+    grid: { xs: 12, sm: 4, md: 3 },
   },
   firstName: {
     type: 'TextInput',
@@ -109,7 +109,7 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: 'Enter first name',
     required: true,
-    grid: { xs: '12', sm: '8', md: '9' },
+    grid: { xs: 12, sm: 8, md: 9 },
   },
   lastName: {
     type: 'TextInput',
@@ -117,7 +117,7 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: 'Enter last name',
     required: true,
-    grid: { xs: '12' },
+    grid: { xs: 12 },
   },
   email: {
     type: 'EmailInput',
@@ -125,20 +125,20 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: 'Enter email address',
     required: true,
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   phone: {
     type: 'TextInput',
     label: 'Phone Number',
     value: '',
     placeholder: '(000) 000-0000',
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   birthDate: {
     type: 'DateInput',
     label: 'Date of Birth',
     value: '',
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   favoriteColor: {
     type: 'SelectInput',
@@ -151,7 +151,7 @@ const formSchema: FormSchema = {
       { label: 'Purple', value: 'purple' },
       { label: 'Orange', value: 'orange' },
     ],
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   interests: {
     type: 'TextAreaInput',
@@ -159,19 +159,19 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: 'Tell us about your interests...',
     rows: 4,
-    grid: { xs: '12' },
+    grid: { xs: 12 },
   },
   newsletter: {
     type: 'CheckboxInput',
     label: 'Subscribe to our newsletter',
     value: false,
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   notifications: {
     type: 'CheckboxInput',
     label: 'Enable push notifications',
     value: true,
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   contactMethod: {
     type: 'RadioInput',
@@ -182,7 +182,7 @@ const formSchema: FormSchema = {
       { label: 'Phone', value: 'phone' },
       { label: 'SMS', value: 'sms' },
     ],
-    grid: { xs: '12' },
+    grid: { xs: 12 },
   },
 };
 

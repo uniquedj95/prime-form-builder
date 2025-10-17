@@ -191,7 +191,7 @@ const formSchema: FormSchema = {
     placeholder: 'Enter username (3-20 chars)',
     required: true,
     validation: usernameValidator,
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   email: {
     type: 'EmailInput',
@@ -200,7 +200,7 @@ const formSchema: FormSchema = {
     placeholder: 'your.email@example.com',
     required: true,
     validation: emailValidator,
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   password: {
     type: 'PasswordInput',
@@ -209,7 +209,7 @@ const formSchema: FormSchema = {
     placeholder: 'Strong password',
     required: true,
     validation: passwordValidator,
-    grid: { xs: '12' },
+    grid: { xs: 12 },
   },
   age: {
     type: 'NumberInput',
@@ -217,7 +217,7 @@ const formSchema: FormSchema = {
     placeholder: 'Your age',
     required: true,
     validation: ageValidator,
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   website: {
     type: 'TextInput',
@@ -225,7 +225,7 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: 'https://yourwebsite.com',
     validation: urlValidator,
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   terms: {
     type: 'CheckboxInput',
@@ -235,13 +235,13 @@ const formSchema: FormSchema = {
     validation: value => {
       return value ? null : ['You must agree to the terms and conditions'];
     },
-    grid: { xs: '12' },
+    grid: { xs: 12 },
   },
   newsletter: {
     type: 'CheckboxInput',
     label: 'Subscribe to newsletter',
     value: false,
-    grid: { xs: '12' },
+    grid: { xs: 12 },
   },
 };
 

@@ -131,9 +131,14 @@ function onReset() {
   const getFieldFromRefKey = (refKey: string) => {
     // Parse the ref-key format: "${index}-${formId}"
     const [indexStr, formId] = refKey.split('-');
-    const index = parseInt(indexStr, 10);
+    const index = Number.parseInt(indexStr, 10);
 
-    if (!isNaN(index) && formId && childrens.value[index] && childrens.value[index][formId]) {
+    if (
+      !Number.isNaN(index) &&
+      formId &&
+      childrens.value[index] &&
+      childrens.value[index][formId]
+    ) {
       return childrens.value[index][formId];
     }
 

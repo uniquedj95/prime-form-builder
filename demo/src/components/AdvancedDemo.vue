@@ -70,7 +70,7 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: 'Enter product name',
     required: true,
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   sku: {
     type: 'TextInput',
@@ -78,14 +78,14 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: 'SKU-0000',
     pattern: 'SKU-0000',
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   price: {
     type: 'NumberInput',
     label: 'Unit Price ($)',
     placeholder: '0.00',
     min: 0,
-    grid: { xs: '12', md: '4' },
+    grid: { xs: 12, md: 4 },
   },
   quantity: {
     type: 'NumberInput',
@@ -93,7 +93,7 @@ const formSchema: FormSchema = {
     value: 1,
     min: 1,
     max: 1000,
-    grid: { xs: '12', md: '4' },
+    grid: { xs: 12, md: 4 },
     onChange: (_value, schema) => {
       const price = Number(schema.price?.value) || 0;
       const quantity = Number(schema.quantity?.value) || 1;
@@ -105,7 +105,7 @@ const formSchema: FormSchema = {
     type: 'NumberInput',
     label: 'Total Price ($)',
     disabled: true,
-    grid: { xs: '12', md: '4' },
+    grid: { xs: 12, md: 4 },
   },
   category: {
     type: 'SelectInput',
@@ -138,7 +138,7 @@ const formSchema: FormSchema = {
       },
     ],
     required: true,
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   tags: {
     type: 'TextAreaInput',
@@ -146,20 +146,20 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: 'tag1, tag2, tag3',
     rows: 3,
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   phoneNumber: {
     type: 'TextInput',
     label: 'Contact Phone',
     value: '',
     placeholder: '(000) 000-0000',
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   urgent: {
     type: 'CheckboxInput',
     label: 'Urgent Processing',
     value: false,
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   priority: {
     type: 'RadioInput',
@@ -202,7 +202,7 @@ const formSchema: FormSchema = {
         },
       },
     ],
-    grid: { xs: '12' },
+    grid: { xs: 12 },
   },
   notes: {
     type: 'TextAreaInput',
@@ -210,7 +210,7 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: 'Any special instructions or notes...',
     rows: 4,
-    grid: { xs: '12' },
+    grid: { xs: 12 },
   },
 };
 

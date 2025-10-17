@@ -214,7 +214,7 @@ const formSchema: FormSchema = {
     label: 'Direct Value',
     value: 'Static value set directly',
     placeholder: 'This field has a direct value',
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
 
   // Function value that computes synchronously
@@ -223,7 +223,7 @@ const formSchema: FormSchema = {
     label: 'Function Value',
     value: () => `Generated at: ${new Date().toLocaleTimeString()}`,
     placeholder: 'This field uses a function',
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
 
   // Section header
@@ -241,7 +241,7 @@ const formSchema: FormSchema = {
       return await mockApiCall('User Data', 1500);
     },
     placeholder: 'Loading from async function...',
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
 
   // Direct Promise value
@@ -250,7 +250,7 @@ const formSchema: FormSchema = {
     label: 'Promise Value',
     value: mockApiCall('Configuration', 1800),
     placeholder: 'Loading from promise...',
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
 
   // Section header
@@ -276,7 +276,7 @@ const formSchema: FormSchema = {
       { label: 'Option 3', value: 'option3' },
     ],
     placeholder: 'Select an option',
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
 
   // Complex async value for user profile
@@ -285,7 +285,7 @@ const formSchema: FormSchema = {
     label: 'User Profile',
     value: fetchUserProfile,
     placeholder: 'Loading user profile...',
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
 
   // Section header
@@ -304,7 +304,7 @@ const formSchema: FormSchema = {
       await new Promise(resolve => setTimeout(resolve, 1200));
       return true; // User has previously accepted terms
     },
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
 
   // Radio field with async default selection
@@ -321,7 +321,7 @@ const formSchema: FormSchema = {
       { label: 'Phone', value: 'phone' },
       { label: 'SMS', value: 'sms' },
     ],
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
 
   // Section header
@@ -342,7 +342,7 @@ const formSchema: FormSchema = {
     },
     rows: 4,
     placeholder: 'Loading user bio...',
-    grid: { xs: '12' },
+    grid: { xs: 12 },
   },
 
   // Date field with function value
@@ -357,7 +357,7 @@ const formSchema: FormSchema = {
       if (tomorrow.getDay() === 0) tomorrow.setDate(tomorrow.getDate() + 1); // Sunday -> Monday
       return tomorrow.toISOString().split('T')[0];
     },
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
 
   // Password field with async validation
@@ -370,7 +370,7 @@ const formSchema: FormSchema = {
       return 'SecurePass123!@#';
     },
     placeholder: 'Generating secure password...',
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
 
   // Section header
@@ -385,7 +385,7 @@ const formSchema: FormSchema = {
     type: 'NumberInput',
     label: 'Computed Number',
     value: () => Math.floor(Math.random() * 100),
-    grid: { xs: '12', md: '4' },
+    grid: { xs: 12, md: 4 },
   },
 
   // Email field with async value
@@ -397,7 +397,7 @@ const formSchema: FormSchema = {
       await new Promise(resolve => setTimeout(resolve, 300));
       return 'user@example.com';
     },
-    grid: { xs: '12', md: '4' },
+    grid: { xs: 12, md: 4 },
   },
 
   // Regular field for comparison
@@ -406,7 +406,7 @@ const formSchema: FormSchema = {
     label: 'Regular Field',
     value: '',
     placeholder: 'Enter value manually',
-    grid: { xs: '12', md: '4' },
+    grid: { xs: 12, md: 4 },
   },
 };
 

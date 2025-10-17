@@ -18,7 +18,7 @@
         @change="onValueUpdate"
         @blur="onValueUpdate"
       />
-      <label :for="model.id">{{ model.label }}</label>
+      <InputLabel :model="model" />
     </IftaLabel>
     <InputText
       v-else
@@ -52,6 +52,7 @@ import { FormField, FormSchema } from '@/types';
 import { ComponentPublicInstance, computed, PropType, ref, watch } from 'vue';
 import { useInputValidation } from '@/composables/useInputValidation';
 import { useFormFieldValue } from '@/composables/useFormFieldValue';
+import InputLabel from '@/components/shared/InputLabel.vue';
 
 const props = defineProps<{ schema?: FormSchema }>();
 const model = defineModel({ type: Object as PropType<FormField>, default: {} });

@@ -20,7 +20,7 @@
         @input="onValueUpdate"
         @blur="onValueUpdate"
       />
-      <label :for="model.id">{{ model.label }}</label>
+      <InputLabel :model="model" />
     </IftaLabel>
     <Textarea
       v-else
@@ -57,6 +57,7 @@ import { FormField, FormSchema } from '@/types';
 import { ComponentPublicInstance, PropType, ref, watch, computed } from 'vue';
 import { useInputValidation } from '@/composables/useInputValidation';
 import { useFormFieldValue } from '@/composables/useFormFieldValue';
+import InputLabel from '../shared/InputLabel.vue';
 
 const props = defineProps<{ schema?: FormSchema }>();
 const model = defineModel({ type: Object as PropType<FormField>, default: {} });

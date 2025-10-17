@@ -1,9 +1,6 @@
 <template>
   <div class="radio-container">
-    <span v-if="model.label" class="radio-group-label">
-      {{ model.label }}
-      <span v-if="model.required" class="required-asterisk">*</span>
-    </span>
+    <InputLabel :model="model" />
     <small v-if="model.error" class="p-error" style="display: block; margin-bottom: 0.5rem">{{
       model.error
     }}</small>
@@ -29,6 +26,7 @@
 
 <script lang="ts" setup>
 import RadioButton from 'primevue/radiobutton';
+import InputLabel from '../shared/InputLabel.vue';
 import { FormField, FormSchema, Option } from '@/types';
 import { ComponentPublicInstance, PropType, ref, watch, computed, onMounted } from 'vue';
 import { useInputValidation } from '@/composables/useInputValidation';

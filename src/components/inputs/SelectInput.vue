@@ -42,7 +42,7 @@
           </div>
         </template>
       </MultiSelect>
-      <label :for="model.id">{{ model.label }}</label>
+      <InputLabel :model="model" />
     </IftaLabel>
 
     <!-- Multi-select without IftaLabel -->
@@ -123,7 +123,7 @@
           </div>
         </template>
       </Dropdown>
-      <label :for="model.id">{{ model.label }}</label>
+      <InputLabel :model="model" />
     </IftaLabel>
 
     <!-- Single select (Dropdown) without IftaLabel -->
@@ -177,6 +177,7 @@ import { FormSchema, BaseFieldTypes, FormField, Option } from '@/types';
 import { deepEqual, isFormField, shouldShowDescription } from '@/utils';
 import { useInputValidation } from '@/composables/useInputValidation';
 import { useFormFieldValue } from '@/composables/useFormFieldValue';
+import InputLabel from '../shared/InputLabel.vue';
 
 const props = defineProps({
   schema: Object as PropType<FormSchema>,

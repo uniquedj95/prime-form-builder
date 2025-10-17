@@ -127,7 +127,7 @@ export function resetFormInputsWithFieldCheck(
   formData: FormData,
   computedData: ComputedData
 ): void {
-  dynamicRefs.forEach((inputRef: any) => {
+  for (const inputRef of dynamicRefs) {
     if (typeof inputRef?.onReset === 'function' && inputRef?.$attrs?.['ref-key']) {
       const formId = inputRef.$attrs['ref-key'];
 
@@ -142,7 +142,7 @@ export function resetFormInputsWithFieldCheck(
 
       inputRef.onReset();
     }
-  });
+  }
 }
 
 /**
@@ -159,7 +159,7 @@ export function resetFormInputsWithCustomResolver(
   computedData: ComputedData,
   getFieldFromRefKey: (refKey: string) => FormField | null
 ): void {
-  dynamicRefs.forEach((inputRef: any) => {
+  for (const inputRef of dynamicRefs) {
     if (typeof inputRef?.onReset === 'function' && inputRef?.$attrs?.['ref-key']) {
       const refKey = inputRef.$attrs['ref-key'];
       const field = getFieldFromRefKey(refKey);
@@ -173,7 +173,7 @@ export function resetFormInputsWithCustomResolver(
 
       inputRef.onReset();
     }
-  });
+  }
 }
 
 /**
@@ -210,14 +210,14 @@ export function deepClone<T = any>(obj: T): T {
 
   // Handle Object
   const cloned: any = {};
-  Object.entries(obj).forEach(([key, value]) => {
+  for (const [key, value] of Object.entries(obj)) {
     // Bind functions to the cloned object
     if (typeof value === 'function') {
       cloned[key] = value.bind(cloned);
     } else {
       cloned[key] = deepClone(value);
     }
-  });
+  }
 
   return cloned;
 }
@@ -279,9 +279,9 @@ export function uncheckOption(option: Option, options: Array<Option>) {
  * @param {Array<Option>} options - The array of options to uncheck.
  */
 export function uncheckAllOptions(options: Array<Option>) {
-  options.forEach(option => {
+  for (const option of options) {
     option.isChecked = false;
-  });
+  }
 }
 
 /**

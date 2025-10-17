@@ -57,7 +57,7 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: 'Enter first name',
     required: true,
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   lastName: {
     type: 'TextInput',
@@ -65,7 +65,7 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: 'Enter last name',
     required: true,
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   email: {
     type: 'EmailInput',
@@ -73,21 +73,21 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: 'employee@company.com',
     required: true,
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   phone: {
     type: 'TextInput',
     label: 'Phone Number',
     value: '',
     placeholder: '+1 (555) 123-4567',
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   birthDate: {
     type: 'DateInput',
     label: 'Date of Birth',
     value: '',
     required: true,
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
 
   // Employment Details Section
@@ -102,7 +102,7 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: 'Software Engineer',
     required: true,
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   department: {
     type: 'SelectInput',
@@ -116,14 +116,14 @@ const formSchema: FormSchema = {
       { label: 'Human Resources', value: 'hr' },
       { label: 'Finance', value: 'finance' },
     ],
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   startDate: {
     type: 'DateInput',
     label: 'Start Date',
     value: '',
     required: true,
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   salary: {
     type: 'NumberInput',
@@ -131,7 +131,7 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: '50000',
     min: 20000,
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   employmentType: {
     type: 'RadioInput',
@@ -143,7 +143,7 @@ const formSchema: FormSchema = {
       { label: 'Contract', value: 'contract' },
       { label: 'Intern', value: 'intern' },
     ],
-    grid: { xs: '12' },
+    grid: { xs: 12 },
   },
 
   // Address Information Section
@@ -158,7 +158,7 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: '123 Main St',
     required: true,
-    grid: { xs: '12' },
+    grid: { xs: 12 },
   },
   city: {
     type: 'TextInput',
@@ -166,7 +166,7 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: 'New York',
     required: true,
-    grid: { xs: '12', md: '4' },
+    grid: { xs: 12, md: 4 },
   },
   state: {
     type: 'SelectInput',
@@ -180,7 +180,7 @@ const formSchema: FormSchema = {
       { label: 'Florida', value: 'FL' },
       { label: 'Illinois', value: 'IL' },
     ],
-    grid: { xs: '12', md: '4' },
+    grid: { xs: 12, md: 4 },
   },
   zipCode: {
     type: 'TextInput',
@@ -188,7 +188,7 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: '10001',
     required: true,
-    grid: { xs: '12', md: '4' },
+    grid: { xs: 12, md: 4 },
   },
 
   // Additional Information Section
@@ -203,7 +203,7 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: 'Tell us about yourself...',
     rows: 4,
-    grid: { xs: '12' },
+    grid: { xs: 12 },
   },
   skills: {
     type: 'SelectInput',
@@ -218,14 +218,14 @@ const formSchema: FormSchema = {
       { label: 'SQL', value: 'sql' },
       { label: 'Project Management', value: 'project-management' },
     ],
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   emergencyContact: {
     type: 'TextInput',
     label: 'Emergency Contact',
     value: '',
     placeholder: 'John Doe (+1 555-999-8888)',
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
 };
 

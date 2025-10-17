@@ -164,7 +164,7 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: 'Enter your first name',
     required: true,
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   lastName: {
     type: 'TextInput',
@@ -172,7 +172,7 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: 'Enter your last name',
     required: true,
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   country: {
     type: 'SelectInput',
@@ -184,7 +184,7 @@ const formSchema: FormSchema = {
       { label: 'United Kingdom', value: 'uk' },
     ],
     required: true,
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
     // Workaround: Reset dependent field when country changes
     onChange: (value, schema) => {
       schema.state.value = ''; // Reset state when country changes
@@ -208,7 +208,7 @@ const formSchema: FormSchema = {
     dependsOn: 'country',
     condition: data => !!(data.country as Option)?.value,
     required: true,
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   employmentStatus: {
     type: 'SelectInput',
@@ -221,7 +221,7 @@ const formSchema: FormSchema = {
       { label: 'Retired', value: 'retired' },
     ],
     required: true,
-    grid: { xs: '6' },
+    grid: { xs: 6 },
   },
   companyName: {
     type: 'TextInput',
@@ -235,7 +235,7 @@ const formSchema: FormSchema = {
       }
       return null;
     },
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   jobTitle: {
     type: 'TextInput',
@@ -249,13 +249,13 @@ const formSchema: FormSchema = {
       }
       return null;
     },
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   isStudent: {
     type: 'CheckboxInput',
     label: 'I am currently a student',
     value: false,
-    grid: { xs: '12' },
+    grid: { xs: 12 },
   },
   schoolName: {
     type: 'TextInput',
@@ -269,7 +269,7 @@ const formSchema: FormSchema = {
       }
       return null;
     },
-    grid: { xs: '12' },
+    grid: { xs: 12 },
   },
   preferredContact: {
     type: 'RadioInput',
@@ -279,21 +279,21 @@ const formSchema: FormSchema = {
       { label: 'Email', value: 'email' },
       { label: 'Phone', value: 'phone' },
     ],
-    grid: { xs: '12' },
+    grid: { xs: 12 },
   },
   email: {
     type: 'EmailInput',
     label: 'Email Address',
     value: '',
     placeholder: 'your.email@example.com',
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   phone: {
     type: 'TextInput',
     label: 'Phone Number',
     value: '',
     placeholder: '(000) 000-0000',
-    grid: { xs: '12', md: '6' },
+    grid: { xs: 12, md: 6 },
   },
   additionalInfo: {
     type: 'TextAreaInput',
@@ -301,7 +301,7 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: "Any additional details you'd like to share...",
     rows: 4,
-    grid: { xs: '12' },
+    grid: { xs: 12 },
   },
 };
 

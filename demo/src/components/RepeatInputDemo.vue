@@ -88,21 +88,21 @@ const formSchema = ref<FormSchema>({
         type: 'TextInput',
         label: 'Item Name',
         required: true,
-        grid: { xs: '12', md: '6' },
+        grid: { xs: 12, md: 6 },
       },
       quantity: {
         type: 'NumberInput',
         label: 'Quantity',
         required: true,
         min: 1,
-        grid: { xs: '12', md: '3' },
+        grid: { xs: 12, md: 3 },
       },
       unitPrice: {
         type: 'NumberInput',
         label: 'Unit Price ($)',
         required: true,
         min: 0,
-        grid: { xs: '12', md: '3' },
+        grid: { xs: 12, md: 3 },
       },
     },
   },
@@ -123,13 +123,13 @@ const contactsSchema = ref<FormSchema>({
         type: 'TextInput',
         label: 'Full Name',
         required: true,
-        grid: { xs: '12', md: '6' },
+        grid: { xs: 12, md: 6 },
       },
       email: {
         type: 'EmailInput',
         label: 'Email Address',
         required: true,
-        grid: { xs: '12', md: '6' },
+        grid: { xs: 12, md: 6 },
         validation: value => {
           if (!value || typeof value !== 'string') return ['Email is required'];
           if (!value.includes('@')) return ['Invalid email format'];
@@ -139,7 +139,7 @@ const contactsSchema = ref<FormSchema>({
       phoneType: {
         type: 'SelectInput',
         label: 'Phone Type',
-        grid: { xs: '12', md: '4' },
+        grid: { xs: 12, md: 4 },
         options: [
           { label: 'Mobile', value: 'mobile' },
           { label: 'Work', value: 'work' },
@@ -149,7 +149,7 @@ const contactsSchema = ref<FormSchema>({
       phoneNumber: {
         type: 'TextInput',
         label: 'Phone Number',
-        grid: { xs: '12', md: '8' },
+        grid: { xs: 12, md: 8 },
         pattern: '\\(\\d{3}\\) \\d{3}-\\d{4}',
         placeholder: '(555) 555-5555',
       },
@@ -161,29 +161,29 @@ const contactsSchema = ref<FormSchema>({
       street: {
         type: 'TextInput',
         label: 'Street Address',
-        grid: { xs: '12' },
+        grid: { xs: 12 },
       },
       city: {
         type: 'TextInput',
         label: 'City',
-        grid: { xs: '12', md: '4' },
+        grid: { xs: 12, md: 4 },
       },
       state: {
         type: 'TextInput',
         label: 'State/Province',
-        grid: { xs: '12', md: '4' },
+        grid: { xs: 12, md: 4 },
       },
       zip: {
         type: 'TextInput',
         label: 'ZIP/Postal Code',
-        grid: { xs: '12', md: '4' },
+        grid: { xs: 12, md: 4 },
       },
       notes: {
         type: 'TextAreaInput',
         label: 'Notes',
         rows: 2,
         autoGrow: true,
-        grid: { xs: '12' },
+        grid: { xs: 12 },
       },
     },
   },

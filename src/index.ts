@@ -18,8 +18,7 @@ import Lara from '@primeuix/themes/lara';
 
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
-import './assets/styles.scss';
-import './assets/tailwind.css';
+// import './assets/styles.scss';
 
 // Export composables
 export { useFormValidation } from './composables/useFormValidation';

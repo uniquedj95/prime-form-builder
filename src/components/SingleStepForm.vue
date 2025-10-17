@@ -1,11 +1,11 @@
 <template>
   <div class="single-step-form">
-    <div class="p-grid">
-      <div class="p-col-12">
-        <template v-for="formId of Object.keys(activeSchema)" :key="formId">
+    <!-- Render rows grouped by the row property -->
+    <template v-for="(row, _rowIndex) of groupedRows" :key="_rowIndex">
+      <div class="flex flex-row mb-2 gap-2">
+        <template v-for="formId of row" :key="formId">
           <div
             :class="getGridClasses(activeSchema[formId])"
-            class="form-field-col"
             v-if="canRenderField(activeSchema[formId], formData, computedData)"
           >
             <component
@@ -15,47 +15,44 @@
               :form-id="formId"
               ref="dynamicRefs"
               :ref-key="formId"
-              style="width: 100%"
             />
           </div>
         </template>
       </div>
+    </template>
 
-      <!-- Form action buttons -->
-      <div
-        v-if="!hideButtons"
-        class="p-col-12"
-        style="display: flex; gap: 0.5rem"
-        :style="{ justifyContent: buttonPlacement }"
-      >
-        <ActionButton
-          type="cancel"
-          color="secondary"
-          :label="cancelButtonText"
-          @click="handleCancel"
-          v-if="showCancelButton"
-        />
-        <ActionButton
-          type="clear"
-          color="warning"
-          :label="clearButtonText"
-          @click="handleClear"
-          v-if="showClearButton"
-        />
-        <CustomButton :button="btn" v-for="btn of customButtons" :key="btn.label" />
-        <ActionButton
-          type="submit"
-          :label="submitButtonText"
-          color="success"
-          @click="handleSubmit"
-        />
-      </div>
+    <!-- Form action buttons -->
+    <div
+      v-if="!hideButtons"
+      class="col-12 flex gap-2"
+      :class="{
+        'justify-content-start': buttonPlacement === 'start',
+        'justify-content-center': buttonPlacement === 'middle',
+        'justify-content-end': buttonPlacement === 'end',
+      }"
+    >
+      <ActionButton
+        type="cancel"
+        color="secondary"
+        :label="cancelButtonText"
+        @click="handleCancel"
+        v-if="showCancelButton"
+      />
+      <ActionButton
+        type="clear"
+        color="warning"
+        :label="clearButtonText"
+        @click="handleClear"
+        v-if="showClearButton"
+      />
+      <CustomButton :button="btn" v-for="btn of customButtons" :key="btn.label" />
+      <ActionButton type="submit" :label="submitButtonText" color="success" @click="handleSubmit" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, defineExpose } from 'vue';
+import { ref, watch, computed, defineExpose } from 'vue';
 import type { ComputedData, FormData, FormField, CustomButton as CustomButtonType } from '@/types';
 import { deepClone, isFormField, canRenderField, resetFormInputsWithFieldCheck } from '@/utils';
 import { useFormValidation } from '@/composables/useFormValidation';
@@ -96,23 +93,62 @@ const props = withDefaults(defineProps<SingleStepFormProps>(), {
 
 const emit = defineEmits<SingleStepFormEmits>();
 
-// Helper function to generate grid classes
+// Helper function to generate PrimeFlex grid classes
 const getGridClasses = (field: FormField) => {
   const classes = [];
-  const xs = field.grid?.xs ?? '12';
+  const xs = field.grid?.xs ?? 12;
   const sm = field.grid?.sm;
   const md = field.grid?.md;
   const lg = field.grid?.lg;
   const xl = field.grid?.xl;
 
-  classes.push(`p-col-${xs}`);
-  if (sm) classes.push(`p-sm-${sm}`);
-  if (md) classes.push(`p-md-${md}`);
-  if (lg) classes.push(`p-lg-${lg}`);
-  if (xl) classes.push(`p-xl-${xl}`);
+  // Base size (xs) - PrimeFlex uses col-{number}
+  classes.push(`col-${xs}`);
+
+  // Responsive sizes - PrimeFlex uses breakpoint:col-{number}
+  if (sm) classes.push(`sm:col-${sm}`);
+  if (md) classes.push(`md:col-${md}`);
+  if (lg) classes.push(`lg:col-${lg}`);
+  if (xl) classes.push(`xl:col-${xl}`);
 
   return classes.join(' ');
 };
+
+// Group fields by their row property
+const groupedRows = computed(() => {
+  const result: Array<string[]> = [];
+  const processedFields = new Set<string>();
+
+  // Process fields in their original order
+  for (const formId of Object.keys(activeSchema.value)) {
+    if (processedFields.has(formId)) {
+      continue; // Skip if already processed as part of a group
+    }
+
+    const field = activeSchema.value[formId];
+
+    if (field.row !== undefined && field.row !== null) {
+      // Find all fields with the same row identifier
+      const rowFields = Object.keys(activeSchema.value).filter(
+        id => activeSchema.value[id].row === field.row
+      );
+
+      // Add the group row
+      result.push(rowFields);
+
+      // Mark all fields in this group as processed
+      for (const id of rowFields) {
+        processedFields.add(id);
+      }
+    } else {
+      // Field without row - gets its own row
+      result.push([formId]);
+      processedFields.add(formId);
+    }
+  }
+
+  return result;
+});
 
 // Form validation and data management
 // Create a deep copy of the schema to avoid mutating props
@@ -184,117 +220,8 @@ defineExpose({
 </script>
 
 <style scoped>
-/* PrimeVue Flex Grid System */
-.p-grid {
-  display: flex;
-  flex-wrap: wrap;
-  margin-right: -0.5rem;
-  margin-left: -0.5rem;
-  margin-top: -0.5rem;
-}
-
-.p-col-12,
-.p-col-6,
-.p-col-4,
-.p-col-3,
-.p-sm-12,
-.p-sm-6,
-.p-sm-4,
-.p-sm-3,
-.p-md-12,
-.p-md-6,
-.p-md-4,
-.p-md-3,
-.p-lg-12,
-.p-lg-6,
-.p-lg-4,
-.p-lg-3,
-.p-xl-12,
-.p-xl-6,
-.p-xl-4,
-.p-xl-3 {
-  position: relative;
-  padding: 0.5rem;
-}
-
-.p-col-12 {
-  flex: 0 0 auto;
+/* Minimal styles - using Tailwind for grid layout */
+.single-step-form {
   width: 100%;
-}
-.p-col-6 {
-  flex: 0 0 auto;
-  width: 50%;
-}
-.p-col-4 {
-  flex: 0 0 auto;
-  width: 33.3333%;
-}
-.p-col-3 {
-  flex: 0 0 auto;
-  width: 25%;
-}
-
-@media (min-width: 576px) {
-  .p-sm-12 {
-    width: 100%;
-  }
-  .p-sm-6 {
-    width: 50%;
-  }
-  .p-sm-4 {
-    width: 33.3333%;
-  }
-  .p-sm-3 {
-    width: 25%;
-  }
-}
-
-@media (min-width: 768px) {
-  .p-md-12 {
-    width: 100%;
-  }
-  .p-md-6 {
-    width: 50%;
-  }
-  .p-md-4 {
-    width: 33.3333%;
-  }
-  .p-md-3 {
-    width: 25%;
-  }
-}
-
-@media (min-width: 992px) {
-  .p-lg-12 {
-    width: 100%;
-  }
-  .p-lg-6 {
-    width: 50%;
-  }
-  .p-lg-4 {
-    width: 33.3333%;
-  }
-  .p-lg-3 {
-    width: 25%;
-  }
-}
-
-@media (min-width: 1200px) {
-  .p-xl-12 {
-    width: 100%;
-  }
-  .p-xl-6 {
-    width: 50%;
-  }
-  .p-xl-4 {
-    width: 33.3333%;
-  }
-  .p-xl-3 {
-    width: 25%;
-  }
-}
-
-.form-field-col {
-  margin-bottom: 1rem;
 }
 </style>
