@@ -181,7 +181,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import Card from 'primevue/card';
-import type { FormData, ComputedData, FormSchema } from '@uniquedj95/vform';
+import type { FormData, ComputedData, FormSchema } from 'pv-form';
 
 const submittedData = ref<any>(null);
 

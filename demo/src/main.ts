@@ -10,8 +10,8 @@ import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 
 // Import VForm from the built package
-import VForm from '@uniquedj95/vform';
-import '@uniquedj95/vform/vform.css';
+import VForm from 'pv-form';
+import 'pv-form/vform.css';
 
 // Import demo styles
 import './demo-styles.css';

@@ -42,7 +42,7 @@ import { ref } from 'vue';
 import { useToast } from 'primevue/usetoast';
 import Card from 'primevue/card';
 import Toast from 'primevue/toast';
-import type { FormData, ComputedData, FormSchema, CustomButton } from '@uniquedj95/vform';
+import type { FormData, ComputedData, FormSchema, CustomButton } from 'pv-form';
 
 const submittedData = ref<any>(null);
 const toast = useToast();

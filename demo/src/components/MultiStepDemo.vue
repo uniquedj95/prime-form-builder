@@ -102,7 +102,7 @@
 <script lang="ts" setup>
 import { ref, reactive } from 'vue';
 import Card from 'primevue/card';
-import type { MultiStepConfig, MultiStepFormData, StepPosition } from '@uniquedj95/vform';
+import type { MultiStepConfig, MultiStepFormData, StepPosition } from 'pv-form';
 
 const submittedData = ref<any>(null);
 const currentStepInfo = ref<{ index: number; id: string; title: string } | null>(null);

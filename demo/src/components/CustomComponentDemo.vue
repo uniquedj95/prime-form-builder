@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { MultiStepConfig } from '@uniquedj95/vform';
+import { MultiStepConfig } from 'pv-form';
 import ANCHistoryComponent from './CustomComponent.vue';
 import Card from 'primevue/card';
 const patientId = ref('P12345');

@@ -54,7 +54,7 @@
 <script lang="ts" setup>
 import { ref, reactive } from 'vue';
 import Card from 'primevue/card';
-import type { MultiStepConfig, MultiStepFormData, Option } from '@uniquedj95/vform';
+import type { MultiStepConfig, MultiStepFormData, Option } from 'pv-form';
 
 const submittedData = ref<MultiStepFormData | null>(null);
 

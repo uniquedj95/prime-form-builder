@@ -74,7 +74,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { FormSchema, FormData, ComputedData } from '@uniquedj95/vform';
+import { FormSchema, FormData, ComputedData } from 'pv-form';
 import Card from 'primevue/card';
 
 // Simple inventory items with repeatable fields
