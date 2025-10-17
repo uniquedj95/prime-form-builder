@@ -1,6 +1,6 @@
 {
   "name": "pv-form",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A simplified PrimeVue form builder",
   "type": "module",
   "main": "./dist/index.umd.js",
