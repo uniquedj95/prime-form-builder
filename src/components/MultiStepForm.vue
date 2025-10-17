@@ -34,7 +34,7 @@
                 <template v-for="formId of row" :key="formId">
                   <div
                     :class="getGridClasses(activeSchema[formId])"
-                    v-if="canRenderField(activeSchema[formId], data, computedData)"
+                    v-if="checkFieldVisibility(activeSchema[formId])"
                   >
                     <component
                       :is="activeSchema[formId].type"
@@ -111,10 +111,14 @@ import type {
   FormField,
   CustomButton as CustomButtonType,
 } from '@/types';
-import { canRenderField, isFormField, resetFormInputsWithFieldCheck, deepClone } from '@/utils';
-import { useFormValidation } from '@/composables/useFormValidation';
-import { useDataTransformation } from '@/composables/useDataTransformation';
-import { useMultiStepForm } from '@/composables/useMultiStepForm';
+import { deepClone, getGridClasses, resetFormInputsWithFieldCheck } from '@/utils';
+import {
+  useFormValidation,
+  useDataTransformation,
+  useMultiStepForm,
+  useRowGrouping,
+  useFieldVisibility,
+} from '@/composables';
 import ActionButton from './buttons/ActionButton.vue';
 import CustomButton from './buttons/CustomButton.vue';
 
@@ -156,69 +160,16 @@ const props = withDefaults(defineProps<MultiStepFormProps>(), {
 
 const emit = defineEmits<MultiStepFormEmits>();
 
-// Helper function to generate PrimeFlex grid classes
-const getGridClasses = (field: FormField) => {
-  const classes = [];
-  const xs = field.grid?.xs ?? 12;
-  const sm = field.grid?.sm;
-  const md = field.grid?.md;
-  const lg = field.grid?.lg;
-  const xl = field.grid?.xl;
-
-  // Base size (xs) - PrimeFlex uses col-{number}
-  classes.push(`col-${xs}`);
-
-  // Responsive sizes - PrimeFlex uses breakpoint:col-{number}
-  if (sm) classes.push(`sm:col-${sm}`);
-  if (md) classes.push(`md:col-${md}`);
-  if (lg) classes.push(`lg:col-${lg}`);
-  if (xl) classes.push(`xl:col-${xl}`);
-
-  return classes.join(' ');
-};
-
-// Group fields by their row property
-const groupedRows = computed(() => {
-  const result: Array<string[]> = [];
-  const processedFields = new Set<string>();
-
-  // Process fields in their original order
-  for (const formId of Object.keys(activeSchema.value)) {
-    if (processedFields.has(formId)) {
-      continue; // Skip if already processed as part of a group
-    }
-
-    const field = activeSchema.value[formId];
-
-    if (field.row !== undefined && field.row !== null) {
-      // Find all fields with the same row identifier
-      const rowFields = Object.keys(activeSchema.value).filter(
-        id => activeSchema.value[id].row === field.row
-      );
-
-      // Add the group row
-      result.push(rowFields);
-
-      // Mark all fields in this group as processed
-      for (const id of rowFields) {
-        processedFields.add(id);
-      }
-    } else {
-      // Field without row - gets its own row
-      result.push([formId]);
-      processedFields.add(formId);
-    }
-  }
-
-  return result;
-});
-
 // Multi-step form logic
 const multiStepForm = useMultiStepForm(props.multiStepConfig);
 const activeSchema = ref<Record<string, FormField>>({});
 const { dynamicRefs, isFormValid } = useFormValidation();
 const { formData: data, computedData } = useDataTransformation(activeSchema);
 const customComponentRef = ref<any>(null);
+
+// Use composables for common functionality
+const { groupedRows } = useRowGrouping(activeSchema);
+const { checkFieldVisibility } = useFieldVisibility(activeSchema, data, computedData);
 
 // Multi-step computed properties
 const currentStepIndex = computed(() => multiStepForm.currentStepIndex.value);
@@ -252,23 +203,16 @@ watch(
   { deep: true }
 );
 
-// Field visibility logic - reset hidden field values
-watch(
+// Setup field visibility watcher with current step context
+const { setupFieldVisibilityWatcher } = useFieldVisibility(
+  activeSchema,
   data,
-  () => {
-    for (const [k, f] of Object.entries(activeSchema.value)) {
-      if (!canRenderField(f, data.value, computedData.value)) {
-        const originalSchema = currentStep.value?.schema?.[k];
-        if (originalSchema && isFormField(originalSchema) && 'value' in originalSchema) {
-          f.value = originalSchema.value;
-        } else {
-          f.value = undefined;
-        }
-      }
-    }
-  },
-  { deep: true, immediate: true }
+  computedData,
+  computed(() => currentStep.value?.schema)
 );
+
+// Initialize field visibility watcher
+setupFieldVisibilityWatcher();
 
 // Form actions
 async function handleSubmit() {

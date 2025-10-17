@@ -11,9 +11,9 @@
           <template v-for="formId of Object.keys(child)">
             <div
               :key="`${index}-${formId}`"
-              :class="getGridClasses(child[formId])"
+              :class="getPrimeVueGridClasses(child[formId])"
               class="field-col"
-              v-if="canRenderField(child[formId], data, computedData)"
+              v-if="checkFieldVisibility(child[formId])"
             >
               <component
                 :is="child[formId].type"
@@ -54,27 +54,14 @@
 <script setup lang="ts">
 import { ComputedData, FormData, FormField, FormSchema, Option } from '@/types';
 import Button from 'primevue/button';
-import { canRenderField, deepClone, isFormField, resetFormInputsWithCustomResolver } from '@/utils';
-import { useFormValidation } from '@/composables/useFormValidation';
+import {
+  deepClone,
+  isFormField,
+  resetFormInputsWithCustomResolver,
+  getPrimeVueGridClasses,
+} from '@/utils';
+import { useFormValidation, useRepeatInputFieldVisibility } from '@/composables';
 import { computed, onMounted, PropType, ref, watch } from 'vue';
-
-// Helper function to generate grid classes
-const getGridClasses = (field: FormField) => {
-  const classes = [];
-  const xs = field.grid?.xs ?? '12';
-  const sm = field.grid?.sm;
-  const md = field.grid?.md;
-  const lg = field.grid?.lg;
-  const xl = field.grid?.xl;
-
-  classes.push(`p-col-${xs}`);
-  if (sm) classes.push(`p-sm-${sm}`);
-  if (md) classes.push(`p-md-${md}`);
-  if (lg) classes.push(`p-lg-${lg}`);
-  if (xl) classes.push(`p-xl-${xl}`);
-
-  return classes.join(' ');
-};
 
 interface PropsI {
   schema?: FormSchema;
@@ -88,6 +75,9 @@ const childrens = ref<FormSchema[]>([]);
 
 // Use form validation composable
 const { dynamicRefs, getFormErrors, updateFormValues } = useFormValidation();
+
+// Use field visibility composable for RepeatInput
+const { checkFieldVisibility } = useRepeatInputFieldVisibility(props.data, props.computedData);
 
 const inputValue = computed<Array<Option>>(() => {
   return childrens.value.map((child, index) => ({

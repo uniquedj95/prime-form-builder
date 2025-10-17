@@ -6,7 +6,7 @@
         <template v-for="formId of row" :key="formId">
           <div
             :class="getGridClasses(activeSchema[formId])"
-            v-if="canRenderField(activeSchema[formId], formData, computedData)"
+            v-if="checkFieldVisibility(activeSchema[formId])"
           >
             <component
               :is="activeSchema[formId].type"
@@ -35,28 +35,38 @@
         type="cancel"
         color="secondary"
         :label="cancelButtonText"
-        @click="handleCancel"
+        @click="() => handleCancel(onCancel)"
         v-if="showCancelButton"
       />
       <ActionButton
         type="clear"
         color="warning"
         :label="clearButtonText"
-        @click="handleClear"
+        @click="() => handleClear(onClear)"
         v-if="showClearButton"
       />
       <CustomButton :button="btn" v-for="btn of customButtons" :key="btn.label" />
-      <ActionButton type="submit" :label="submitButtonText" color="success" @click="handleSubmit" />
+      <ActionButton
+        type="submit"
+        :label="submitButtonText"
+        color="success"
+        @click="() => handleSubmit(onSubmit)"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, computed, defineExpose } from 'vue';
+import { ref, watch, defineExpose } from 'vue';
 import type { ComputedData, FormData, FormField, CustomButton as CustomButtonType } from '@/types';
-import { deepClone, isFormField, canRenderField, resetFormInputsWithFieldCheck } from '@/utils';
-import { useFormValidation } from '@/composables/useFormValidation';
-import { useDataTransformation } from '@/composables/useDataTransformation';
+import { deepClone, getGridClasses } from '@/utils';
+import {
+  useFormValidation,
+  useDataTransformation,
+  useRowGrouping,
+  useFormActions,
+  useFieldVisibility,
+} from '@/composables';
 import ActionButton from './buttons/ActionButton.vue';
 import CustomButton from './buttons/CustomButton.vue';
 
@@ -93,68 +103,27 @@ const props = withDefaults(defineProps<SingleStepFormProps>(), {
 
 const emit = defineEmits<SingleStepFormEmits>();
 
-// Helper function to generate PrimeFlex grid classes
-const getGridClasses = (field: FormField) => {
-  const classes = [];
-  const xs = field.grid?.xs ?? 12;
-  const sm = field.grid?.sm;
-  const md = field.grid?.md;
-  const lg = field.grid?.lg;
-  const xl = field.grid?.xl;
-
-  // Base size (xs) - PrimeFlex uses col-{number}
-  classes.push(`col-${xs}`);
-
-  // Responsive sizes - PrimeFlex uses breakpoint:col-{number}
-  if (sm) classes.push(`sm:col-${sm}`);
-  if (md) classes.push(`md:col-${md}`);
-  if (lg) classes.push(`lg:col-${lg}`);
-  if (xl) classes.push(`xl:col-${xl}`);
-
-  return classes.join(' ');
-};
-
-// Group fields by their row property
-const groupedRows = computed(() => {
-  const result: Array<string[]> = [];
-  const processedFields = new Set<string>();
-
-  // Process fields in their original order
-  for (const formId of Object.keys(activeSchema.value)) {
-    if (processedFields.has(formId)) {
-      continue; // Skip if already processed as part of a group
-    }
-
-    const field = activeSchema.value[formId];
-
-    if (field.row !== undefined && field.row !== null) {
-      // Find all fields with the same row identifier
-      const rowFields = Object.keys(activeSchema.value).filter(
-        id => activeSchema.value[id].row === field.row
-      );
-
-      // Add the group row
-      result.push(rowFields);
-
-      // Mark all fields in this group as processed
-      for (const id of rowFields) {
-        processedFields.add(id);
-      }
-    } else {
-      // Field without row - gets its own row
-      result.push([formId]);
-      processedFields.add(formId);
-    }
-  }
-
-  return result;
-});
-
 // Form validation and data management
 // Create a deep copy of the schema to avoid mutating props
 const activeSchema = ref<Record<string, FormField>>(deepClone(props.schema));
 const { dynamicRefs, isFormValid } = useFormValidation();
 const { formData, computedData } = useDataTransformation(activeSchema);
+
+// Use composables for common functionality
+const { groupedRows } = useRowGrouping(activeSchema);
+const { handleSubmit, handleClear, handleCancel } = useFormActions(
+  dynamicRefs,
+  activeSchema,
+  formData,
+  computedData,
+  isFormValid
+);
+const { setupFieldVisibilityWatcher, checkFieldVisibility } = useFieldVisibility(
+  activeSchema,
+  formData,
+  computedData,
+  props.schema
+);
 
 // Initialize form with schema values
 watch(
@@ -166,46 +135,19 @@ watch(
   { deep: true, immediate: true }
 );
 
-// Field visibility logic - reset hidden field values
-watch(
-  formData,
-  () => {
-    for (const [k, f] of Object.entries(activeSchema.value)) {
-      if (!canRenderField(f, formData.value, computedData.value)) {
-        const originalSchema = props.schema?.[k];
-        if (originalSchema && isFormField(originalSchema) && 'value' in originalSchema) {
-          f.value = originalSchema.value;
-        } else {
-          f.value = undefined;
-        }
-      }
-    }
-  },
-  { deep: true, immediate: true }
-);
+// Setup field visibility watcher
+setupFieldVisibilityWatcher();
 
-// Form actions
-async function handleSubmit() {
-  if (!(await isFormValid())) return;
+// Form action handlers
+async function onSubmit() {
   emit('submit', formData.value, computedData.value);
 }
 
-function resetForm() {
-  resetFormInputsWithFieldCheck(
-    dynamicRefs.value,
-    activeSchema.value,
-    formData.value,
-    computedData.value
-  );
-}
-
-function handleClear() {
-  resetForm();
+function onClear() {
   emit('clear');
 }
 
-function handleCancel() {
-  resetForm();
+function onCancel() {
   emit('cancel');
 }
 
@@ -213,9 +155,9 @@ function handleCancel() {
 defineExpose({
   formData,
   computedData,
-  resetForm,
+  resetForm: () => handleClear(),
   isFormValid,
-  submitForm: handleSubmit,
+  submitForm: () => handleSubmit(onSubmit),
 });
 </script>
 
