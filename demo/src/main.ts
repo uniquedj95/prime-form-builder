@@ -29,6 +29,7 @@ import CustomComponentExample from './components/CustomComponentDemo.vue';
 import ConditionalStepsDemo from './components/ConditionalStepsDemo.vue';
 import RepeatInputDemo from './components/RepeatInputDemo.vue';
 import AsyncFieldValuesDemo from './components/AsyncFieldValuesDemo.vue';
+import EnhancedStepperDemo from './components/EnhancedStepperDemo.vue';
 
 const routes = [
   { path: '/', redirect: '/basic' },
@@ -58,6 +59,11 @@ const routes = [
     path: '/async-field-values',
     component: AsyncFieldValuesDemo,
     meta: { title: 'Async Field Values Demo' },
+  },
+  {
+    path: '/enhanced-stepper',
+    component: EnhancedStepperDemo,
+    meta: { title: 'Enhanced Stepper Demo' },
   },
 ];
 

@@ -111,6 +111,12 @@ export interface FormStep {
   subtitle?: string;
 
   /**
+   * Optional icon class for the step (e.g., 'pi pi-user').
+   * If not provided, step number will be displayed instead.
+   */
+  icon?: string;
+
+  /**
    * The form schema for this step.
    * Not required if customComponent is provided.
    */

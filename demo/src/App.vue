@@ -162,6 +162,11 @@ const menuItems = [
     url: '/async-field-values',
     icon: 'pi pi-file-import',
   },
+  {
+    label: 'Enhanced Stepper',
+    url: '/enhanced-stepper',
+    icon: 'pi pi-star',
+  },
 ];
 </script>
 

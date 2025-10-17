@@ -118,6 +118,7 @@ const multiStepConfig = reactive<MultiStepConfig>({
       id: 'personal-info',
       title: 'Personal Information',
       subtitle: 'Tell us about yourself',
+      icon: 'pi pi-user',
       schema: {
         firstName: {
           type: 'TextInput',
@@ -158,6 +159,7 @@ const multiStepConfig = reactive<MultiStepConfig>({
       id: 'address-info',
       title: 'Address Details',
       subtitle: 'Where can we reach you?',
+      icon: 'pi pi-map-marker',
       schema: {
         street: {
           type: 'TextInput',
@@ -214,6 +216,7 @@ const multiStepConfig = reactive<MultiStepConfig>({
       id: 'preferences',
       title: 'Preferences',
       subtitle: 'Customize your experience',
+      icon: 'pi pi-cog',
       schema: {
         interests: {
           type: 'CheckboxInput',
