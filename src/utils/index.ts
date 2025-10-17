@@ -387,3 +387,53 @@ export function isFormField(item: FormField): boolean {
 export function isFormSection(item: FormField): boolean {
   return item.type === 'FormSection';
 }
+
+/**
+ * Generates responsive grid classes for PrimeFlex based on field grid configuration
+ *
+ * @param field - The form field containing grid configuration
+ * @returns String of CSS classes for responsive grid layout
+ */
+export function getGridClasses(field: FormField): string {
+  const classes = [];
+  const xs = field.grid?.xs ?? 12;
+  const sm = field.grid?.sm;
+  const md = field.grid?.md;
+  const lg = field.grid?.lg;
+  const xl = field.grid?.xl;
+
+  // Base size (xs) - PrimeFlex uses col-{number}
+  classes.push(`col-${xs}`);
+
+  // Responsive sizes - PrimeFlex uses breakpoint:col-{number}
+  if (sm) classes.push(`sm:col-${sm}`);
+  if (md) classes.push(`md:col-${md}`);
+  if (lg) classes.push(`lg:col-${lg}`);
+  if (xl) classes.push(`xl:col-${xl}`);
+
+  return classes.join(' ');
+}
+
+/**
+ * Alternative grid classes function for components using PrimeVue CSS Grid (older style)
+ * Generates grid classes in the format p-col-{size}, p-sm-{size}, etc.
+ *
+ * @param field - The form field containing grid configuration
+ * @returns String of CSS classes for PrimeVue grid layout
+ */
+export function getPrimeVueGridClasses(field: FormField): string {
+  const classes = [];
+  const xs = field.grid?.xs ?? '12';
+  const sm = field.grid?.sm;
+  const md = field.grid?.md;
+  const lg = field.grid?.lg;
+  const xl = field.grid?.xl;
+
+  classes.push(`p-col-${xs}`);
+  if (sm) classes.push(`p-sm-${sm}`);
+  if (md) classes.push(`p-md-${md}`);
+  if (lg) classes.push(`p-lg-${lg}`);
+  if (xl) classes.push(`p-xl-${xl}`);
+
+  return classes.join(' ');
+}
