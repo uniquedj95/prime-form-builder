@@ -561,6 +561,17 @@ export interface FormField {
    * @type (data: FormData, computedData: ComputedData) => boolean
    */
   condition?: (data: FormData, computedData: ComputedData) => boolean;
+
+  /**
+   * The border accent color for the repeat input wrapper.
+   * Accepts PrimeVue theme color names or custom hex color strings.
+   * When specified, adds a colored left border to visually distinguish the repeat group.
+   * If not specified, no accent border is displayed.
+   *
+   * @type BorderAccentColor
+   * @optional
+   */
+  borderAccentColor?: BorderAccentColor;
 }
 
 /**
@@ -641,6 +652,28 @@ export type InputType =
   | 'CheckboxInput'
   | 'RadioInput'
   | 'FormSection';
+
+/**
+ * PrimeVue theme color names that map to CSS custom properties.
+ *
+ * @type PrimeVueThemeColor
+ */
+export type PrimeVueThemeColor =
+  | 'primary'
+  | 'secondary'
+  | 'success'
+  | 'info'
+  | 'warn'
+  | 'danger'
+  | 'help'
+  | 'surface';
+
+/**
+ * Border accent color type that accepts PrimeVue theme colors or hex color strings.
+ *
+ * @type BorderAccentColor
+ */
+export type BorderAccentColor = PrimeVueThemeColor | `#${string}`;
 
 /**
  * Represents the basic field types for HTML input elements.

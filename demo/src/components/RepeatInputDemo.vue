@@ -1,10 +1,8 @@
 <template>
   <div class="demo-page">
-    <h1 class="demo-title">Repeat Input Demo</h1>
-
     <div class="demo-content">
       <div class="demo-container">
-        <Card>
+        <Card class="p-4">
           <template #header>
             <h3 class="card-title">Inventory Items</h3>
             <h4 class="card-subtitle">Add multiple items with dynamically repeatable fields</h4>
@@ -22,7 +20,7 @@
           </template>
         </Card>
 
-        <Card>
+        <Card class="p-4">
           <template #header>
             <h3 class="card-title">Contact List</h3>
             <p class="card-subtitle">Complex repeatable fields with validation</p>
@@ -40,7 +38,7 @@
           </template>
         </Card>
 
-        <Card v-if="submittedData">
+        <Card v-if="submittedData" class="p-4 mt-4">
           <template #header>
             <h3 class="card-title">Form Result</h3>
           </template>
@@ -83,6 +81,7 @@ const formSchema = ref<FormSchema>({
     type: 'RepeatInput',
     label: 'Inventory Items',
     className: 'inventory-repeat',
+    borderAccentColor: '#4d76ff',
     children: {
       itemName: {
         type: 'TextInput',
@@ -231,9 +230,7 @@ const handleContactsSubmit = (data: FormData, computedData: ComputedData) => {
 
 <style scoped>
 .demo-container {
-  max-width: 900px;
   margin: 0 auto;
-  padding: 20px;
 }
 
 pre {
@@ -253,22 +250,5 @@ pre {
   margin-top: 0;
   color: var(--ion-color-primary);
   font-weight: 500;
-}
-
-/* Custom styling for the repeat groups */
-:deep(.inventory-repeat) {
-  --background: #f0f8ff;
-  border-left: 4px solid #4d76ff;
-  border-radius: 4px;
-  padding: 12px;
-  margin-bottom: 12px;
-}
-
-:deep(.contacts-repeat) {
-  --background: #fafafa;
-  border-left: 4px solid #45c289;
-  border-radius: 4px;
-  padding: 16px;
-  margin-bottom: 16px;
 }
 </style>
