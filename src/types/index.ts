@@ -298,6 +298,20 @@ export interface FormField {
   subtitle?: string;
 
   /**
+   * Indicates if the section is collapsible when type is 'FormSection'.
+   *
+   * @type boolean
+   */
+  collapsible?: boolean;
+
+  /**
+   * Indicates if the section is collapsed when type is 'FormSection'.
+   *
+   * @type boolean
+   */
+  collapsed?: boolean;
+
+  /**
    * Optional styling class for the section or input field.
    *
    * @type string

@@ -1,14 +1,34 @@
 <template>
   <div :class="['form-section-container', section.className, getGridClasses()]">
-    <div class="form-section-header">
-      <h3 class="form-section-title">{{ section.title }}</h3>
-      <p v-if="section.subtitle" class="form-section-subtitle">{{ section.subtitle }}</p>
-    </div>
+    <!-- Section Divider -->
+    <Divider
+      align="left"
+      type="solid"
+      :class="[
+        'section-divider-prime',
+        { 'divider-collapsible': section.collapsible },
+        section.className,
+      ]"
+      @click="section.collapsible ? toggleSection() : null"
+    >
+      <div class="section-title-content">
+        <i v-if="section.icon" :class="['section-icon-compact', section.icon]"></i>
+        <span class="section-title-text">{{ section.title }}</span>
+        <i
+          v-if="section.collapsible"
+          :class="[
+            'section-toggle-compact pi',
+            section.collapsed ? 'pi-chevron-down' : 'pi-chevron-up',
+          ]"
+        ></i>
+      </div>
+    </Divider>
   </div>
 </template>
 
 <script lang="ts" setup>
 import type { FormField, FormSchema } from '@/types';
+import Divider from 'primevue/divider';
 
 interface SectionTitleProps {
   // Standard form component props (even though we don't use modelValue)
@@ -19,9 +39,20 @@ interface SectionTitleProps {
 }
 
 const props = defineProps<SectionTitleProps>();
+const emit = defineEmits(['section-toggle']);
 
 // Extract the section data from modelValue (which contains the FormSection)
 const section = props.modelValue!;
+
+const toggleSection = () => {
+  if (section && section.collapsible) {
+    section.collapsed = !section.collapsed;
+    emit('section-toggle', {
+      section,
+      collapsed: section.collapsed,
+    });
+  }
+};
 
 // Helper function to generate grid classes
 const getGridClasses = () => {
@@ -43,47 +74,67 @@ const getGridClasses = () => {
 </script>
 
 <style scoped>
-/* Minimal overrides - use PrimeVue defaults */
+/* Adopt styles from FormStepContent.vue */
 .form-section-container {
   padding: 0 !important;
 }
 
-.form-section-header {
-  margin: 1.5rem 0 1rem 0;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid;
+:deep(.section-divider-prime) {
+  margin: 0rem 0 1.5rem 0;
 }
 
-.form-section-title {
-  margin: 0 0 0.25rem 0;
-  font-size: 1.25rem;
+:deep(.section-divider-prime .p-divider-content) {
+  background: var(--hospital-bg-card, #ffffff);
+  padding: 0 1rem;
+}
+
+.divider-collapsible {
+  cursor: pointer;
+}
+
+.section-title-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--hospital-primary, #2563eb);
   font-weight: 600;
-  line-height: 1.2;
+  font-size: 1rem;
+  transition: all 0.3s ease;
 }
 
-.form-section-subtitle {
-  margin: 0;
+.section-icon-compact {
+  font-size: 1rem;
+  color: inherit;
+  flex-shrink: 0;
+}
+
+.section-title-text {
+  color: inherit;
+  white-space: nowrap;
+  flex-grow: 1;
+}
+
+.section-toggle-compact {
   font-size: 0.875rem;
-  line-height: 1.3;
+  color: var(--hospital-text-muted, #94a3b8);
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
+  flex-shrink: 0;
 }
 
-/* First section should have less top margin */
-:first-child .form-section-header {
-  margin-top: 0.5rem;
+.divider-collapsible:hover .section-title-content {
+  color: var(--hospital-primary-dark, #1d4ed8);
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .form-section-header {
-    margin: 1rem 0 0.75rem 0;
+  :deep(.section-divider-prime) {
+    margin: 0rem 0 1rem 0;
   }
 
-  .form-section-title {
-    font-size: 1.125rem;
-  }
-
-  .form-section-subtitle {
-    font-size: 0.8rem;
+  .section-title-content {
+    font-size: 0.9rem;
   }
 }
 </style>
