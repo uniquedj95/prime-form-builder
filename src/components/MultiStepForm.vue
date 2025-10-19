@@ -1,11 +1,7 @@
 <template>
   <div class="multi-step-form hospital-theme">
     <!-- PrimeVue Stepper with enhanced styling -->
-    <Stepper
-      v-model:value="currentStepIndex"
-      :linear="!multiStepConfig.allowStepNavigation"
-      class="hospital-stepper"
-    >
+    <Stepper v-model:value="currentStepIndex" :linear="!multiStepConfig.allowStepNavigation">
       <!-- Horizontal scroll container for steps -->
       <div class="steps-scroll-container" ref="stepsScrollContainer">
         <StepList class="steps-list">
@@ -64,7 +60,7 @@
           />
           <!-- Regular schema-based form with direct field rendering -->
           <template v-else>
-            <div class="grid grid-cols-12 gap-4">
+            <div class="grid grid-cols-12 gap-4 p-4 h-full">
               <template v-for="(field, formId) in activeSchema" :key="formId">
                 <div :class="getGridClasses(field)" v-if="checkFieldVisibility(field)">
                   <component
@@ -452,10 +448,6 @@ defineExpose({
   background: var(--hospital-bg-primary);
 }
 
-.hospital-stepper {
-  margin-bottom: 2rem;
-}
-
 /* Horizontal scroll container for steps */
 .steps-scroll-container {
   overflow-x: auto;
@@ -529,9 +521,9 @@ defineExpose({
 }
 
 .step-button.step-active {
-  background: linear-gradient(135deg, var(--hospital-primary), var(--hospital-primary-light));
-  color: white;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  background: var(--hospital-bg-accent);
+  color: var(--hospital-primary);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
 }
 
 .step-button.step-completed {
@@ -576,9 +568,9 @@ defineExpose({
 }
 
 .step-button.step-active .step-indicator {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--hospital-primary);
   color: white;
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: var(--hospital-primary);
 }
 
 .step-icon {
@@ -598,7 +590,7 @@ defineExpose({
 }
 
 .step-button.step-active .step-title {
-  color: white;
+  color: var(--hospital-primary);
 }
 
 .step-subtitle {
@@ -609,7 +601,7 @@ defineExpose({
 }
 
 .step-button.step-active .step-subtitle {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--hospital-text-secondary);
 }
 
 /* Button Styles */

@@ -54,28 +54,9 @@ const toggleSection = () => {
     });
   }
 };
-
-// Helper function to generate grid classes
-// const getGridClasses = () => {
-//   const classes = [];
-//   const xs = section.grid?.xs ?? '12';
-//   const sm = section.grid?.sm;
-//   const md = section.grid?.md;
-//   const lg = section.grid?.lg;
-//   const xl = section.grid?.xl;
-
-//   classes.push(`p-col-${xs}`);
-//   if (sm) classes.push(`p-sm-${sm}`);
-//   if (md) classes.push(`p-md-${md}`);
-//   if (lg) classes.push(`p-lg-${lg}`);
-//   if (xl) classes.push(`p-xl-${xl}`);
-
-//   return classes.join(' ');
-// };
 </script>
 
 <style scoped>
-/* Adopt styles from FormStepContent.vue */
 .form-section-container {
   padding: 0 !important;
 }
