@@ -403,6 +403,69 @@ export interface FormField {
   enableTime?: boolean;
 
   /**
+   * Indicates if only time should be selectable (hides date section).
+   *
+   * @type boolean
+   */
+  timeOnly?: boolean;
+
+  /**
+   * The hour format for time picker ('12' for 12-hour, '24' for 24-hour).
+   *
+   * @type '12' | '24'
+   */
+  hourFormat?: '12' | '24';
+
+  /**
+   * The view mode for the date picker ('date', 'month', 'year').
+   *
+   * @type 'date' | 'month' | 'year'
+   */
+  view?: 'date' | 'month' | 'year';
+
+  /**
+   * The date format string for display.
+   *
+   * @type string
+   */
+  dateFormat?: string;
+
+  /**
+   * Selection mode for date picker ('single', 'multiple', 'range').
+   *
+   * @type 'single' | 'multiple' | 'range'
+   */
+  selectionMode?: 'single' | 'multiple' | 'range';
+
+  /**
+   * Array of disabled dates.
+   *
+   * @type Date[]
+   */
+  disabledDates?: Date[];
+
+  /**
+   * Array of disabled day numbers (0-6, where 0 is Sunday).
+   *
+   * @type number[]
+   */
+  disabledDays?: number[];
+
+  /**
+   * Whether to display the date picker inline.
+   *
+   * @type boolean
+   */
+  inline?: boolean;
+
+  /**
+   * Label for the today button (when button bar is automatically shown).
+   *
+   * @type string
+   */
+  todayButtonLabel?: string;
+
+  /**
    * Indicates if the form input field is disabled.
    *
    * @type boolean
@@ -688,6 +751,8 @@ export type PrimeVueThemeColor =
  * @type BorderAccentColor
  */
 export type BorderAccentColor = PrimeVueThemeColor | `#${string}`;
+
+/**
 
 /**
  * Represents the basic field types for HTML input elements.
