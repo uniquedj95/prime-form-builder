@@ -16,8 +16,6 @@ import { GlobalConfig } from './types';
 import PrimeVue from 'primevue/config';
 import Lara from '@primeuix/themes/lara';
 
-import 'primeicons/primeicons.css';
-import 'primeflex/primeflex.css';
 import './assets/styles.scss';
 
 // Export composables

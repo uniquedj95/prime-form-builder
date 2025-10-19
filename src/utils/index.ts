@@ -389,51 +389,21 @@ export function isFormSection(item: FormField): boolean {
 }
 
 /**
- * Generates responsive grid classes for PrimeFlex based on field grid configuration
+ * Generates responsive grid classes for Tailwind CSS based on field grid configuration
+ * Maps grid configuration to Tailwind's col-span-* system
  *
  * @param field - The form field containing grid configuration
  * @returns String of CSS classes for responsive grid layout
  */
 export function getGridClasses(field: FormField): string {
+  if (!field.grid) return 'col-span-12';
+
   const classes = [];
-  const xs = field.grid?.xs ?? 12;
-  const sm = field.grid?.sm;
-  const md = field.grid?.md;
-  const lg = field.grid?.lg;
-  const xl = field.grid?.xl;
-
-  // Base size (xs) - PrimeFlex uses col-{number}
-  classes.push(`col-${xs}`);
-
-  // Responsive sizes - PrimeFlex uses breakpoint:col-{number}
-  if (sm) classes.push(`sm:col-${sm}`);
-  if (md) classes.push(`md:col-${md}`);
-  if (lg) classes.push(`lg:col-${lg}`);
-  if (xl) classes.push(`xl:col-${xl}`);
-
-  return classes.join(' ');
-}
-
-/**
- * Alternative grid classes function for components using PrimeVue CSS Grid (older style)
- * Generates grid classes in the format p-col-{size}, p-sm-{size}, etc.
- *
- * @param field - The form field containing grid configuration
- * @returns String of CSS classes for PrimeVue grid layout
- */
-export function getPrimeVueGridClasses(field: FormField): string {
-  const classes = [];
-  const xs = field.grid?.xs ?? '12';
-  const sm = field.grid?.sm;
-  const md = field.grid?.md;
-  const lg = field.grid?.lg;
-  const xl = field.grid?.xl;
-
-  classes.push(`p-col-${xs}`);
-  if (sm) classes.push(`p-sm-${sm}`);
-  if (md) classes.push(`p-md-${md}`);
-  if (lg) classes.push(`p-lg-${lg}`);
-  if (xl) classes.push(`p-xl-${xl}`);
+  classes.push(`col-span-${field.grid.xs ?? 12}`);
+  if (field.grid.sm) classes.push(`sm:col-span-${field.grid.sm}`);
+  if (field.grid.md) classes.push(`md:col-span-${field.grid.md}`);
+  if (field.grid.lg) classes.push(`lg:col-span-${field.grid.lg}`);
+  if (field.grid.xl) classes.push(`xl:col-span-${field.grid.xl}`);
 
   return classes.join(' ');
 }

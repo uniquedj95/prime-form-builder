@@ -1,34 +1,28 @@
 <template>
   <div class="single-step-form">
-    <!-- Render rows grouped by the row property -->
-    <template v-for="(row, _rowIndex) of groupedRows" :key="_rowIndex">
-      <div :class="getRowGridClasses(row, getVisibleFieldsInRow(row).length)" class="mb-4">
-        <template v-for="formId of row" :key="formId">
-          <div
-            :class="getGridClasses(activeSchema[formId])"
-            v-if="checkFieldVisibility(activeSchema[formId])"
-          >
-            <component
-              :is="activeSchema[formId].type"
-              v-model="activeSchema[formId]"
-              :schema="activeSchema"
-              :form-id="formId"
-              ref="dynamicRefs"
-              :ref-key="formId"
-            />
-          </div>
-        </template>
-      </div>
-    </template>
+    <div class="grid grid-cols-12 gap-4">
+      <template v-for="(field, formId) in activeSchema" :key="formId">
+        <div :class="getGridClasses(field)" v-if="checkFieldVisibility(field)">
+          <component
+            :is="field.type"
+            v-model="activeSchema[formId]"
+            :schema="activeSchema"
+            :form-id="formId"
+            ref="dynamicRefs"
+            :ref-key="formId"
+          />
+        </div>
+      </template>
+    </div>
 
     <!-- Form action buttons -->
     <div
       v-if="!hideButtons"
-      class="col-12 flex gap-2"
+      class="col-span-12 flex gap-2 mt-4"
       :class="{
-        'justify-content-start': buttonPlacement === 'start',
-        'justify-content-center': buttonPlacement === 'middle',
-        'justify-content-end': buttonPlacement === 'end',
+        'justify-start': buttonPlacement === 'start',
+        'justify-center': buttonPlacement === 'middle',
+        'justify-end': buttonPlacement === 'end',
       }"
     >
       <ActionButton
@@ -63,7 +57,6 @@ import { deepClone, getGridClasses } from '@/utils';
 import {
   useFormValidation,
   useDataTransformation,
-  useRowGrouping,
   useFormActions,
   useFieldVisibility,
 } from '@/composables';
@@ -110,7 +103,6 @@ const { dynamicRefs, isFormValid } = useFormValidation();
 const { formData, computedData } = useDataTransformation(activeSchema);
 
 // Use composables for common functionality
-const { groupedRows, getRowGridClasses } = useRowGrouping(activeSchema);
 const { handleSubmit, handleClear, handleCancel } = useFormActions(
   dynamicRefs,
   activeSchema,
@@ -125,16 +117,10 @@ const { setupFieldVisibilityWatcher, checkFieldVisibility } = useFieldVisibility
   props.schema
 );
 
-// Helper function to count visible fields in a row
-const getVisibleFieldsInRow = (row: string[]) => {
-  return row.filter(formId => checkFieldVisibility(activeSchema.value[formId]));
-};
-
 // Initialize form with schema values
 watch(
   () => props.schema,
   newSchema => {
-    // Create a deep copy to avoid mutating the prop
     activeSchema.value = deepClone(newSchema);
   },
   { deep: true, immediate: true }
@@ -167,7 +153,6 @@ defineExpose({
 </script>
 
 <style scoped>
-/* Minimal styles - using Tailwind for grid layout */
 .single-step-form {
   width: 100%;
 }

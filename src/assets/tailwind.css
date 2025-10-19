@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* PrimeVue component optimizations with Tailwind */
+@layer components {
+  .p-inputtext {
+    @apply rounded-lg border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500;
+  }
+
+  .p-dropdown {
+    @apply rounded-lg border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500;
+  }
+
+  .p-datepicker-input {
+    @apply rounded-lg border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500;
+  }
+
+  .p-textarea {
+    @apply rounded-lg border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500;
+  }
+
+  .p-checkbox {
+    @apply rounded focus:ring-2 focus:ring-primary-500;
+  }
+
+  .p-radiobutton {
+    @apply focus:ring-2 focus:ring-primary-500;
+  }
+}

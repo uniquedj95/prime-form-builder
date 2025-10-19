@@ -7,32 +7,21 @@
   >
     <div class="repeat-row">
       <div class="form-fields-column">
-        <!-- Use row grouping for consistent layout -->
-        <template
-          v-for="(row, _rowIndex) of getGroupedRowsForChild(child)"
-          :key="`${index}-row-${_rowIndex}`"
-        >
-          <div
-            :class="getRowGridClasses(row, getVisibleFieldsInRow(child, row).length)"
-            class="mb-4"
-          >
-            <template v-for="formId of row" :key="`${index}-${formId}`">
-              <div
-                :class="getGridClasses(child[formId])"
-                v-if="checkFieldVisibility(child[formId])"
-              >
-                <component
-                  :is="child[formId].type"
-                  v-model="child[formId]"
-                  :schema="child"
-                  :ref-key="`${index}-${formId}`"
-                  ref="dynamicRefs"
-                  style="width: 100%"
-                />
-              </div>
-            </template>
-          </div>
-        </template>
+        <!-- Simplified direct field rendering -->
+        <div class="grid grid-cols-12 gap-4">
+          <template v-for="(field, formId) in child" :key="`${index}-${formId}`">
+            <div :class="getGridClasses(field)" v-if="checkFieldVisibility(field)">
+              <component
+                :is="field.type"
+                v-model="child[formId]"
+                :schema="child"
+                :ref-key="`${index}-${formId}`"
+                ref="dynamicRefs"
+                style="width: 100%"
+              />
+            </div>
+          </template>
+        </div>
       </div>
       <div class="button-column">
         <div class="button-container">
@@ -62,7 +51,7 @@
 import { ComputedData, FormData, FormField, FormSchema, Option } from '@/types';
 import Button from 'primevue/button';
 import { deepClone, isFormField, resetFormInputsWithCustomResolver, getGridClasses } from '@/utils';
-import { useFormValidation, useRepeatInputFieldVisibility, useRowGrouping } from '@/composables';
+import { useFormValidation, useRepeatInputFieldVisibility } from '@/composables';
 import { computed, onMounted, PropType, ref, watch } from 'vue';
 
 interface PropsI {
@@ -109,30 +98,6 @@ const { dynamicRefs, getFormErrors, updateFormValues } = useFormValidation();
 
 // Use field visibility composable for RepeatInput
 const { checkFieldVisibility } = useRepeatInputFieldVisibility(props.data, props.computedData);
-
-// Helper functions for row grouping within RepeatInput children
-const getGroupedRowsForChild = (child: FormSchema) => {
-  const childRef = ref(child);
-  const { groupedRows } = useRowGrouping(childRef);
-  return groupedRows.value;
-};
-
-const getRowGridClasses = (row: string[], visibleFieldsCount?: number) => {
-  const fieldCount = visibleFieldsCount ?? row.length;
-
-  // Base grid classes with responsive breakpoints
-  if (fieldCount === 0) return 'hidden';
-  if (fieldCount === 1) return 'grid grid-cols-1 gap-4';
-  if (fieldCount === 2) return 'grid grid-cols-1 md:grid-cols-2 gap-4';
-  if (fieldCount === 3) return 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4';
-  if (fieldCount >= 4) return 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4';
-
-  return 'grid grid-cols-1 gap-4';
-};
-
-const getVisibleFieldsInRow = (child: FormSchema, row: string[]) => {
-  return row.filter(formId => child[formId] && checkFieldVisibility(child[formId]));
-};
 
 const inputValue = computed<Array<Option>>(() => {
   return childrens.value.map((child, index) => ({

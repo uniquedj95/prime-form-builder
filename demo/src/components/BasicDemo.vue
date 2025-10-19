@@ -1,16 +1,5 @@
 <template>
   <div class="demo-page">
-    <div class="page-header">
-      <h1 class="demo-title">
-        <i class="pi pi-file"></i>
-        Basic Form Demo
-      </h1>
-      <p class="demo-description">
-        Create beautiful forms with common input types including text, email, password, date, and
-        number fields with built-in validation.
-      </p>
-    </div>
-
     <div class="demo-content">
       <div class="demo-container">
         <Card class="p-4 slide-in-left">
@@ -35,7 +24,7 @@
           </template>
         </Card>
 
-        <Card v-if="submittedData" class="result-card slide-in-right success-bounce">
+        <Card v-if="submittedData" class="p-4">
           <template #header>
             <h3 class="card-title">
               <i class="pi pi-check-circle"></i>
@@ -72,7 +61,6 @@ const formSchema: FormSchema = {
     placeholder: 'Enter your first name',
     required: true,
     grid: { xs: 12, md: 6 },
-    row: 'first-row',
   },
   lastName: {
     type: 'TextInput',
@@ -81,7 +69,6 @@ const formSchema: FormSchema = {
     placeholder: 'Enter your last name',
     required: true,
     grid: { xs: 12, md: 6 },
-    row: 'first-row',
   },
   email: {
     type: 'EmailInput',
@@ -89,16 +76,14 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: 'your.email@example.com',
     required: true,
-    grid: { xs: 12, md: 3 },
-    row: 'second-row',
+    grid: { xs: 12, sm: 12, md: 8 },
   },
   phone: {
     type: 'TextInput',
     label: 'Phone Number',
     value: '',
     placeholder: 'Enter your phone number',
-    grid: { xs: 12, md: 3 },
-    row: 'second-row',
+    grid: { xs: 12, sm: 6, md: 4 },
   },
   password: {
     type: 'PasswordInput',
@@ -106,8 +91,7 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: 'Enter a secure password',
     required: true,
-    grid: { xs: 12, md: 3 },
-    row: 'second-row',
+    grid: { xs: 12, sm: 6, md: 6, lg: 4 },
   },
   confirmPassword: {
     type: 'PasswordInput',
@@ -115,26 +99,29 @@ const formSchema: FormSchema = {
     value: '',
     placeholder: 'Confirm your password',
     required: true,
-    grid: { xs: 12, md: 3 },
-    row: 'second-row',
+    grid: { xs: 12, sm: 6, md: 6, lg: 4 },
+  },
+  twoFactorEnabled: {
+    type: 'CheckboxInput',
+    label: 'Enable 2FA',
+    value: false,
+    grid: { xs: 12, sm: 12, md: 12, lg: 4 },
   },
   birthDate: {
     type: 'DateInput',
     label: 'Date of Birth',
     value: new Date().toISOString().split('T')[0],
     required: true,
-    grid: { xs: 12, md: 6 },
-    row: 'dates',
+    grid: { xs: 12, sm: 6, md: 6 },
   },
   appointmentDateTime: {
     type: 'DateInput',
     label: 'Appointment Date & Time',
-    value: new Date().toISOString().substring(0, 16), // Format: YYYY-MM-DDTHH:MM
+    value: new Date().toISOString().substring(0, 16),
     enableTime: true,
     required: true,
     disabled: true,
-    grid: { xs: 12, md: 6 },
-    row: 'dates',
+    grid: { xs: 12, sm: 6, md: 6 },
   },
   age: {
     type: 'NumberInput',
@@ -142,8 +129,7 @@ const formSchema: FormSchema = {
     placeholder: 'Your age',
     min: 13,
     max: 120,
-    grid: { xs: 12, md: 6 },
-    row: 'demographic',
+    grid: { xs: 6, sm: 4, md: 3 },
   },
   gender: {
     type: 'SelectInput',
@@ -155,32 +141,48 @@ const formSchema: FormSchema = {
       { label: 'Other', value: 'other' },
       { label: 'Prefer not to say', value: 'not_specified' },
     ],
-    grid: { xs: 12, md: 6 },
-    row: 'demographic',
+    grid: { xs: 6, sm: 4, md: 3 },
+  },
+  country: {
+    type: 'SelectInput',
+    label: 'Country',
+    value: '',
+    options: [
+      { label: 'United States', value: 'us' },
+      { label: 'Canada', value: 'ca' },
+      { label: 'United Kingdom', value: 'uk' },
+      { label: 'Australia', value: 'au' },
+      { label: 'Germany', value: 'de' },
+      { label: 'France', value: 'fr' },
+    ],
+    grid: { xs: 12, sm: 4, md: 6 },
   },
   preferences: {
     type: 'SelectInput',
-    label: 'Preferences',
+    label: 'Communication Preferences',
     multiple: true,
     options: [
-      { label: 'Newsletters', value: 'newsletters' },
+      { label: 'Email Newsletters', value: 'newsletters' },
       { label: 'Product Updates', value: 'product_updates' },
-      { label: 'Promotions', value: 'promotions' },
-      { label: 'Beta Features', value: 'beta_features' },
+      { label: 'Special Promotions', value: 'promotions' },
+      { label: 'Beta Features Access', value: 'beta_features' },
       { label: 'Community Events', value: 'community_events' },
-      { label: 'Surveys', value: 'surveys' },
-      { label: 'No Preferences', value: 'none' },
+      { label: 'Survey Invitations', value: 'surveys' },
     ],
-    placeholder: 'Select your preference',
-    grid: { xs: 12, md: 6 },
-    row: 'preferences',
+    placeholder: 'Select your communication preferences',
+    grid: { xs: 12, sm: 8, md: 8 },
   },
   notifications: {
     type: 'CheckboxInput',
     label: 'Email Notifications',
     value: true,
-    grid: { xs: 12, md: 6 },
-    row: 'preferences',
+    grid: { xs: 6, sm: 2, md: 2 }, // Half → 1/6 → 1/6
+  },
+  marketingEmails: {
+    type: 'CheckboxInput',
+    label: 'Marketing Emails',
+    value: false,
+    grid: { xs: 6, sm: 2, md: 2 }, // Half → 1/6 → 1/6
   },
   bio: {
     type: 'TextAreaInput',

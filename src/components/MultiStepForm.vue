@@ -62,37 +62,32 @@
             @update:data="handleCustomComponentDataUpdate"
             ref="customComponentRef"
           />
-          <!-- Regular schema-based form with row grouping -->
+          <!-- Regular schema-based form with direct field rendering -->
           <template v-else>
-            <template v-for="(row, _rowIndex) of groupedRows" :key="_rowIndex">
-              <div :class="getRowGridClasses(row, getVisibleFieldsInRow(row).length)" class="mb-4">
-                <template v-for="formId of row" :key="formId">
-                  <div
-                    :class="getGridClasses(activeSchema[formId])"
-                    v-if="checkFieldVisibility(activeSchema[formId])"
-                  >
-                    <component
-                      :is="activeSchema[formId].type"
-                      v-model="activeSchema[formId]"
-                      :schema="activeSchema"
-                      :form-id="formId"
-                      ref="dynamicRefs"
-                      :ref-key="formId"
-                    />
-                  </div>
-                </template>
-              </div>
-            </template>
+            <div class="grid grid-cols-12 gap-4">
+              <template v-for="(field, formId) in activeSchema" :key="formId">
+                <div :class="getGridClasses(field)" v-if="checkFieldVisibility(field)">
+                  <component
+                    :is="field.type"
+                    v-model="activeSchema[formId]"
+                    :schema="activeSchema"
+                    :form-id="formId"
+                    ref="dynamicRefs"
+                    :ref-key="formId"
+                  />
+                </div>
+              </template>
+            </div>
           </template>
 
           <!-- Multi-step buttons -->
           <div
             v-if="!hideButtons"
-            class="col-12 flex gap-2 mt-4"
+            class="col-span-12 flex gap-2 mt-4"
             :class="{
-              'justify-content-start': buttonPlacement === 'start',
-              'justify-content-center': buttonPlacement === 'middle',
-              'justify-content-end': buttonPlacement === 'end',
+              'justify-start': buttonPlacement === 'start',
+              'justify-center': buttonPlacement === 'middle',
+              'justify-end': buttonPlacement === 'end',
             }"
           >
             <ActionButton
@@ -152,7 +147,6 @@ import {
   useFormValidation,
   useDataTransformation,
   useMultiStepForm,
-  useRowGrouping,
   useFieldVisibility,
 } from '@/composables';
 import ActionButton from './buttons/ActionButton.vue';
@@ -205,13 +199,7 @@ const customComponentRef = ref<any>(null);
 const stepsScrollContainer = ref<HTMLElement | null>(null);
 
 // Use composables for common functionality
-const { groupedRows, getRowGridClasses } = useRowGrouping(activeSchema);
 const { checkFieldVisibility } = useFieldVisibility(activeSchema, data, computedData);
-
-// Helper function to count visible fields in a row
-const getVisibleFieldsInRow = (row: string[]) => {
-  return row.filter(formId => checkFieldVisibility(activeSchema.value[formId]));
-};
 
 // Multi-step computed properties
 const currentStepIndex = computed(() => multiStepForm.currentStepIndex.value);
