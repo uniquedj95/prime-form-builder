@@ -1,10 +1,8 @@
 <template>
   <div class="demo-page">
-    <h1 class="demo-title">Multi-Step Form Demo</h1>
-
     <div class="demo-content">
       <div class="demo-container">
-        <Card>
+        <Card class="p-4">
           <template #header>
             <h3 class="card-title">User Registration - Multi-Step</h3>
             <ion-card-subtitle
@@ -54,7 +52,7 @@
           </template>
         </Card>
 
-        <Card v-if="submittedData">
+        <Card v-if="submittedData" class="p-4">
           <template #header>
             <h3 class="card-title">Multi-Step Form Submission Result</h3>
           </template>
@@ -81,7 +79,7 @@
           </template>
         </Card>
 
-        <Card v-if="currentStepInfo">
+        <Card v-if="currentStepInfo" class="p-4 mt-4">
           <template #header>
             <h3 class="card-title">Current Step Info</h3>
           </template>
@@ -324,8 +322,6 @@ function handleCancel() {
 
 <style scoped>
 .demo-container {
-  padding: 1rem;
-  max-width: 1200px;
   margin: 0 auto;
 }
 

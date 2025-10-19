@@ -1,10 +1,8 @@
 <template>
   <div class="demo-page">
-    <h1 class="demo-title">Section Demo</h1>
-
     <div class="demo-content">
       <div class="demo-container">
-        <Card>
+        <Card class="p-4">
           <template #header>
             <h3 class="card-title">Employee Registration Form</h3>
             <p class="card-subtitle">Demonstrates form sections with titles</p>
@@ -23,7 +21,7 @@
           </template>
         </Card>
 
-        <Card v-if="submittedData">
+        <Card v-if="submittedData" class="p-4">
           <template #header>
             <h3 class="card-title">Form Submission Result</h3>
           </template>
@@ -247,13 +245,7 @@ function handleCancel() {
 
 <style scoped>
 .demo-container {
-  padding: 1rem;
-  max-width: 1200px;
   margin: 0 auto;
-}
-
-ion-card {
-  margin: 1rem 0;
 }
 
 pre {
