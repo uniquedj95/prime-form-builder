@@ -1,5 +1,5 @@
 <template>
-  <div :class="['form-section-container', section.className, getGridClasses()]">
+  <div :class="['form-section-container', section.className, getGridClasses(section)]">
     <!-- Section Divider -->
     <Divider
       align="left"
@@ -28,6 +28,7 @@
 
 <script lang="ts" setup>
 import type { FormField, FormSchema } from '@/types';
+import { getGridClasses } from '@/utils';
 import Divider from 'primevue/divider';
 
 interface SectionTitleProps {
@@ -55,22 +56,22 @@ const toggleSection = () => {
 };
 
 // Helper function to generate grid classes
-const getGridClasses = () => {
-  const classes = [];
-  const xs = section.grid?.xs ?? '12';
-  const sm = section.grid?.sm;
-  const md = section.grid?.md;
-  const lg = section.grid?.lg;
-  const xl = section.grid?.xl;
+// const getGridClasses = () => {
+//   const classes = [];
+//   const xs = section.grid?.xs ?? '12';
+//   const sm = section.grid?.sm;
+//   const md = section.grid?.md;
+//   const lg = section.grid?.lg;
+//   const xl = section.grid?.xl;
 
-  classes.push(`p-col-${xs}`);
-  if (sm) classes.push(`p-sm-${sm}`);
-  if (md) classes.push(`p-md-${md}`);
-  if (lg) classes.push(`p-lg-${lg}`);
-  if (xl) classes.push(`p-xl-${xl}`);
+//   classes.push(`p-col-${xs}`);
+//   if (sm) classes.push(`p-sm-${sm}`);
+//   if (md) classes.push(`p-md-${md}`);
+//   if (lg) classes.push(`p-lg-${lg}`);
+//   if (xl) classes.push(`p-xl-${xl}`);
 
-  return classes.join(' ');
-};
+//   return classes.join(' ');
+// };
 </script>
 
 <style scoped>
