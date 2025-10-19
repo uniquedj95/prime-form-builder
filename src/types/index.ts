@@ -487,19 +487,6 @@ export interface FormField {
   grid?: GridSize;
 
   /**
-   * Optional row identifier to group fields together on the same row.
-   * Fields with the same row value will be rendered in the same grid row.
-   * If not specified, each field will be in its own row.
-   *
-   * @type string | number
-   * @example
-   * // Group email and password on the same row
-   * email: { type: 'EmailInput', grid: { xs: 12, md: 6 }, row: 1 }
-   * password: { type: 'PasswordInput', grid: { xs: 12, md: 6 }, row: 1 }
-   */
-  row?: string | number;
-
-  /**
    * The placeholder text for the form input field.
    *
    * @type string
