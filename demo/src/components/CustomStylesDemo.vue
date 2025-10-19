@@ -2,17 +2,13 @@
   <div class="demo-page">
     <div class="demo-content">
       <div class="demo-container">
-        <ion-segment v-model="selectedTheme" @ionChange="handleThemeChange">
-          <ion-segment-button value="default">
-            <ion-label>Default</ion-label>
-          </ion-segment-button>
-          <ion-segment-button value="dark">
-            <ion-label>Dark Theme</ion-label>
-          </ion-segment-button>
-          <ion-segment-button value="colorful">
-            <ion-label>Colorful</ion-label>
-          </ion-segment-button>
-        </ion-segment>
+        <SelectButton
+          v-model="selectedTheme"
+          :options="themeOptions"
+          option-label="label"
+          option-value="value"
+          class="theme-selector mb-4"
+        />
 
         <Card :class="'theme-' + selectedTheme" class="p-4 slide-in-left">
           <template #header>
@@ -47,32 +43,24 @@
           </template>
 
           <template #content>
-            <ion-list>
-              <ion-item>
-                <ion-label>
-                  <h3>Theme Support</h3>
-                  <p>Switch between default, dark, and colorful themes</p>
-                </ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-label>
-                  <h3>CSS Custom Properties</h3>
-                  <p>Easy customization with CSS variables</p>
-                </ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-label>
-                  <h3>Responsive Grid</h3>
-                  <p>Built-in responsive grid system for different screen sizes</p>
-                </ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-label>
-                  <h3>Custom Animations</h3>
-                  <p>Smooth transitions and hover effects</p>
-                </ion-label>
-              </ion-item>
-            </ion-list>
+            <div class="feature-list">
+              <div class="feature-item">
+                <h4>Theme Support</h4>
+                <p>Switch between default, dark, and colorful themes</p>
+              </div>
+              <div class="feature-item">
+                <h4>CSS Custom Properties</h4>
+                <p>Easy customization with CSS variables</p>
+              </div>
+              <div class="feature-item">
+                <h4>Responsive Grid</h4>
+                <p>Built-in responsive grid system for different screen sizes</p>
+              </div>
+              <div class="feature-item">
+                <h4>Custom Animations</h4>
+                <p>Smooth transitions and hover effects</p>
+              </div>
+            </div>
           </template>
         </Card>
       </div>
@@ -83,10 +71,17 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import Card from 'primevue/card';
+import SelectButton from 'primevue/selectbutton';
 import type { FormData, ComputedData, FormSchema } from 'pv-form';
 
 const submittedData = ref<any>(null);
 const selectedTheme = ref('default');
+
+const themeOptions = ref([
+  { label: 'Default', value: 'default' },
+  { label: 'Dark Theme', value: 'dark' },
+  { label: 'Colorful', value: 'colorful' },
+]);
 
 const formSchema: FormSchema = {
   title: {
@@ -188,10 +183,6 @@ function handleSubmit(formData: FormData, computedData: ComputedData) {
   console.log('Styled form submitted:', formData, computedData);
   submittedData.value = { formData, computedData };
 }
-
-function handleThemeChange(event: any) {
-  selectedTheme.value = event.detail.value;
-}
 </script>
 
 <style scoped>
@@ -199,12 +190,12 @@ function handleThemeChange(event: any) {
   margin: 0 auto;
 }
 
-ion-segment {
+.theme-selector {
   margin-bottom: 20px;
 }
 
 pre {
-  background: var(--ion-color-light);
+  background: var(--p-surface-100);
   padding: 16px;
   border-radius: 8px;
   overflow-x: auto;
@@ -212,14 +203,30 @@ pre {
   line-height: 1.4;
 }
 
-ion-list {
-  background: transparent;
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-ion-item {
-  --background: var(--ion-color-light);
-  --border-radius: 8px;
-  margin-bottom: 8px;
+.feature-item {
+  background: var(--p-surface-50);
+  padding: 16px;
+  border-radius: 8px;
+  border-left: 4px solid var(--p-primary-color);
+}
+
+.feature-item h4 {
+  margin: 0 0 8px 0;
+  color: var(--p-primary-color);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.feature-item p {
+  margin: 0;
+  color: var(--p-text-muted-color);
+  font-size: 0.9rem;
 }
 
 /* Default Theme */
@@ -236,12 +243,12 @@ ion-item {
   color: var(--color);
 }
 
-.theme-dark ion-card-header {
-  color: var(--ion-color-light);
+.theme-dark :deep(.p-card-header) {
+  color: var(--p-surface-0);
 }
 
-.theme-dark ion-card-content {
-  color: var(--ion-color-light);
+.theme-dark :deep(.p-card-content) {
+  color: var(--p-surface-0);
 }
 
 /* Colorful Theme */
@@ -251,11 +258,11 @@ ion-item {
   background: var(--background);
 }
 
-.theme-colorful ion-card-header {
+.theme-colorful :deep(.p-card-header) {
   color: white;
 }
 
-.theme-colorful ion-card-content {
+.theme-colorful :deep(.p-card-content) {
   color: white;
 }
 
@@ -265,43 +272,39 @@ ion-item {
 }
 
 /* Custom animations and effects */
-.styled-form :deep(ion-item) {
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+.styled-form :deep(.p-inputtext) {
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.2s ease;
 }
 
-.styled-form :deep(ion-item:hover) {
+.styled-form :deep(.p-inputtext:hover) {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.styled-form :deep(ion-button) {
-  --border-radius: 25px;
-  --padding-start: 24px;
-  --padding-end: 24px;
+.styled-form :deep(.p-button) {
+  border-radius: 25px;
+  padding: 12px 24px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   transition: all 0.3s ease;
 }
 
-.styled-form :deep(ion-button:hover) {
+.styled-form :deep(.p-button:hover) {
   transform: translateY(-2px);
-  --box-shadow: 0 6px 20px rgba(var(--ion-color-primary-rgb), 0.4);
+  box-shadow: 0 6px 20px rgba(var(--p-primary-color-rgb), 0.4);
 }
 
-.styled-form :deep(ion-input),
-.styled-form :deep(ion-select),
-.styled-form :deep(ion-textarea) {
-  --border-radius: 12px;
-  --padding-start: 16px;
-  --padding-end: 16px;
+.styled-form :deep(.p-dropdown),
+.styled-form :deep(.p-multiselect) {
+  border-radius: 12px;
 }
 
-.styled-form :deep(.input-label) {
+.styled-form :deep(.p-field-label) {
   font-weight: 600;
   margin-bottom: 8px;
-  color: var(--ion-color-primary);
+  color: var(--p-primary-color);
 }
 </style>

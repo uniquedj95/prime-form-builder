@@ -5,35 +5,36 @@
         <Card class="p-4">
           <template #header>
             <h3 class="card-title">User Registration - Multi-Step</h3>
-            <ion-card-subtitle
-              >A comprehensive registration form with multiple steps</ion-card-subtitle
-            >
+            <p class="card-subtitle">A comprehensive registration form with multiple steps</p>
           </template>
 
           <template #content>
             <div class="demo-controls">
-              <ion-segment v-model="stepPosition" @ion-change="handleSegmentChange">
-                <ion-segment-button value="top">
-                  <ion-label>Top</ion-label>
-                </ion-segment-button>
-                <ion-segment-button value="bottom">
-                  <ion-label>Bottom</ion-label>
-                </ion-segment-button>
-                <ion-segment-button value="left">
-                  <ion-label>Left</ion-label>
-                </ion-segment-button>
-                <ion-segment-button value="right">
-                  <ion-label>Right</ion-label>
-                </ion-segment-button>
-              </ion-segment>
+              <SelectButton
+                v-model="stepPosition"
+                :options="stepPositionOptions"
+                option-label="label"
+                option-value="value"
+                class="step-position-selector"
+              />
 
               <div class="demo-options">
-                <ion-checkbox v-model="showProgress" @ionChange="handleOptionsChange">
-                  <ion-label>Show Progress</ion-label>
-                </ion-checkbox>
-                <ion-checkbox v-model="allowNavigation" @ionChange="handleOptionsChange">
-                  <ion-label>Allow Step Navigation</ion-label>
-                </ion-checkbox>
+                <div class="flex align-items-center">
+                  <Checkbox
+                    v-model="showProgress"
+                    @change="handleOptionsChange"
+                    input-id="show-progress"
+                  />
+                  <label for="show-progress" class="ml-2">Show Progress</label>
+                </div>
+                <div class="flex align-items-center">
+                  <Checkbox
+                    v-model="allowNavigation"
+                    @change="handleOptionsChange"
+                    input-id="allow-navigation"
+                  />
+                  <label for="allow-navigation" class="ml-2">Allow Step Navigation</label>
+                </div>
               </div>
             </div>
 
@@ -58,24 +59,24 @@
           </template>
 
           <template #content>
-            <ion-accordion-group>
-              <ion-accordion value="combined-form-data">
-                <ion-item slot="header">
-                  <ion-label>Form Data</ion-label>
-                </ion-item>
-                <div slot="content" class="accordion-content">
-                  <pre>{{ JSON.stringify(submittedData.formData, null, 2) }}</pre>
-                </div>
-              </ion-accordion>
-              <ion-accordion value="combined-computed-data">
-                <ion-item slot="header">
-                  <ion-label>Computed Data</ion-label>
-                </ion-item>
-                <div slot="content" class="accordion-content">
-                  <pre>{{ JSON.stringify(submittedData.computedData, null, 2) }}</pre>
-                </div>
-              </ion-accordion>
-            </ion-accordion-group>
+            <Accordion multiple>
+              <AccordionPanel value="0">
+                <AccordionHeader>Form Data</AccordionHeader>
+                <AccordionContent>
+                  <div class="accordion-content">
+                    <pre>{{ JSON.stringify(submittedData.formData, null, 2) }}</pre>
+                  </div>
+                </AccordionContent>
+              </AccordionPanel>
+              <AccordionPanel value="1">
+                <AccordionHeader>Computed Data</AccordionHeader>
+                <AccordionContent>
+                  <div class="accordion-content">
+                    <pre>{{ JSON.stringify(submittedData.computedData, null, 2) }}</pre>
+                  </div>
+                </AccordionContent>
+              </AccordionPanel>
+            </Accordion>
           </template>
         </Card>
 
@@ -98,8 +99,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, watch } from 'vue';
 import Card from 'primevue/card';
+import SelectButton from 'primevue/selectbutton';
+import Checkbox from 'primevue/checkbox';
+import Accordion from 'primevue/accordion';
+import AccordionPanel from 'primevue/accordionpanel';
+import AccordionHeader from 'primevue/accordionheader';
+import AccordionContent from 'primevue/accordioncontent';
 import type { MultiStepConfig, MultiStepFormData, StepPosition } from 'pv-form';
 
 const submittedData = ref<any>(null);
@@ -109,6 +116,13 @@ const currentStepInfo = ref<{ index: number; id: string; title: string } | null>
 const stepPosition = ref<StepPosition>('top');
 const showProgress = ref(true);
 const allowNavigation = ref(false);
+
+const stepPositionOptions = ref([
+  { label: 'Top', value: 'top' },
+  { label: 'Bottom', value: 'bottom' },
+  { label: 'Left', value: 'left' },
+  { label: 'Right', value: 'right' },
+]);
 
 const multiStepConfig = reactive<MultiStepConfig>({
   steps: [
@@ -282,14 +296,15 @@ const multiStepConfig = reactive<MultiStepConfig>({
   allowStepNavigation: allowNavigation.value,
 });
 
-function handleSegmentChange(event: any) {
-  stepPosition.value = event.detail.value;
-  multiStepConfig.stepPosition = stepPosition.value;
-}
+// Watch for stepPosition changes
+watch(stepPosition, newValue => {
+  multiStepConfig.stepPosition = newValue;
+});
 
 function handleOptionsChange() {
   multiStepConfig.showProgress = showProgress.value;
   multiStepConfig.allowStepNavigation = allowNavigation.value;
+  multiStepConfig.stepPosition = stepPosition.value;
 }
 
 function handleMultiStepSubmit(data: MultiStepFormData) {
@@ -328,8 +343,12 @@ function handleCancel() {
 .demo-controls {
   margin-bottom: 2rem;
   padding: 1rem;
-  background: var(--ion-color-light);
+  background: var(--p-surface-100);
   border-radius: 8px;
+}
+
+.step-position-selector {
+  margin-bottom: 1rem;
 }
 
 .demo-options {
@@ -340,14 +359,14 @@ function handleCancel() {
   flex-wrap: wrap;
 }
 
-.demo-options ion-checkbox,
-.demo-options ion-select {
+.demo-options .p-checkbox,
+.demo-options .p-dropdown {
   min-width: fit-content;
 }
 
 .accordion-content {
   padding: 1rem;
-  background: var(--ion-color-light);
+  background: var(--p-surface-100);
 }
 
 .accordion-content pre {
@@ -360,7 +379,7 @@ function handleCancel() {
 
 .accordion-content h4 {
   margin: 1rem 0 0.5rem 0;
-  color: var(--ion-color-primary);
+  color: var(--p-primary-color);
   font-weight: 600;
 }
 

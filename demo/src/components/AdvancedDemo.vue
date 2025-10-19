@@ -224,7 +224,7 @@ function handleSubmit(formData: FormData, computedData: ComputedData) {
 }
 
 pre {
-  background: var(--ion-color-light);
+  background: var(--p-surface-100);
   padding: 16px;
   border-radius: 8px;
   overflow-x: auto;

@@ -32,67 +32,51 @@
         <Card class="p-4 mt-4">
           <template #header>
             <h3 class="card-title">Async Field Values</h3>
-            <ion-card-subtitle
-              >Supporting functions and Promises for field values</ion-card-subtitle
-            >
+            <p class="card-subtitle">Supporting functions and Promises for field values</p>
           </template>
 
           <template #content>
             <p>This demo showcases the new <code>FormFieldValue</code> type that supports:</p>
 
-            <ion-list>
-              <ion-item>
-                <ion-label>
-                  <h3>Direct Values</h3>
-                  <p>Traditional static values like strings, numbers, booleans</p>
-                </ion-label>
-              </ion-item>
+            <div class="feature-list">
+              <div class="feature-item">
+                <h4>Direct Values</h4>
+                <p>Traditional static values like strings, numbers, booleans</p>
+              </div>
 
-              <ion-item>
-                <ion-label>
-                  <h3>Function Values</h3>
-                  <p>Functions that return values (computed synchronously)</p>
-                </ion-label>
-              </ion-item>
+              <div class="feature-item">
+                <h4>Function Values</h4>
+                <p>Functions that return values (computed synchronously)</p>
+              </div>
 
-              <ion-item>
-                <ion-label>
-                  <h3>Async Function Values</h3>
-                  <p>Functions that return Promises for async data loading</p>
-                </ion-label>
-              </ion-item>
+              <div class="feature-item">
+                <h4>Async Function Values</h4>
+                <p>Functions that return Promises for async data loading</p>
+              </div>
 
-              <ion-item>
-                <ion-label>
-                  <h3>Promise Values</h3>
-                  <p>Direct Promise objects that resolve to values</p>
-                </ion-label>
-              </ion-item>
-            </ion-list>
+              <div class="feature-item">
+                <h4>Promise Values</h4>
+                <p>Direct Promise objects that resolve to values</p>
+              </div>
+            </div>
 
             <h4>Supported Field Types</h4>
-            <ion-list>
-              <ion-item>
-                <ion-label>
-                  <h3>Text Inputs</h3>
-                  <p>TextInput, EmailInput, PasswordInput, NumberInput</p>
-                </ion-label>
-              </ion-item>
+            <div class="feature-list">
+              <div class="feature-item">
+                <h4>Text Inputs</h4>
+                <p>TextInput, EmailInput, PasswordInput, NumberInput</p>
+              </div>
 
-              <ion-item>
-                <ion-label>
-                  <h3>Selection Inputs</h3>
-                  <p>SelectInput, RadioInput, CheckboxInput</p>
-                </ion-label>
-              </ion-item>
+              <div class="feature-item">
+                <h4>Selection Inputs</h4>
+                <p>SelectInput, RadioInput, CheckboxInput</p>
+              </div>
 
-              <ion-item>
-                <ion-label>
-                  <h3>Specialized Inputs</h3>
-                  <p>TextAreaInput, DateInput</p>
-                </ion-label>
-              </ion-item>
-            </ion-list>
+              <div class="feature-item">
+                <h4>Specialized Inputs</h4>
+                <p>TextAreaInput, DateInput</p>
+              </div>
+            </div>
 
             <h4>Examples</h4>
 
@@ -441,7 +425,7 @@ function handleSubmit(formData: FormData, computedData: ComputedData) {
 }
 
 pre {
-  background: var(--ion-color-light);
+  background: var(--p-surface-100);
   padding: 16px;
   border-radius: 8px;
   overflow-x: auto;
@@ -449,7 +433,7 @@ pre {
 }
 
 code {
-  background: var(--ion-color-light);
+  background: var(--p-surface-100);
   padding: 2px 6px;
   border-radius: 4px;
   font-family: 'Courier New', monospace;
@@ -459,10 +443,33 @@ h4,
 h5 {
   margin-top: 20px;
   margin-bottom: 10px;
-  color: var(--ion-color-primary);
+  color: var(--p-primary-color);
 }
 
-ion-list {
+.feature-list {
   margin: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.feature-item {
+  background: var(--p-surface-50);
+  padding: 16px;
+  border-radius: 8px;
+  border-left: 4px solid var(--p-primary-color);
+}
+
+.feature-item h4 {
+  margin: 0 0 8px 0;
+  color: var(--p-primary-color);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.feature-item p {
+  margin: 0;
+  color: var(--p-text-muted-color);
+  font-size: 0.9rem;
 }
 </style>

@@ -33,41 +33,31 @@
           </template>
 
           <template #content>
-            <ion-list>
-              <ion-item>
-                <ion-label>
-                  <h3>Country → States</h3>
-                  <p>State options update based on selected country</p>
-                </ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-label>
-                  <h3>Employment Status → Company Details</h3>
-                  <p>Company fields only show if "Employed" is selected</p>
-                </ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-label>
-                  <h3>Student Status → School Info</h3>
-                  <p>School field appears when "Student" is checked</p>
-                </ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-label>
-                  <h3>Contact Method → Phone/Email</h3>
-                  <p>Required contact field changes based on preference</p>
-                </ion-label>
-              </ion-item>
-            </ion-list>
+            <div class="dependency-list">
+              <div class="dependency-item">
+                <h4>Country → States</h4>
+                <p>State options update based on selected country</p>
+              </div>
+              <div class="dependency-item">
+                <h4>Employment Status → Company Details</h4>
+                <p>Company fields only show if "Employed" is selected</p>
+              </div>
+              <div class="dependency-item">
+                <h4>Student Status → School Info</h4>
+                <p>School field appears when "Student" is checked</p>
+              </div>
+              <div class="dependency-item">
+                <h4>Contact Method → Phone/Email</h4>
+                <p>Required contact field changes based on preference</p>
+              </div>
+            </div>
           </template>
         </Card>
 
         <Card class="p-4 mt-4">
           <template #header>
             <h3 class="card-title">Resetting Dependent Fields</h3>
-            <ion-card-subtitle
-              >Best practices for clearing dependent field values</ion-card-subtitle
-            >
+            <p class="card-subtitle">Best practices for clearing dependent field values</p>
           </template>
 
           <template #content>
@@ -313,7 +303,7 @@ function handleSubmit(formData: FormData, computedData: ComputedData) {
 }
 
 pre {
-  background: var(--ion-color-light);
+  background: var(--p-surface-100);
   padding: 16px;
   border-radius: 8px;
   overflow-x: auto;
@@ -321,13 +311,29 @@ pre {
   line-height: 1.4;
 }
 
-ion-list {
-  background: transparent;
+.dependency-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-ion-item {
-  --background: var(--ion-color-light);
-  --border-radius: 8px;
-  margin-bottom: 8px;
+.dependency-item {
+  background: var(--p-surface-50);
+  padding: 16px;
+  border-radius: 8px;
+  border-left: 4px solid var(--p-primary-color);
+}
+
+.dependency-item h4 {
+  margin: 0 0 8px 0;
+  color: var(--p-primary-color);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.dependency-item p {
+  margin: 0;
+  color: var(--p-text-muted-color);
+  font-size: 0.9rem;
 }
 </style>

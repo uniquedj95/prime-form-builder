@@ -44,25 +44,16 @@
           </template>
 
           <template #content>
-            <ion-segment v-model="activeTab">
-              <ion-segment-button value="data">
-                <ion-label>Submitted Data</ion-label>
-              </ion-segment-button>
-              <ion-segment-button value="computed">
-                <ion-label>Computed Data</ion-label>
-              </ion-segment-button>
-            </ion-segment>
-
-            <div class="segment-content">
-              <div v-if="activeTab === 'data'">
+            <TabView v-model:activeIndex="activeTabIndex">
+              <TabPanel value="0" header="Submitted Data">
                 <h4>Form Data</h4>
                 <pre>{{ JSON.stringify(submittedData, null, 2) }}</pre>
-              </div>
-              <div v-if="activeTab === 'computed'">
+              </TabPanel>
+              <TabPanel value="1" header="Computed Data">
                 <h4>Computed Data</h4>
                 <pre>{{ JSON.stringify(computedDataValue, null, 2) }}</pre>
-              </div>
-            </div>
+              </TabPanel>
+            </TabView>
           </template>
         </Card>
       </div>
@@ -74,6 +65,8 @@
 import { ref } from 'vue';
 import { FormSchema, FormData, ComputedData } from 'pv-form';
 import Card from 'primevue/card';
+import TabView from 'primevue/tabview';
+import TabPanel from 'primevue/tabpanel';
 
 // Simple inventory items with repeatable fields
 const formSchema = ref<FormSchema>({
@@ -149,7 +142,7 @@ const contactsSchema = ref<FormSchema>({
         type: 'TextInput',
         label: 'Phone Number',
         grid: { xs: 12, md: 8 },
-        pattern: '\\(\\d{3}\\) \\d{3}-\\d{4}',
+        pattern: String.raw`\(\d{3}\) \d{3}-\d{4}`,
         placeholder: '(555) 555-5555',
       },
       addressSection: {
@@ -190,7 +183,7 @@ const contactsSchema = ref<FormSchema>({
 
 const submittedData = ref<FormData | null>(null);
 const computedDataValue = ref<ComputedData | null>(null);
-const activeTab = ref('data');
+const activeTabIndex = ref(0);
 
 const handleSubmit = (data: FormData, computedData: ComputedData) => {
   console.log('Inventory items submitted:', data, computedData);
@@ -207,7 +200,7 @@ const handleSubmit = (data: FormData, computedData: ComputedData) => {
   // Calculate total value
   let totalValue = 0;
   if (data.inventoryItems && Array.isArray(data.inventoryItems)) {
-    data.inventoryItems.forEach(item => {
+    for (const item of data.inventoryItems) {
       // RepeatInput stores data in the 'other' property of each Option
       const itemData = item.other as InventoryItemData;
       if (itemData) {
@@ -215,7 +208,7 @@ const handleSubmit = (data: FormData, computedData: ComputedData) => {
         const price = Number(itemData.unitPrice) || 0;
         totalValue += quantity * price;
       }
-    });
+    }
   }
 
   console.log('Total inventory value:', totalValue);
@@ -234,7 +227,7 @@ const handleContactsSubmit = (data: FormData, computedData: ComputedData) => {
 }
 
 pre {
-  background-color: #f5f5f5;
+  background-color: var(--p-surface-100);
   padding: 10px;
   border-radius: 4px;
   white-space: pre-wrap;
@@ -242,13 +235,9 @@ pre {
   font-size: 0.85rem;
 }
 
-.segment-content {
-  margin-top: 16px;
-}
-
-.segment-content h4 {
+h4 {
   margin-top: 0;
-  color: var(--ion-color-primary);
+  color: var(--p-primary-color);
   font-weight: 500;
 }
 </style>

@@ -5,9 +5,9 @@
         <Card class="p-4 slide-in-left">
           <template #header>
             <h3 class="card-title">Custom Component in Multi-Step Form</h3>
-            <ion-card-subtitle
-              >Using custom components in a multi-step form for an ANC workflow</ion-card-subtitle
-            >
+            <p class="card-subtitle">
+              Using custom components in a multi-step form for an ANC workflow
+            </p>
           </template>
 
           <template #content>
@@ -128,9 +128,5 @@ function handleSubmit(allData: any) {
 <style scoped>
 .demo-container {
   margin: 0 auto;
-}
-
-ion-card {
-  margin-bottom: 20px;
 }
 </style>

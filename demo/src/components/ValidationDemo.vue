@@ -36,38 +36,28 @@
           </template>
 
           <template #content>
-            <ion-list>
-              <ion-item>
-                <ion-label>
-                  <h3>Username</h3>
-                  <p>3-20 characters, alphanumeric only</p>
-                </ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-label>
-                  <h3>Email</h3>
-                  <p>Valid email format with async domain check</p>
-                </ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-label>
-                  <h3>Password</h3>
-                  <p>Min 8 chars, 1 uppercase, 1 lowercase, 1 number</p>
-                </ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-label>
-                  <h3>Age</h3>
-                  <p>Must be between 18 and 120</p>
-                </ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-label>
-                  <h3>Website</h3>
-                  <p>Valid URL format (optional)</p>
-                </ion-label>
-              </ion-item>
-            </ion-list>
+            <div class="validation-rules">
+              <div class="rule-item">
+                <h4>Username</h4>
+                <p>3-20 characters, alphanumeric only</p>
+              </div>
+              <div class="rule-item">
+                <h4>Email</h4>
+                <p>Valid email format with async domain check</p>
+              </div>
+              <div class="rule-item">
+                <h4>Password</h4>
+                <p>Min 8 chars, 1 uppercase, 1 lowercase, 1 number</p>
+              </div>
+              <div class="rule-item">
+                <h4>Age</h4>
+                <p>Must be between 18 and 120</p>
+              </div>
+              <div class="rule-item">
+                <h4>Website</h4>
+                <p>Valid URL format (optional)</p>
+              </div>
+            </div>
           </template>
         </Card>
       </div>
@@ -158,7 +148,7 @@ const ageValidator: FormValidator = value => {
   const age = Number(value);
   const errors: string[] = [];
 
-  if (isNaN(age) || age < 18) {
+  if (Number.isNaN(age) || age < 18) {
     errors.push('You must be at least 18 years old');
   }
 
@@ -260,7 +250,7 @@ function handleSubmit(formData: FormData, computedData: ComputedData) {
 }
 
 pre {
-  background: var(--ion-color-light);
+  background: var(--p-surface-100);
   padding: 16px;
   border-radius: 8px;
   overflow-x: auto;
@@ -269,21 +259,38 @@ pre {
 }
 
 .success-message {
-  color: var(--ion-color-success);
+  color: var(--p-green-600);
   font-weight: bold;
   margin-bottom: 16px;
   padding: 12px;
-  background: var(--ion-color-success-tint);
+  background: var(--p-green-50);
   border-radius: 8px;
+  border-left: 4px solid var(--p-green-500);
 }
 
-ion-list {
-  background: transparent;
+.validation-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-ion-item {
-  --background: var(--ion-color-light);
-  --border-radius: 8px;
-  margin-bottom: 8px;
+.rule-item {
+  background: var(--p-surface-50);
+  padding: 16px;
+  border-radius: 8px;
+  border-left: 4px solid var(--p-primary-color);
+}
+
+.rule-item h4 {
+  margin: 0 0 8px 0;
+  color: var(--p-primary-color);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.rule-item p {
+  margin: 0;
+  color: var(--p-text-muted-color);
+  font-size: 0.9rem;
 }
 </style>

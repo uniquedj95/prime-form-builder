@@ -249,7 +249,7 @@ function handleCancel() {
 }
 
 pre {
-  background: var(--ion-color-light);
+  background: var(--p-surface-100);
   padding: 1rem;
   border-radius: 8px;
   overflow-x: auto;

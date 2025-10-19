@@ -11,9 +11,7 @@
         <Card class="p-4 slide-in-left">
           <template #header>
             <h3 class="card-title">Demo Form</h3>
-            <ion-card-subtitle
-              >Try changing the form options to see steps appear/disappear</ion-card-subtitle
-            >
+            <p class="card-subtitle">Try changing the form options to see steps appear/disappear</p>
           </template>
 
           <template #content>
@@ -32,16 +30,16 @@
           </template>
 
           <template #content>
-            <ion-accordion-group>
-              <ion-accordion value="data">
-                <ion-item slot="header">
-                  <ion-label>View Submitted Data</ion-label>
-                </ion-item>
-                <div slot="content" class="accordion-content">
-                  <pre>{{ JSON.stringify(submittedData, null, 2) }}</pre>
-                </div>
-              </ion-accordion>
-            </ion-accordion-group>
+            <Accordion multiple>
+              <AccordionPanel value="0">
+                <AccordionHeader>View Submitted Data</AccordionHeader>
+                <AccordionContent>
+                  <div class="accordion-content">
+                    <pre>{{ JSON.stringify(submittedData, null, 2) }}</pre>
+                  </div>
+                </AccordionContent>
+              </AccordionPanel>
+            </Accordion>
           </template>
         </Card>
       </div>
@@ -52,6 +50,10 @@
 <script lang="ts" setup>
 import { ref, reactive } from 'vue';
 import Card from 'primevue/card';
+import Accordion from 'primevue/accordion';
+import AccordionPanel from 'primevue/accordionpanel';
+import AccordionHeader from 'primevue/accordionheader';
+import AccordionContent from 'primevue/accordioncontent';
 import type { MultiStepConfig, MultiStepFormData, Option } from 'pv-form';
 
 const submittedData = ref<MultiStepFormData | null>(null);
@@ -220,7 +222,7 @@ function handleSubmit(data: MultiStepFormData) {
 
 .accordion-content {
   padding: 16px;
-  background-color: var(--ion-color-light);
+  background-color: var(--p-surface-100);
   border-radius: 0 0 8px 8px;
   overflow-x: auto;
 }
