@@ -1,7 +1,7 @@
 <!-- ANCHistoryComponent.vue -->
 <template>
   <div class="anc-history-component">
-    <Card>
+    <Card class="p-4">
       <template #header>
         <h3 class="card-title">Previous ANC Visits</h3>
         <p class="card-subtitle">{{ patientName }}'s visit history</p>
@@ -48,7 +48,7 @@
     </Card>
 
     <!-- Selected Visit Details -->
-    <Card v-if="selectedVisit">
+    <Card v-if="selectedVisit" class="p-4">
       <template #header>
         <h3 class="card-title">Visit Details</h3>
         <p class="card-subtitle">{{ formatDate(selectedVisit.date) }}</p>

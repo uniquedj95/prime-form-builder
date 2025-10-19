@@ -1,16 +1,14 @@
 <template>
   <div class="demo-page">
-    <h1 class="demo-title">Conditional Steps Demo</h1>
-
     <div class="demo-content">
-      <div class="container ion-padding">
+      <div class="container">
         <h1>Conditional Steps Demo</h1>
         <p>
           This example demonstrates how to conditionally show or hide steps in a multi-step form
           based on the values entered in previous steps.
         </p>
 
-        <Card>
+        <Card class="p-4 slide-in-left">
           <template #header>
             <h3 class="card-title">Demo Form</h3>
             <ion-card-subtitle
@@ -28,7 +26,7 @@
         </Card>
 
         <!-- Submit Results -->
-        <Card v-if="submittedData">
+        <Card v-if="submittedData" class="p-4 mt-4">
           <template #header>
             <h3 class="card-title">Form Submission Data</h3>
           </template>
@@ -217,7 +215,6 @@ function handleSubmit(data: MultiStepFormData) {
 
 <style scoped>
 .container {
-  max-width: 1200px;
   margin: 0 auto;
 }
 

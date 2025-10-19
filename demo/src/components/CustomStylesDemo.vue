@@ -1,7 +1,5 @@
 <template>
   <div class="demo-page">
-    <h1 class="demo-title">Custom Styles</h1>
-
     <div class="demo-content">
       <div class="demo-container">
         <ion-segment v-model="selectedTheme" @ionChange="handleThemeChange">
@@ -16,7 +14,7 @@
           </ion-segment-button>
         </ion-segment>
 
-        <Card :class="'theme-' + selectedTheme">
+        <Card :class="'theme-' + selectedTheme" class="p-4 slide-in-left">
           <template #header>
             <h3 class="card-title">Styled Form Demo</h3>
             <p class="card-subtitle">Custom styling and theming examples</p>
@@ -33,7 +31,7 @@
           </template>
         </Card>
 
-        <Card v-if="submittedData">
+        <Card v-if="submittedData" class="p-4 mt-4">
           <template #header>
             <h3 class="card-title">Styled Form Data</h3>
           </template>
@@ -43,7 +41,7 @@
           </template>
         </Card>
 
-        <Card>
+        <Card class="p-4 mt-4">
           <template #header>
             <h3 class="card-title">Styling Features</h3>
           </template>
@@ -198,8 +196,6 @@ function handleThemeChange(event: any) {
 
 <style scoped>
 .demo-container {
-  padding: 20px;
-  max-width: 900px;
   margin: 0 auto;
 }
 

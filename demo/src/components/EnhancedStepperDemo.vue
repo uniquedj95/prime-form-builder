@@ -1,14 +1,8 @@
 <template>
   <div class="demo-page">
-    <h1 class="demo-title">Enhanced Stepper Demo</h1>
-    <p class="demo-description">
-      This demo showcases the enhanced stepper design inspired by PrimeVueFormBuilderSteps.vue.
-      Notice how steps with icons display the icon, while steps without icons show step numbers.
-    </p>
-
     <div class="demo-content">
       <div class="demo-container">
-        <Card>
+        <Card class="p-4 slide-in-left">
           <template #header>
             <h3 class="card-title">Mixed Icon & Number Steps</h3>
             <p class="card-subtitle">Demonstrating both icon and number-based step indicators</p>
@@ -32,7 +26,7 @@
         </Card>
 
         <!-- Debug Panel -->
-        <Card v-if="submittedData || currentStepInfo" class="mt-4">
+        <Card v-if="submittedData || currentStepInfo" class="mt-4 p-4">
           <template #header>
             <h3 class="card-title">Debug Information</h3>
           </template>

@@ -1,19 +1,25 @@
 <template>
   <div class="demo-page">
-    <h1 class="demo-title">Async Field Values Demo</h1>
-
     <div class="demo-content">
       <div class="demo-container">
-        <!-- Form Section -->
-        <v-form
-          :schema="formSchema"
-          @submit="handleSubmit"
-          :custom-buttons="customButtons"
-          submit-button-text="Submit Form"
-        />
+        <Card class="p-4 slide-in-left">
+          <template #header>
+            <h3 class="card-title">Async Form Field Values</h3>
+            <p class="card-subtitle">dynamically loading field values via functions and Promises</p>
+          </template>
+
+          <template #content>
+            <v-form
+              :schema="formSchema"
+              @submit="handleSubmit"
+              :custom-buttons="customButtons"
+              submit-button-text="Submit Form"
+            />
+          </template>
+        </Card>
 
         <!-- Results Section -->
-        <Card v-if="submittedData">
+        <Card v-if="submittedData" class="p-4 mt-4">
           <template #header>
             <h3 class="card-title">Submitted Data</h3>
           </template>
@@ -23,7 +29,7 @@
         </Card>
 
         <!-- Documentation Section -->
-        <Card>
+        <Card class="p-4 mt-4">
           <template #header>
             <h3 class="card-title">Async Field Values</h3>
             <ion-card-subtitle
@@ -431,8 +437,6 @@ function handleSubmit(formData: FormData, computedData: ComputedData) {
 
 <style scoped>
 .demo-container {
-  padding: 20px;
-  max-width: 1000px;
   margin: 0 auto;
 }
 

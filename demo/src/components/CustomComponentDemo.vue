@@ -1,10 +1,8 @@
 <template>
   <div class="demo-page">
-    <h1 class="demo-title">Custom Component Demo</h1>
-
     <div class="demo-content">
       <div class="demo-container">
-        <Card>
+        <Card class="p-4 slide-in-left">
           <template #header>
             <h3 class="card-title">Custom Component in Multi-Step Form</h3>
             <ion-card-subtitle
@@ -129,8 +127,6 @@ function handleSubmit(allData: any) {
 
 <style scoped>
 .demo-container {
-  padding: 20px;
-  max-width: 900px;
   margin: 0 auto;
 }
 

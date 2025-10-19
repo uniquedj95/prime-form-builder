@@ -1,15 +1,11 @@
 <template>
   <div class="demo-page">
-    <h1 class="demo-title">Dependent Fields</h1>
-
     <div class="demo-content">
       <div class="demo-container">
-        <Card>
+        <Card class="p-4 slide-in-left">
           <template #header>
             <h3 class="card-title">Dynamic Field Dependencies</h3>
-            <ion-card-subtitle
-              >Fields that show/hide and update based on other field values</ion-card-subtitle
-            >
+            <p>Fields that show/hide and update based on other field values</p>
           </template>
 
           <template #content>
@@ -21,7 +17,7 @@
           </template>
         </Card>
 
-        <Card v-if="submittedData">
+        <Card v-if="submittedData" class="p-4 mt-4">
           <template #header>
             <h3 class="card-title">Application Data</h3>
           </template>
@@ -31,7 +27,7 @@
           </template>
         </Card>
 
-        <Card>
+        <Card class="p-4 mt-4">
           <template #header>
             <h3 class="card-title">How Dependencies Work</h3>
           </template>
@@ -66,7 +62,7 @@
           </template>
         </Card>
 
-        <Card>
+        <Card class="p-4 mt-4">
           <template #header>
             <h3 class="card-title">Resetting Dependent Fields</h3>
             <ion-card-subtitle
@@ -313,8 +309,6 @@ function handleSubmit(formData: FormData, computedData: ComputedData) {
 
 <style scoped>
 .demo-container {
-  padding: 20px;
-  max-width: 800px;
   margin: 0 auto;
 }
 
