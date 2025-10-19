@@ -2,7 +2,7 @@
   <div class="single-step-form">
     <!-- Render rows grouped by the row property -->
     <template v-for="(row, _rowIndex) of groupedRows" :key="_rowIndex">
-      <div class="flex flex-row mb-2 gap-2">
+      <div :class="getRowGridClasses(row, getVisibleFieldsInRow(row).length)" class="mb-4">
         <template v-for="formId of row" :key="formId">
           <div
             :class="getGridClasses(activeSchema[formId])"
@@ -110,7 +110,7 @@ const { dynamicRefs, isFormValid } = useFormValidation();
 const { formData, computedData } = useDataTransformation(activeSchema);
 
 // Use composables for common functionality
-const { groupedRows } = useRowGrouping(activeSchema);
+const { groupedRows, getRowGridClasses } = useRowGrouping(activeSchema);
 const { handleSubmit, handleClear, handleCancel } = useFormActions(
   dynamicRefs,
   activeSchema,
@@ -124,6 +124,11 @@ const { setupFieldVisibilityWatcher, checkFieldVisibility } = useFieldVisibility
   computedData,
   props.schema
 );
+
+// Helper function to count visible fields in a row
+const getVisibleFieldsInRow = (row: string[]) => {
+  return row.filter(formId => checkFieldVisibility(activeSchema.value[formId]));
+};
 
 // Initialize form with schema values
 watch(

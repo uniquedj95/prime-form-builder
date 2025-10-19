@@ -7,25 +7,32 @@
   >
     <div class="repeat-row">
       <div class="form-fields-column">
-        <div class="fields-row">
-          <template v-for="formId of Object.keys(child)">
-            <div
-              :key="`${index}-${formId}`"
-              :class="getPrimeVueGridClasses(child[formId])"
-              class="field-col"
-              v-if="checkFieldVisibility(child[formId])"
-            >
-              <component
-                :is="child[formId].type"
-                v-model="child[formId]"
-                :schema="child"
-                :ref-key="`${index}-${formId}`"
-                ref="dynamicRefs"
-                style="width: 100%"
-              />
-            </div>
-          </template>
-        </div>
+        <!-- Use row grouping for consistent layout -->
+        <template
+          v-for="(row, _rowIndex) of getGroupedRowsForChild(child)"
+          :key="`${index}-row-${_rowIndex}`"
+        >
+          <div
+            :class="getRowGridClasses(row, getVisibleFieldsInRow(child, row).length)"
+            class="mb-4"
+          >
+            <template v-for="formId of row" :key="`${index}-${formId}`">
+              <div
+                :class="getGridClasses(child[formId])"
+                v-if="checkFieldVisibility(child[formId])"
+              >
+                <component
+                  :is="child[formId].type"
+                  v-model="child[formId]"
+                  :schema="child"
+                  :ref-key="`${index}-${formId}`"
+                  ref="dynamicRefs"
+                  style="width: 100%"
+                />
+              </div>
+            </template>
+          </div>
+        </template>
       </div>
       <div class="button-column">
         <div class="button-container">
@@ -54,13 +61,8 @@
 <script setup lang="ts">
 import { ComputedData, FormData, FormField, FormSchema, Option } from '@/types';
 import Button from 'primevue/button';
-import {
-  deepClone,
-  isFormField,
-  resetFormInputsWithCustomResolver,
-  getPrimeVueGridClasses,
-} from '@/utils';
-import { useFormValidation, useRepeatInputFieldVisibility } from '@/composables';
+import { deepClone, isFormField, resetFormInputsWithCustomResolver, getGridClasses } from '@/utils';
+import { useFormValidation, useRepeatInputFieldVisibility, useRowGrouping } from '@/composables';
 import { computed, onMounted, PropType, ref, watch } from 'vue';
 
 interface PropsI {
@@ -107,6 +109,30 @@ const { dynamicRefs, getFormErrors, updateFormValues } = useFormValidation();
 
 // Use field visibility composable for RepeatInput
 const { checkFieldVisibility } = useRepeatInputFieldVisibility(props.data, props.computedData);
+
+// Helper functions for row grouping within RepeatInput children
+const getGroupedRowsForChild = (child: FormSchema) => {
+  const childRef = ref(child);
+  const { groupedRows } = useRowGrouping(childRef);
+  return groupedRows.value;
+};
+
+const getRowGridClasses = (row: string[], visibleFieldsCount?: number) => {
+  const fieldCount = visibleFieldsCount ?? row.length;
+
+  // Base grid classes with responsive breakpoints
+  if (fieldCount === 0) return 'hidden';
+  if (fieldCount === 1) return 'grid grid-cols-1 gap-4';
+  if (fieldCount === 2) return 'grid grid-cols-1 md:grid-cols-2 gap-4';
+  if (fieldCount === 3) return 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4';
+  if (fieldCount >= 4) return 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4';
+
+  return 'grid grid-cols-1 gap-4';
+};
+
+const getVisibleFieldsInRow = (child: FormSchema, row: string[]) => {
+  return row.filter(formId => child[formId] && checkFieldVisibility(child[formId]));
+};
 
 const inputValue = computed<Array<Option>>(() => {
   return childrens.value.map((child, index) => ({
@@ -221,97 +247,8 @@ defineExpose({
   flex: 1;
 }
 
-.fields-row {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-}
-
 .field-col {
   min-width: 0; /* Prevent field overflow */
-}
-
-/* Grid classes for responsive layout */
-.p-col-12 {
-  grid-column: 1 / -1;
-}
-.p-col-6 {
-  grid-column: span 2;
-}
-.p-col-4 {
-  grid-column: span 1;
-}
-.p-col-3 {
-  grid-column: span 1;
-}
-
-@media (min-width: 576px) {
-  .fields-row {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .p-sm-12 {
-    grid-column: 1 / -1;
-  }
-  .p-sm-6 {
-    grid-column: span 1;
-  }
-  .p-sm-4 {
-    grid-column: span 1;
-  }
-  .p-sm-3 {
-    grid-column: span 1;
-  }
-}
-
-@media (min-width: 768px) {
-  .fields-row {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .p-md-12 {
-    grid-column: 1 / -1;
-  }
-  .p-md-6 {
-    grid-column: span 2;
-  }
-  .p-md-4 {
-    grid-column: span 1;
-  }
-  .p-md-3 {
-    grid-column: span 1;
-  }
-}
-
-@media (min-width: 992px) {
-  .fields-row {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  .p-lg-12 {
-    grid-column: 1 / -1;
-  }
-  .p-lg-6 {
-    grid-column: span 2;
-  }
-  .p-lg-4 {
-    grid-column: span 1;
-  }
-  .p-lg-3 {
-    grid-column: span 1;
-  }
-}
-
-@media (min-width: 1200px) {
-  .p-xl-12 {
-    grid-column: 1 / -1;
-  }
-  .p-xl-6 {
-    grid-column: span 2;
-  }
-  .p-xl-4 {
-    grid-column: span 1;
-  }
-  .p-xl-3 {
-    grid-column: span 1;
-  }
 }
 
 .button-column {
@@ -383,7 +320,8 @@ defineExpose({
     flex-direction: row;
   }
 
-  .fields-row {
+  /* Ensure grid always uses single column on mobile */
+  .form-fields-column .grid {
     grid-template-columns: 1fr !important;
   }
 }

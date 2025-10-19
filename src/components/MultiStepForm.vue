@@ -65,7 +65,7 @@
           <!-- Regular schema-based form with row grouping -->
           <template v-else>
             <template v-for="(row, _rowIndex) of groupedRows" :key="_rowIndex">
-              <div class="flex flex-row mb-2 gap-2">
+              <div :class="getRowGridClasses(row, getVisibleFieldsInRow(row).length)" class="mb-4">
                 <template v-for="formId of row" :key="formId">
                   <div
                     :class="getGridClasses(activeSchema[formId])"
@@ -205,8 +205,13 @@ const customComponentRef = ref<any>(null);
 const stepsScrollContainer = ref<HTMLElement | null>(null);
 
 // Use composables for common functionality
-const { groupedRows } = useRowGrouping(activeSchema);
+const { groupedRows, getRowGridClasses } = useRowGrouping(activeSchema);
 const { checkFieldVisibility } = useFieldVisibility(activeSchema, data, computedData);
+
+// Helper function to count visible fields in a row
+const getVisibleFieldsInRow = (row: string[]) => {
+  return row.filter(formId => checkFieldVisibility(activeSchema.value[formId]));
+};
 
 // Multi-step computed properties
 const currentStepIndex = computed(() => multiStepForm.currentStepIndex.value);
