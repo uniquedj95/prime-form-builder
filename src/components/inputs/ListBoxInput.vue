@@ -1,38 +1,11 @@
 <template>
   <div class="listbox-container" :class="{ loading: isValueLoading }">
-    <IftaLabel v-if="model.label">
-      <ListBox
-        :id="model.id"
-        ref="inputRef"
-        v-model="selectedValue"
-        :options="options"
-        optionLabel="label"
-        :multiple="model.multiple"
-        :disabled="model.disabled || isValueLoading"
-        :filter="true"
-        :filterPlaceholder="'Search...'"
-        :class="[model.className, { 'p-invalid': model.error }]"
-        @focus="onFocus"
-        @change="onValueUpdate"
-        @blur="onValueUpdate"
-      >
-        <template #option="slotProps">
-          <div class="option-content">
-            <div>{{ slotProps.option.label }}</div>
-            <small
-              v-if="shouldShowDescription(slotProps.option, isSelected(slotProps.option))"
-              :class="`option-description text-${slotProps.option.description?.color || 'secondary'}`"
-            >
-              {{ slotProps.option.description?.text }}
-            </small>
-          </div>
-        </template>
-      </ListBox>
-      <InputLabel :model="model" />
-    </IftaLabel>
+    <InputLabel :model="model" class="mb-4" />
+    <small v-if="model.error" class="p-error" style="display: block; margin-bottom: 0.5rem">{{
+      model.error
+    }}</small>
 
     <ListBox
-      v-else
       :id="model.id"
       ref="inputRef"
       v-model="selectedValue"
@@ -60,7 +33,6 @@
       </template>
     </ListBox>
 
-    <small v-if="model.error" class="p-error">{{ model.error }}</small>
     <i v-if="isValueLoading" class="pi pi-spin pi-spinner loading-spinner"></i>
   </div>
 </template>
@@ -68,12 +40,11 @@
 <script setup lang="ts">
 import { ref, computed, PropType, watch, ComponentPublicInstance, onMounted } from 'vue';
 import ListBox from 'primevue/listbox';
-import IftaLabel from 'primevue/iftalabel';
+import InputLabel from '../shared/InputLabel.vue';
 import { FormSchema, BaseFieldTypes, FormField, Option } from '@/types';
 import { deepEqual, isFormField, shouldShowDescription } from '@/utils';
 import { useInputValidation } from '@/composables/useInputValidation';
 import { useFormFieldValue } from '@/composables/useFormFieldValue';
-import InputLabel from '../shared/InputLabel.vue';
 
 const props = defineProps({
   schema: Object as PropType<FormSchema>,

@@ -1,21 +1,11 @@
 <template>
   <div class="toggle-switch-container" :class="{ loading: isLoading }">
-    <IftaLabel v-if="model.label">
-      <ToggleSwitch
-        :id="model.id"
-        ref="inputRef"
-        v-model="input"
-        :disabled="model.disabled || isLoading"
-        :class="[model.className, { 'p-invalid': model.error }]"
-        @focus="onFocus"
-        @change="onValueUpdate"
-        @blur="onValueUpdate"
-      />
-      <InputLabel :model="model" />
-    </IftaLabel>
+    <InputLabel :model="model" class="mr-4" />
+    <small v-if="model.error" class="p-error" style="display: block; margin-bottom: 0.5rem">{{
+      model.error
+    }}</small>
 
     <ToggleSwitch
-      v-else
       :id="model.id"
       ref="inputRef"
       v-model="input"
@@ -25,19 +15,16 @@
       @change="onValueUpdate"
       @blur="onValueUpdate"
     />
-
-    <small v-if="model.error" class="p-error">{{ model.error }}</small>
   </div>
 </template>
 
 <script lang="ts" setup>
 import ToggleSwitch from 'primevue/toggleswitch';
-import IftaLabel from 'primevue/iftalabel';
+import InputLabel from '../shared/InputLabel.vue';
 import { FormField, FormSchema } from '@/types';
 import { ComponentPublicInstance, computed, PropType, ref, watch } from 'vue';
 import { useInputValidation } from '@/composables/useInputValidation';
 import { useFormFieldValue } from '@/composables/useFormFieldValue';
-import InputLabel from '@/components/shared/InputLabel.vue';
 
 const props = defineProps<{ schema?: FormSchema }>();
 const model = defineModel({ type: Object as PropType<FormField>, default: {} });
@@ -93,6 +80,8 @@ defineExpose({
 <style scoped>
 .toggle-switch-container {
   width: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .toggle-switch-container.loading {

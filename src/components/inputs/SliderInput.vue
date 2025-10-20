@@ -1,28 +1,14 @@
 <template>
   <div class="slider-container" :class="{ loading: isLoading }">
-    <IftaLabel v-if="model.label">
-      <Slider
-        :id="model.id"
-        ref="inputRef"
-        v-model="input"
-        :min="typeof model.min === 'number' ? model.min : 0"
-        :max="typeof model.max === 'number' ? model.max : 100"
-        :step="model.step || 1"
-        :range="model.range"
-        :orientation="model.orientation || 'horizontal'"
-        :disabled="model.disabled || isLoading"
-        :class="[model.className, { 'p-invalid': model.error }]"
-        @focus="onFocus"
-        @change="onValueUpdate"
-        @blur="onValueUpdate"
-      />
-      <InputLabel :model="model" />
-    </IftaLabel>
+    <InputLabel :model="model" class="mb-4" />
+    <small v-if="model.error" class="p-error" style="display: block; margin-bottom: 0.5rem">{{
+      model.error
+    }}</small>
 
     <Slider
-      v-else
       :id="model.id"
       ref="inputRef"
+      class="mt-4"
       v-model="input"
       :min="typeof model.min === 'number' ? model.min : 0"
       :max="typeof model.max === 'number' ? model.max : 100"
@@ -35,19 +21,16 @@
       @change="onValueUpdate"
       @blur="onValueUpdate"
     />
-
-    <small v-if="model.error" class="p-error">{{ model.error }}</small>
   </div>
 </template>
 
 <script lang="ts" setup>
 import Slider from 'primevue/slider';
-import IftaLabel from 'primevue/iftalabel';
+import InputLabel from '../shared/InputLabel.vue';
 import { FormField, FormSchema } from '@/types';
 import { ComponentPublicInstance, computed, PropType, ref, watch } from 'vue';
 import { useInputValidation } from '@/composables/useInputValidation';
 import { useFormFieldValue } from '@/composables/useFormFieldValue';
-import InputLabel from '@/components/shared/InputLabel.vue';
 
 const props = defineProps<{ schema?: FormSchema }>();
 const model = defineModel({ type: Object as PropType<FormField>, default: {} });

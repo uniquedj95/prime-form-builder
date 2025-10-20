@@ -17,6 +17,10 @@ const { showLabel, showRequired, labelText } = useLabelTemplate(toRef(props, 'mo
 <style scoped>
 .input-label {
   font-weight: 600;
+  color: var(--hospital-text-secondary, #64748b);
+  font-size: 0.9rem;
+  background: var(--hospital-bg-card, #ffffff);
+  padding: 0 0.5rem;
 }
 
 .required-asterisk {

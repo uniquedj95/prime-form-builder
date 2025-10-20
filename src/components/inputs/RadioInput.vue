@@ -1,9 +1,9 @@
 <template>
   <div class="radio-container">
-    <InputLabel :model="model" />
-    <small v-if="model.error" class="p-error" style="display: block; margin-bottom: 0.5rem">{{
-      model.error
-    }}</small>
+    <InputLabel :model="model" class="mb-4" />
+    <small v-if="model.error" class="p-error" style="display: block; margin-bottom: 0.5rem">
+      {{ model.error }}
+    </small>
 
     <div class="radio-group">
       <div v-for="option of options" :key="option.value" class="radio-option">
@@ -112,7 +112,7 @@ onMounted(initializeOptions);
 .radio-group {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
   gap: 0.5rem;
 }
 

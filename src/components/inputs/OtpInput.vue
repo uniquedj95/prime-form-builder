@@ -1,23 +1,11 @@
 <template>
   <div class="input-otp-container" :class="{ loading: isLoading }">
-    <IftaLabel v-if="model.label">
-      <InputOtp
-        :id="model.id"
-        ref="inputRef"
-        v-model="input"
-        :length="model.length || 4"
-        :integerOnly="model.integerOnly !== false"
-        :disabled="model.disabled || isLoading"
-        :class="[model.className, { 'p-invalid': model.error }]"
-        @focus="onFocus"
-        @change="onValueUpdate"
-        @blur="onValueUpdate"
-      />
-      <InputLabel :model="model" />
-    </IftaLabel>
+    <InputLabel :model="model" class="mb-4" />
+    <small v-if="model.error" class="p-error" style="display: block; margin-bottom: 0.5rem">
+      {{ model.error }}
+    </small>
 
     <InputOtp
-      v-else
       :id="model.id"
       ref="inputRef"
       v-model="input"
@@ -29,19 +17,16 @@
       @change="onValueUpdate"
       @blur="onValueUpdate"
     />
-
-    <small v-if="model.error" class="p-error">{{ model.error }}</small>
   </div>
 </template>
 
 <script lang="ts" setup>
 import InputOtp from 'primevue/inputotp';
-import IftaLabel from 'primevue/iftalabel';
+import InputLabel from '../shared/InputLabel.vue';
 import { FormField, FormSchema } from '@/types';
 import { ComponentPublicInstance, computed, PropType, ref, watch } from 'vue';
 import { useInputValidation } from '@/composables/useInputValidation';
 import { useFormFieldValue } from '@/composables/useFormFieldValue';
-import InputLabel from '@/components/shared/InputLabel.vue';
 
 const props = defineProps<{ schema?: FormSchema }>();
 const model = defineModel({ type: Object as PropType<FormField>, default: {} });
