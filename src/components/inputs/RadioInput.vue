@@ -113,6 +113,7 @@ onMounted(initializeOptions);
   display: flex;
   flex-wrap: wrap;
   margin-top: 1rem;
+  margin-left: 1rem;
   gap: 0.5rem;
 }
 
