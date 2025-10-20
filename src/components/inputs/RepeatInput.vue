@@ -181,11 +181,10 @@ defineExpose({
 
 <style scoped>
 .repeat-input-wrapper {
-  border: 2px solid var(--hospital-border, #e2e8f0);
+  /* border: 2px solid var(--hospital-border, #e2e8f0); */
   border-radius: 12px;
   padding: 1rem;
   background: var(--hospital-bg-secondary, #f1f5f9);
-  margin-bottom: 1rem;
   border-left: v-bind(
     'accentColor ? `4px solid ${accentColor}` : "2px solid var(--hospital-border, #e2e8f0)"'
   );
@@ -199,7 +198,7 @@ defineExpose({
   background: var(--hospital-bg-card, #ffffff);
   border: 1px solid var(--hospital-border, #e2e8f0);
   border-radius: 8px;
-  padding: 1rem;
+  padding: 1.5rem;
   transition: all 0.3s ease;
 }
 

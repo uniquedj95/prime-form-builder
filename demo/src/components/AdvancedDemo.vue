@@ -7,7 +7,8 @@
           <template #header>
             <h3 class="card-title">Advanced Form Features</h3>
             <p class="card-subtitle">
-              Masking, computed values, dynamic options, and option descriptions
+              Showcasing all input types including ListBox, InputMask, OTP, Knob, ToggleSwitch,
+              Rating, and Slider
             </p>
           </template>
 
@@ -62,6 +63,11 @@ const customButtons: CustomButton[] = [
 ];
 
 const formSchema: FormSchema = {
+  sectionBasicInfo: {
+    type: 'FormSection',
+    title: 'Basic Product Information',
+    subtitle: 'Enter the essential details about the product',
+  },
   productName: {
     type: 'TextInput',
     label: 'Product Name',
@@ -71,11 +77,12 @@ const formSchema: FormSchema = {
     grid: { xs: 12, md: 6 },
   },
   sku: {
-    type: 'TextInput',
+    type: 'MaskInput',
     label: 'SKU',
     value: '',
+    mask: 'aaa-9999',
     placeholder: 'SKU-0000',
-    pattern: 'SKU-0000',
+    required: true,
     grid: { xs: 12, md: 6 },
   },
   price: {
@@ -96,7 +103,6 @@ const formSchema: FormSchema = {
       const price = Number(schema.price?.value) || 0;
       const quantity = Number(schema.quantity?.value) || 1;
       schema.totalPrice.value = (price * quantity).toFixed(2);
-      return quantity;
     },
   },
   totalPrice: {
@@ -106,9 +112,10 @@ const formSchema: FormSchema = {
     grid: { xs: 12, md: 4 },
   },
   category: {
-    type: 'SelectInput',
-    label: 'Category',
+    type: 'ListBoxInput',
+    label: 'Categories',
     value: '',
+    multiple: true,
     options: [
       {
         label: 'Electronics',
@@ -125,10 +132,6 @@ const formSchema: FormSchema = {
       {
         label: 'Home & Garden',
         value: 'home_garden',
-        description: {
-          color: 'secondary',
-          text: 'Furniture, decor, gardening tools, and household items (Currently unavailable)',
-        },
       },
       {
         label: 'Sports',
@@ -146,17 +149,66 @@ const formSchema: FormSchema = {
     rows: 3,
     grid: { xs: 12, md: 6 },
   },
+
+  sectionContact: {
+    type: 'FormSection',
+    title: 'Contact & Verification',
+    subtitle: 'Contact information and verification details',
+  },
   phoneNumber: {
-    type: 'TextInput',
+    type: 'MaskInput',
     label: 'Contact Phone',
     value: '',
-    placeholder: '(000) 000-0000',
+    mask: '(999) 999-9999',
+    placeholder: '(555) 123-4567',
     grid: { xs: 12, md: 6 },
   },
+  verificationCode: {
+    type: 'OtpInput',
+    label: 'Verification Code',
+    length: 6,
+    integerOnly: true,
+    grid: { xs: 12, md: 6 },
+  },
+
+  sectionSettings: {
+    type: 'FormSection',
+    title: 'Processing Settings',
+    subtitle: 'Configure processing priority and settings',
+  },
   urgent: {
-    type: 'CheckboxInput',
+    type: 'ToggleSwitchInput',
     label: 'Urgent Processing',
     value: false,
+    grid: { xs: 12, md: 6 },
+  },
+  qualityLevel: {
+    type: 'KnobInput',
+    label: 'Quality Level (%)',
+    min: 0,
+    max: 100,
+    step: 10,
+    value: 80,
+    size: 120,
+    valueColor: '#3b82f6',
+    rangeColor: '#e5e7eb',
+    grid: { xs: 12, md: 6 },
+  },
+  priceRange: {
+    type: 'SliderInput',
+    label: 'Acceptable Price Range ($)',
+    min: 0,
+    max: 1000,
+    step: 50,
+    range: true,
+    value: [100, 500],
+    grid: { xs: 12, md: 6 },
+  },
+  customerRating: {
+    type: 'RatingInput',
+    label: 'Customer Rating',
+    stars: 5,
+    cancel: true,
     grid: { xs: 12, md: 6 },
   },
   priority: {
@@ -201,6 +253,11 @@ const formSchema: FormSchema = {
       },
     ],
     grid: { xs: 12 },
+  },
+
+  sectionNotes: {
+    type: 'FormSection',
+    title: 'Additional Information',
   },
   notes: {
     type: 'TextAreaInput',

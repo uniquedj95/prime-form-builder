@@ -10,6 +10,13 @@ import TextAreaInput from './components/inputs/TextAreaInput.vue';
 import RepeatInput from './components/inputs/RepeatInput.vue';
 import CheckboxInput from './components/inputs/CheckboxInput.vue';
 import RadioInput from './components/inputs/RadioInput.vue';
+import ListBoxInput from './components/inputs/ListBoxInput.vue';
+import MaskInput from './components/inputs/MaskInput.vue';
+import OtpInput from './components/inputs/OtpInput.vue';
+import KnobInput from './components/inputs/KnobInput.vue';
+import ToggleSwitchInput from './components/inputs/ToggleSwitchInput.vue';
+import RatingInput from './components/inputs/RatingInput.vue';
+import SliderInput from './components/inputs/SliderInput.vue';
 import FormSection from './components/shared/SectionTitle.vue';
 import { GlobalConfig } from './types';
 
@@ -56,6 +63,13 @@ export const VForm: Plugin = {
     app.component('RepeatInput', RepeatInput);
     app.component('CheckboxInput', CheckboxInput);
     app.component('RadioInput', RadioInput);
+    app.component('ListBoxInput', ListBoxInput);
+    app.component('MaskInput', MaskInput);
+    app.component('OtpInput', OtpInput);
+    app.component('KnobInput', KnobInput);
+    app.component('ToggleSwitchInput', ToggleSwitchInput);
+    app.component('RatingInput', RatingInput);
+    app.component('SliderInput', SliderInput);
     app.component('FormSection', FormSection);
   },
 };
@@ -75,6 +89,13 @@ export {
   RepeatInput,
   CheckboxInput,
   RadioInput,
+  ListBoxInput,
+  MaskInput,
+  OtpInput,
+  KnobInput,
+  ToggleSwitchInput,
+  RatingInput,
+  SliderInput,
   FormSection,
 };
 
