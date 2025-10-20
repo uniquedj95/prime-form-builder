@@ -181,7 +181,6 @@ defineExpose({
 
 <style scoped>
 .repeat-input-wrapper {
-  /* border: 2px solid var(--hospital-border, #e2e8f0); */
   border-radius: 12px;
   padding: 1rem;
   background: var(--hospital-bg-secondary, #f1f5f9);
