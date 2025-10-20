@@ -5,7 +5,7 @@ import { Component } from 'vue';
  *
  * @type FormValue
  */
-export type FormValue = string | number | boolean | Option | Array<Option>;
+export type FormValue = string | number | boolean | Option | Array<Option> | Array<number>;
 
 /**
  * Represents a flexible value type that can be a direct value, a function returning a value,
@@ -636,6 +636,92 @@ export interface FormField {
    * @optional
    */
   borderAccentColor?: BorderAccentColor;
+
+  /**
+   * The input mask pattern for InputMaskInput type.
+   * Example: '99/99/9999' for date format, '(999) 999-9999' for phone numbers.
+   *
+   * @type string
+   */
+  mask?: string;
+
+  /**
+   * The number of digits for InputOtpInput type.
+   *
+   * @type number
+   * @default 4
+   */
+  length?: number;
+
+  /**
+   * Whether the OTP input should be integer-only for InputOtpInput type.
+   *
+   * @type boolean
+   * @default true
+   */
+  integerOnly?: boolean;
+
+  /**
+   * The step increment for SliderInput and KnobInput types.
+   *
+   * @type number
+   * @default 1
+   */
+  step?: number;
+
+  /**
+   * The range mode for SliderInput type - enables dual handle slider.
+   *
+   * @type boolean
+   * @default false
+   */
+  range?: boolean;
+
+  /**
+   * Orientation for SliderInput type.
+   *
+   * @type 'horizontal' | 'vertical'
+   * @default 'horizontal'
+   */
+  orientation?: 'horizontal' | 'vertical';
+
+  /**
+   * The number of stars for RatingInput type.
+   *
+   * @type number
+   * @default 5
+   */
+  stars?: number;
+
+  /**
+   * Whether to allow cancelling rating selection for RatingInput type.
+   *
+   * @type boolean
+   * @default true
+   */
+  cancel?: boolean;
+
+  /**
+   * The size of the knob for KnobInput type.
+   *
+   * @type number
+   * @default 100
+   */
+  size?: number;
+
+  /**
+   * The color of the value arc for KnobInput type.
+   *
+   * @type string
+   */
+  valueColor?: string;
+
+  /**
+   * The color of the range arc for KnobInput type.
+   *
+   * @type string
+   */
+  rangeColor?: string;
 }
 
 /**
@@ -715,6 +801,13 @@ export type InputType =
   | 'RepeatInput'
   | 'CheckboxInput'
   | 'RadioInput'
+  | 'ListBoxInput'
+  | 'MaskInput'
+  | 'OtpInput'
+  | 'KnobInput'
+  | 'ToggleSwitchInput'
+  | 'RatingInput'
+  | 'SliderInput'
   | 'FormSection';
 
 /**
