@@ -8,6 +8,7 @@
     <InputOtp
       :id="model.id"
       ref="inputRef"
+      class="mt-4"
       v-model="input"
       :length="model.length || 4"
       :integerOnly="model.integerOnly !== false"
