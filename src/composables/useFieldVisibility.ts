@@ -1,4 +1,4 @@
-import { watch, Ref } from 'vue';
+import { watch, Ref, unref } from 'vue';
 import { FormData, ComputedData, FormSchema, FormField } from '@/types';
 import { canRenderField, isFormField } from '@/utils';
 
@@ -18,9 +18,8 @@ export function useFieldVisibility(
   function getOriginalFieldValue(fieldKey: string): any {
     if (!originalSchema) return undefined;
 
-    const schema = ('value' in originalSchema ? originalSchema.value : originalSchema) as
-      | FormSchema
-      | undefined;
+    // Properly unwrap the ref or computed value
+    const schema = unref(originalSchema);
     if (!schema) return undefined;
 
     const original = schema[fieldKey];
@@ -63,5 +62,6 @@ export function useFieldVisibility(
   return {
     setupFieldVisibilityWatcher,
     checkFieldVisibility,
+    resetHiddenField,
   };
 }

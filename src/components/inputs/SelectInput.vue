@@ -90,7 +90,7 @@
 
     <!-- Single select (Dropdown) with IftaLabel -->
     <IftaLabel v-else-if="model.label">
-      <Dropdown
+      <Select
         :id="model.id"
         ref="inputRef"
         v-model="selectedValue"
@@ -122,12 +122,12 @@
             </small>
           </div>
         </template>
-      </Dropdown>
+      </Select>
       <InputLabel :model="model" />
     </IftaLabel>
 
     <!-- Single select (Dropdown) without IftaLabel -->
-    <Dropdown
+    <Select
       v-else
       :id="model.id"
       ref="inputRef"
@@ -160,7 +160,7 @@
           </small>
         </div>
       </template>
-    </Dropdown>
+    </Select>
 
     <small v-if="model.error" class="p-error">{{ model.error }}</small>
     <i v-if="isValueLoading" class="pi pi-spin pi-spinner loading-spinner"></i>
@@ -169,7 +169,7 @@
 
 <script setup lang="ts">
 import { ref, computed, PropType, watch, ComponentPublicInstance, onMounted } from 'vue';
-import Dropdown from 'primevue/dropdown';
+import Select from 'primevue/select';
 import MultiSelect from 'primevue/multiselect';
 import Chip from 'primevue/chip';
 import IftaLabel from 'primevue/iftalabel';

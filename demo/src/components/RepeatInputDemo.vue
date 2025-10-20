@@ -63,7 +63,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { FormSchema, FormData, ComputedData } from 'pv-form';
+import { FormSchema, FormData, ComputedData, Option } from 'pv-form';
 import Card from 'primevue/card';
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
@@ -144,6 +144,9 @@ const contactsSchema = ref<FormSchema>({
         grid: { xs: 12, md: 8 },
         pattern: String.raw`\(\d{3}\) \d{3}-\d{4}`,
         placeholder: '(555) 555-5555',
+        condition: d => {
+          return /mobile/i.test(String((d?.phoneType as Option)?.value));
+        },
       },
       addressSection: {
         type: 'FormSection',
