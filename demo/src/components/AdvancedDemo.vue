@@ -153,7 +153,7 @@ const formSchema: FormSchema = {
       { label: 'DevOps', value: 'devops' },
       { label: 'Consulting', value: 'consulting', disabled: true },
     ],
-    grid: { xs: 12, md: 12 },
+    grid: { xs: 12, md: 6 },
   },
   qualityLevel: {
     type: 'KnobInput',
