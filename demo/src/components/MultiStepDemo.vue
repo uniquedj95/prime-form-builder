@@ -211,7 +211,6 @@ const multiStepConfig = reactive<MultiStepConfig>({
           type: 'SelectInput',
           label: 'Country',
           required: true,
-          disabled: true,
           options: [
             { label: 'United States', value: 'US' },
             { label: 'Canada', value: 'CA' },
