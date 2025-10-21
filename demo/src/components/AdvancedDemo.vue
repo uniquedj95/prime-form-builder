@@ -141,6 +141,20 @@ const formSchema: FormSchema = {
     required: true,
     grid: { xs: 12, md: 6 },
   },
+  services: {
+    type: 'MultiCheckboxInput',
+    label: 'Services Interested In',
+    required: true,
+    options: [
+      { label: 'Web Development', value: 'web_dev' },
+      { label: 'Mobile App Development', value: 'mobile_dev' },
+      { label: 'UI/UX Design', value: 'design' },
+      { label: 'Cloud Services', value: 'cloud' },
+      { label: 'DevOps', value: 'devops' },
+      { label: 'Consulting', value: 'consulting', disabled: true },
+    ],
+    grid: { xs: 12, md: 12 },
+  },
   qualityLevel: {
     type: 'KnobInput',
     label: 'Quality Level (%)',

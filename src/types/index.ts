@@ -801,6 +801,7 @@ export type InputType =
   | 'RepeatInput'
   | 'CheckboxInput'
   | 'RadioInput'
+  | 'MultiCheckboxInput'
   | 'ListBoxInput'
   | 'MaskInput'
   | 'OtpInput'

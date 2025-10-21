@@ -10,6 +10,7 @@ import TextAreaInput from './components/inputs/TextAreaInput.vue';
 import RepeatInput from './components/inputs/RepeatInput.vue';
 import CheckboxInput from './components/inputs/CheckboxInput.vue';
 import RadioInput from './components/inputs/RadioInput.vue';
+import MultiCheckboxInput from './components/inputs/MultiCheckboxInput.vue';
 import ListBoxInput from './components/inputs/ListBoxInput.vue';
 import MaskInput from './components/inputs/MaskInput.vue';
 import OtpInput from './components/inputs/OtpInput.vue';
@@ -63,6 +64,7 @@ export const VForm: Plugin = {
     app.component('RepeatInput', RepeatInput);
     app.component('CheckboxInput', CheckboxInput);
     app.component('RadioInput', RadioInput);
+    app.component('MultiCheckboxInput', MultiCheckboxInput);
     app.component('ListBoxInput', ListBoxInput);
     app.component('MaskInput', MaskInput);
     app.component('OtpInput', OtpInput);
@@ -89,6 +91,7 @@ export {
   RepeatInput,
   CheckboxInput,
   RadioInput,
+  MultiCheckboxInput,
   ListBoxInput,
   MaskInput,
   OtpInput,
