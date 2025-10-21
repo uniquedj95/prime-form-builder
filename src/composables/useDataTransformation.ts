@@ -41,7 +41,12 @@ export function useDataTransformation(activeSchema: Ref<FormSchema>) {
     const schemaItem = activeSchema.value[key];
     if (isFormField(schemaItem) && schemaItem.children) {
       const childField = schemaItem.children[childId];
-      if (childField && isFormField(childField) && typeof childField.computedValue === 'function') {
+      if (
+        value &&
+        childField &&
+        isFormField(childField) &&
+        typeof childField.computedValue === 'function'
+      ) {
         return childField.computedValue(value, activeSchema.value);
       }
     }
@@ -137,7 +142,7 @@ export function useDataTransformation(activeSchema: Ref<FormSchema>) {
       }
       // Only compute the value if no children were processed
       // This prevents overwriting child transformations
-      else if (typeof schema.computedValue === 'function') {
+      else if (value && typeof schema.computedValue === 'function') {
         computedData.value[key] = schema.computedValue(value, activeSchema.value);
       }
     }
