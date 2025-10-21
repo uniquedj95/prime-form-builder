@@ -37,6 +37,8 @@ const inputRef = ref<ComponentPublicInstance | null>(null);
 const schema = computed(() => props.schema);
 const options = ref<Option[]>([]);
 
+const flexDirection = computed(() => (model.value.inline ? 'row' : 'column'));
+
 // Initialize input as an array for multiple selection
 const input = ref<Array<string | number>>([]);
 
@@ -99,7 +101,7 @@ onMounted(initializeOptions);
 
 .multicheckbox-group {
   display: flex;
-  flex-direction: column;
+  flex-direction: v-bind(flexDirection);
   margin-top: 1rem;
   margin-left: 1rem;
   gap: 0.75rem;
