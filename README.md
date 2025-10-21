@@ -10,9 +10,9 @@ A dynamic form builder for Vue.js with PrimeVue components
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Vue Version](https://img.shields.io/badge/vue-3.5+-brightgreen.svg)](https://vuejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue)](https://www.typescriptlang.org/)
-[![Downloads](https://img.shields.io/npm/dt/@uniquedj95/vform.svg)](https://www.npmjs.com/package/@uniquedj95/vform)
+[![Downloads](https://img.shields.io/npm/dt/pv-form.svg)](https://www.npmjs.com/package/pv-form)
 [![PrimeVue](https://img.shields.io/badge/PrimeVue-4.2+-blue)](https://primevue.org/)
-[![Bundle Size](https://img.shields.io/bundlephobia/min/@uniquedj95/vform)](https://bundlephobia.com/package/@uniquedj95/vform)
+[![Bundle Size](https://img.shields.io/bundlephobia/min/pv-form)](https://bundlephobia.com/package/pv-form)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/uniquedj95/vform/pulls)
 
 </div>
@@ -78,6 +78,7 @@ The demo showcases:
 - **Basic Forms**: All input types and basic functionality
 - **Form Sections**: Organized forms with section headers and titles
 - **Multi-Step Forms**: Step indicators, validation, and smart navigation
+- **Conditional Steps**: Dynamic step visibility based on user input
 - **Custom Components**: Integration of custom Vue components within multi-step workflows
 - **Advanced Features**: Masking, computed fields, custom buttons
 - **Validation Examples**: Custom validators and error handling
@@ -98,6 +99,7 @@ npm run demo:update
 ## Features
 
 - **Multi-Step Forms**: Create guided, step-by-step forms with configurable step indicators, validation, and smart navigation.
+- **Conditional Steps**: Dynamically show or hide steps in multi-step forms based on user input, with automatic data clearing for hidden steps.
 - **Custom Components**: Integrate custom Vue components directly into multi-step forms for advanced visualizations and workflows.
 - **Form Sections**: Organize forms into logical sections with titles and subtitles for better user experience.
 - **Dynamic Form Generation**: Create forms dynamically based on a schema definition.
@@ -122,11 +124,11 @@ npm run demo:update
 1. Install the package using your preferred package manager:
 
    ```bash
-   npm install @uniquedj95/vform
+   npm install pv-form
    # or
-   yarn add @uniquedj95/vform
+   yarn add pv-form
    # or
-   pnpm add @uniquedj95/vform
+   pnpm add pv-form
    ```
 
 2. Make sure you have the required peer dependencies:
@@ -169,8 +171,8 @@ npm run demo:update
 2. Register `VForm` component in your application:
 
    ```typescript
-   import VForm from '@uniquedj95/vform';
-   import '@uniquedj95/vform/vform.css';
+   import VForm from 'pv-form';
+   import 'pv-form/style.css';
 
    app.use(VForm);
    ```
@@ -184,7 +186,7 @@ npm run demo:update
 
    <script setup lang="ts">
    import { reactive } from 'vue';
-   import { FormSchema, FormData, ComputedData } from '@uniquedj95/vform';
+   import { FormSchema, FormData, ComputedData } from 'pv-form';
 
    const formSchema: FormSchema = {
      // Your form fields here
@@ -505,6 +507,16 @@ The masking is automatically applied when the user types, providing real-time fo
 
 vForm supports multi-step forms with configurable step indicators, validation, and smart navigation. Multi-step forms break complex forms into manageable sections, improving user experience and data collection.
 
+### Key Features
+
+- **Conditional Steps**: Show or hide steps dynamically based on user input
+- **Step-Namespaced Data**: Organize form data by step ID to prevent field name conflicts
+- **Automatic Data Clearing**: Hidden steps automatically clear their data to prevent submission of skipped information
+- **Smart Navigation**: Step-by-step validation ensures data quality before progression
+- **Custom Components**: Integrate custom Vue components alongside schema-based steps
+- **Flexible Positioning**: Position step indicators at top, bottom, left, or right
+- **Progress Tracking**: Visual progress indicators show completion status
+
 ### Basic Multi-Step Setup
 
 To create a multi-step form, define a `multiStepConfig` prop:
@@ -520,7 +532,7 @@ To create a multi-step form, define a `multiStepConfig` prop:
 
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { FormSchema, MultiStepConfig } from '@uniquedj95/vform';
+import { FormSchema, MultiStepConfig } from 'pv-form';
 
 const multiStepConfig: MultiStepConfig = {
   steps: [
@@ -588,18 +600,34 @@ function handleStepChange(stepIndex: number, stepId: string) {
 
 Each step in the multi-step configuration supports the following properties:
 
-| Property         | Type         | Description                                                              | Required |
-| ---------------- | ------------ | ------------------------------------------------------------------------ | -------- |
-| `id`             | `string`     | Unique identifier for the step                                           | Yes      |
-| `title`          | `string`     | Display title for the step                                               | Yes      |
-| `subtitle`       | `string`     | Optional subtitle/description for the step                               | No       |
-| `schema`         | `FormSchema` | Schema object containing fields for this step                            | No       |
-| `component`      | `Component`  | Custom Vue component to render instead of a schema                       | No       |
-| `componentProps` | `Object`     | Props to pass to the custom component                                    | No       |
-| `condition`      | `function`   | Function that determines if the step should be shown, based on form data | No       |
-| `validation`     | `function`   | Custom validation function for the step                                  | No       |
+| Property         | Type         | Description                                                                                  | Required |
+| ---------------- | ------------ | -------------------------------------------------------------------------------------------- | -------- |
+| `id`             | `string`     | Unique identifier for the step                                                               | Yes      |
+| `title`          | `string`     | Display title for the step                                                                   | Yes      |
+| `subtitle`       | `string`     | Optional subtitle/description for the step                                                   | No       |
+| `schema`         | `FormSchema` | Schema object containing fields for this step                                                | No       |
+| `component`      | `Component`  | Custom Vue component to render instead of a schema                                           | No       |
+| `componentProps` | `Object`     | Props to pass to the custom component                                                        | No       |
+| `condition`      | `function`   | Function `(formData, computedData) => boolean` that determines if the step should be visible | No       |
+| `validation`     | `function`   | Custom validation function for the step                                                      | No       |
 
 \*Either `schema` or `component` must be provided.
+
+**Condition Function Signature:**
+
+```typescript
+condition?: (
+  formData: Record<string, FormData>,
+  computedData: Record<string, ComputedData>
+) => boolean
+```
+
+The condition function receives:
+
+- `formData`: Form data organized by step ID (e.g., `formData['step-id'].fieldName`)
+- `computedData`: Computed data organized by step ID (e.g., `computedData['step-id'].computedFieldName`)
+
+This step-namespaced structure prevents field name conflicts across different steps.
 
 ### Custom Components in Steps
 
@@ -611,7 +639,7 @@ vForm allows you to use custom Vue components in multi-step forms instead of sch
 </template>
 
 <script setup lang="ts">
-import { MultiStepConfig } from '@uniquedj95/vform';
+import { MultiStepConfig } from 'pv-form';
 import PreviousResultsTable from './components/PreviousResultsTable.vue';
 
 const multiStepConfig: MultiStepConfig = {
@@ -689,62 +717,107 @@ vForm allows you to conditionally show or hide steps based on the values entered
 ```vue
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { MultiStepConfig } from '@uniquedj95/vform';
+import { MultiStepConfig, MultiStepFormData, Option } from 'pv-form';
 
 const multiStepConfig = reactive<MultiStepConfig>({
   steps: [
+    // Step 1: Basic Information
     {
-      id: 'account-type',
-      title: 'Account Type',
+      id: 'basic-info',
+      title: 'Basic Information',
+      subtitle: 'Your personal details',
       schema: {
+        fullName: {
+          type: 'TextInput',
+          label: 'Full Name',
+          required: true,
+        },
         accountType: {
           type: 'SelectInput',
           label: 'Account Type',
           options: [
             { label: 'Personal', value: 'personal' },
             { label: 'Business', value: 'business' },
+            { label: 'Educational', value: 'educational' },
           ],
           value: 'personal',
           required: true,
         },
       },
     },
+
+    // Step 2: Business Information (Conditional - only show if account type is business)
     {
-      id: 'business-details',
-      title: 'Business Details',
+      id: 'business-info',
+      title: 'Business Information',
+      subtitle: 'Your business details',
       schema: {
-        businessName: {
+        companyName: {
           type: 'TextInput',
-          label: 'Business Name',
+          label: 'Company Name',
+          required: true,
+        },
+        businessType: {
+          type: 'SelectInput',
+          label: 'Business Type',
+          options: [
+            { label: 'Sole Proprietorship', value: 'sole-prop' },
+            { label: 'LLC', value: 'llc' },
+            { label: 'Corporation', value: 'corp' },
+          ],
           required: true,
         },
       },
-      // Only show this step if accountType is 'business'
-      // Using stepData with step ID to avoid field name conflicts
-      condition: (stepData, stepComputedData) => {
-        return /business/i.test(stepData['account-type'].accountType.label);
-      },
+      // Condition: Only show if accountType is 'business'
+      condition: formData => (formData['basic-info']?.accountType as Option)?.value === 'business',
     },
+
+    // Step 3: Educational Information (Conditional)
     {
-      id: 'review',
-      title: 'Review',
+      id: 'educational-info',
+      title: 'Educational Information',
+      subtitle: 'Your institution details',
       schema: {
-        // Review fields
+        institutionName: {
+          type: 'TextInput',
+          label: 'Institution Name',
+          required: true,
+        },
+        institutionType: {
+          type: 'SelectInput',
+          label: 'Institution Type',
+          options: [
+            { label: 'K-12 School', value: 'k12' },
+            { label: 'University', value: 'university' },
+            { label: 'Community College', value: 'community-college' },
+          ],
+          required: true,
+        },
       },
+      // Condition: Only show if accountType is 'educational'
+      condition: formData =>
+        (formData['basic-info']?.accountType as Option)?.value === 'educational',
     },
   ],
+  stepPosition: 'top',
+  showProgress: true,
+  allowStepNavigation: true,
 });
+
+function handleSubmit(data: MultiStepFormData) {
+  console.log('Form submitted:', data);
+}
 </script>
 ```
 
 The `condition` function receives two arguments:
 
-- `stepData`: Form data organized by step ID to avoid key conflicts
-- `stepComputedData`: Computed data organized by step ID
+- `formData`: Form data organized by step ID to avoid key conflicts
+- `computedData`: Computed data organized by step ID
 
 ```typescript
-condition: (stepData, stepComputedData) => {
-  const firstStepData = stepData['first-step-id'];
+condition: (formData, computedData) => {
+  const firstStepData = formData['first-step-id'];
   return firstStepData.someField === 'expectedValue';
 };
 ```
@@ -756,6 +829,7 @@ When a step is hidden:
 - The step count and progress indicators will update accordingly
 - **Data behavior**: Form data from hidden steps is automatically cleared
   - Hidden step data is not included in the final submission
+  - Data is cleared whenever a step becomes hidden to prevent submission of skipped information
   - If a step becomes visible again, it starts with empty/default values
   - This prevents processing of data that was meant to be skipped
 
@@ -818,25 +892,56 @@ const multiStepConfig: MultiStepConfig = {
 
 ### Multi-Step Events
 
-| Event         | Description                               | Signature                                                       |
-| ------------- | ----------------------------------------- | --------------------------------------------------------------- |
-| `step-change` | Emitted when user navigates between steps | `(stepIndex: number, stepId: string) => void`                   |
-| `submit`      | Emitted when multi-step form is submitted | `(allData: FormData, multiStepData: MultiStepFormData) => void` |
+| Event         | Description                               | Signature                                     |
+| ------------- | ----------------------------------------- | --------------------------------------------- |
+| `step-change` | Emitted when user navigates between steps | `(stepIndex: number, stepId: string) => void` |
+| `submit`      | Emitted when multi-step form is submitted | `(multiStepData: MultiStepFormData) => void`  |
 
-The `submit` event provides both the combined data from all steps and the per-step data structure:
+The `submit` event provides the per-step data structure:
 
 ```typescript
 // multi-step data structure
 multiStepData: MultiStepFormData = {
   formData: {
-    personal: { firstName: 'John', lastName: 'Doe' },
-    contact: { email: 'john@example.com', phone: '...' },
-    review: { comments: '...' },
+    'step-1-id': {
+      field1: 'value1',
+      field2: 'value2',
+    },
+    'step-2-id': {
+      field3: 'value3',
+      field4: 'value4',
+    },
   },
   computedData: {
-    /* computed values per step */
+    'step-1-id': {
+      computedField1: 'computedValue1',
+    },
+    'step-2-id': {
+      computedField2: 'computedValue2',
+    },
   },
 };
+```
+
+To access combined data from all steps, you can flatten the data structure:
+
+```typescript
+function handleSubmit(multiStepData: MultiStepFormData) {
+  // Get combined form data from all steps
+  const allFormData = Object.values(multiStepData.formData).reduce(
+    (acc, stepData) => ({ ...acc, ...stepData }),
+    {}
+  );
+
+  // Get combined computed data from all steps
+  const allComputedData = Object.values(multiStepData.computedData).reduce(
+    (acc, stepData) => ({ ...acc, ...stepData }),
+    {}
+  );
+
+  console.log('All form data:', allFormData);
+  console.log('All computed data:', allComputedData);
+}
 ```
 
 ## Form Sections
@@ -854,7 +959,7 @@ To create sections in your form, add FormField items with `type: 'FormSection'` 
 
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { FormSchema, FormData, ComputedData } from '@uniquedj95/vform';
+import { FormSchema, FormData, ComputedData } from 'pv-form';
 
 const formSchema: FormSchema = {
   // Personal Information Section
@@ -1066,7 +1171,7 @@ vForm exports several composables that you can use to build custom form solution
 ### Example Usage
 
 ```typescript
-import { useFormValidation, useInputValidation } from '@uniquedj95/vform';
+import { useFormValidation, useInputValidation } from 'pv-form';
 
 // In your custom form component
 const { isValid, validateForm, getErrors } = useFormValidation();
@@ -1426,8 +1531,8 @@ import {
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { TextInput, SelectInput, CheckboxInput, DateInput, NumberInput } from '@uniquedj95/vform';
-import { FormField } from '@uniquedj95/vform';
+import { TextInput, SelectInput, CheckboxInput, DateInput, NumberInput } from 'pv-form';
+import { FormField } from 'pv-form';
 
 const textField = ref<FormField>({
   type: 'TextInput',
@@ -1494,14 +1599,14 @@ import {
   MultiStepFormData,
   FormStep,
   StepPosition,
-} from '@uniquedj95/vform';
+} from 'pv-form';
 ```
 
 When defining your form schema, you can use these types for proper type checking:
 
 ```typescript
 import { reactive } from 'vue';
-import { FormSchema } from '@uniquedj95/vform';
+import { FormSchema } from 'pv-form';
 
 const myFormSchema = reactive<FormSchema>({
   // Your form fields here with proper type checking
