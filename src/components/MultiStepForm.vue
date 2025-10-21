@@ -50,31 +50,31 @@
 
       <StepPanels>
         <StepPanel v-for="(step, index) in visibleSteps" :key="step.id" :value="index">
-          <!-- Custom Component if provided -->
-          <component
-            v-if="step.component"
-            :is="step.component"
-            v-bind="step.componentProps || {}"
-            @update:data="handleCustomComponentDataUpdate"
-            ref="customComponentRef"
-          />
-          <!-- Regular schema-based form with direct field rendering -->
-          <template v-else>
-            <div class="grid grid-cols-12 gap-4 p-4 h-full">
-              <template v-for="(field, formId) in activeSchema" :key="formId">
-                <div :class="getGridClasses(field)" v-if="checkFieldVisibility(field)">
-                  <component
-                    :is="field.type"
-                    v-model="activeSchema[formId]"
-                    :schema="activeSchema"
-                    :form-id="formId"
-                    ref="dynamicRefs"
-                    :ref-key="formId"
-                  />
-                </div>
-              </template>
-            </div>
-          </template>
+          <KeepAlive>
+            <component
+              v-if="step.component"
+              :is="step.component"
+              v-bind="step.componentProps || {}"
+              @update:data="handleCustomComponentDataUpdate"
+              ref="customComponentRef"
+            />
+            <template v-else>
+              <div class="grid grid-cols-12 gap-4 p-4 h-full">
+                <template v-for="(field, formId) in activeSchema" :key="formId">
+                  <div :class="getGridClasses(field)" v-if="checkFieldVisibility(field)">
+                    <component
+                      :is="field.type"
+                      v-model="activeSchema[formId]"
+                      :schema="activeSchema"
+                      :form-id="formId"
+                      ref="dynamicRefs"
+                      :ref-key="formId"
+                    />
+                  </div>
+                </template>
+              </div>
+            </template>
+          </KeepAlive>
 
           <!-- Multi-step buttons -->
           <div
