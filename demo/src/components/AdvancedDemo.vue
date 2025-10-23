@@ -217,7 +217,7 @@ const formSchema: FormSchema = {
     grid: { xs: 12, md: 6 },
   },
   priority: {
-    type: 'RadioInput',
+    type: 'MultiCheckboxInput',
     label: 'Priority Level',
     options: [
       {
@@ -233,7 +233,7 @@ const formSchema: FormSchema = {
         label: 'Normal',
         value: 'normal',
         description: {
-          color: 'primary',
+          color: 'info',
           text: 'Regular priority with standard delivery timeframe',
           show: 'onSelected',
         },
@@ -242,16 +242,16 @@ const formSchema: FormSchema = {
         label: 'High',
         value: 'high',
         description: {
-          color: 'warning',
+          color: 'warn',
           text: 'Expedited processing with faster turnaround',
-          show: 'onSelected',
+          show: 'always',
         },
       },
       {
         label: 'Critical',
         value: 'critical',
         description: {
-          color: 'danger',
+          color: 'error',
           text: 'Immediate attention required - highest priority (Requires approval)',
           show: 'onSelected',
         },

@@ -733,7 +733,7 @@ export interface OptionDescription {
   /**
    * The color to display the description text in.
    */
-  color: 'primary' | 'warning' | 'danger' | 'secondary' | 'light';
+  color?: 'info' | 'warn' | 'error' | 'secondary' | 'success' | 'contrast';
 
   /**
    * The description text to display.

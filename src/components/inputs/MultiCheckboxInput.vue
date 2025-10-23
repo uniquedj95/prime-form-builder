@@ -21,6 +21,15 @@
           />
           <label :for="`${model.id}_${option.value}`">
             {{ option.label }}
+            <div v-if="shouldShowDescription(option, input.includes(option.value))">
+              <Message
+                :severity="option.description?.color || 'secondary'"
+                variant="simple"
+                size="small"
+              >
+                {{ option.description?.text }}
+              </Message>
+            </div>
           </label>
         </div>
       </div>
@@ -38,6 +47,8 @@ import InputLabel from '../shared/InputLabel.vue';
 import { FormField, FormSchema, Option } from '@/types';
 import { ComponentPublicInstance, PropType, ref, watch, computed, onMounted } from 'vue';
 import { useInputValidation } from '@/composables/useInputValidation';
+import { shouldShowDescription } from '@/utils';
+import Message from 'primevue/message';
 
 const props = defineProps<{ schema?: FormSchema }>();
 const model = defineModel({ type: Object as PropType<FormField>, default: {} });
