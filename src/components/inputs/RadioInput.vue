@@ -1,6 +1,6 @@
 <template>
   <div class="radio-container">
-    <InputLabel :model="model" class="mb-4" />
+    <InputLabel :model="model" :class="{ 'mb-4': !model.inline }" />
     <small v-if="model.error" class="p-error" style="display: block; margin-bottom: 0.5rem">
       {{ model.error }}
     </small>
@@ -34,8 +34,9 @@ import { useInputValidation } from '@/composables/useInputValidation';
 const props = defineProps<{ schema?: FormSchema }>();
 const model = defineModel({ type: Object as PropType<FormField>, default: {} });
 const inputRef = ref<ComponentPublicInstance | null>(null);
-const schema = computed(() => props.schema);
 const options = ref<Option[]>([]);
+const schema = computed(() => props.schema);
+const flexDirection = computed(() => (model.value.inline ? 'row' : 'column'));
 
 // Initialize input
 const input = ref<Option | undefined>(undefined);
@@ -96,25 +97,16 @@ onMounted(initializeOptions);
 <style scoped>
 .radio-container {
   width: 100%;
-}
-
-.radio-group-label {
-  display: block;
-  margin-bottom: 1rem;
-  font-weight: 600;
-}
-
-.required-asterisk {
-  color: var(--red-500);
-  margin-left: 0.25rem;
+  display: flex;
+  align-items: center;
+  flex-direction: v-bind(flexDirection);
 }
 
 .radio-group {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 1rem;
   margin-left: 1rem;
-  gap: 0.5rem;
+  gap: 2rem;
 }
 
 .radio-option {
