@@ -37,6 +37,7 @@ const inputRef = ref<ComponentPublicInstance | null>(null);
 const options = ref<Option[]>([]);
 const schema = computed(() => props.schema);
 const flexDirection = computed(() => (model.value.inline ? 'row' : 'column'));
+const itemAlign = computed(() => (model.value.inline ? 'center' : 'flex-start'));
 
 // Initialize input
 const input = ref<Option | undefined>(undefined);
@@ -98,7 +99,7 @@ onMounted(initializeOptions);
 .radio-container {
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: v-bind(itemAlign);
   flex-direction: v-bind(flexDirection);
 }
 
