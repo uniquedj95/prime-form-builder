@@ -196,12 +196,54 @@ const { isLoading: isValueLoading } = useFormFieldValue(model);
 
 // Initialize options
 async function loadOptions() {
+  const filtered: Option[] = [];
+
+  // Handle function-based options (including dependent options)
   if (typeof model.value.options === 'function') {
-    const result = await model.value.options('', {});
-    options.value = result.filter(o => !!o.label);
-  } else if (Array.isArray(model.value.options)) {
-    options.value = model.value.options;
+    // Get dependency values if this field has dependencies
+    let dependencyValues: Record<string, any> = {};
+
+    if (model.value.dependsOn && props.schema) {
+      const dependsOn = Array.isArray(model.value.dependsOn)
+        ? model.value.dependsOn
+        : [model.value.dependsOn];
+
+      // Check if dependencies have values, especially on initial load
+      let allDependenciesHaveValues = true;
+
+      dependencyValues = dependsOn.reduce(
+        (acc, depId) => {
+          const field = props.schema![depId];
+          acc[depId] = isFormField(field) ? field.value : undefined;
+
+          // Check if this dependency has a value
+          if (acc[depId] === undefined || acc[depId] === null || acc[depId] === '') {
+            allDependenciesHaveValues = false;
+          }
+
+          return acc;
+        },
+        {} as Record<string, any>
+      );
+
+      // Proceed only if all dependencies have values
+      if (allDependenciesHaveValues) {
+        // Call the options function with filter and dependency values
+        const res = await model.value.options('', dependencyValues);
+        filtered.push(...res.filter(o => !!o.label));
+      }
+    } else {
+      // No dependencies, just call the options function
+      const res = await model.value.options('', {});
+      filtered.push(...res.filter(o => !!o.label));
+    }
   }
+  // Handle static array options
+  else if (Array.isArray(model.value.options)) {
+    filtered.push(...model.value.options);
+  }
+
+  options.value = filtered;
 }
 
 // Watch for dependency value changes
@@ -219,6 +261,7 @@ watch(
   async (newValues, oldValues) => {
     if (newValues && oldValues && !deepEqual(newValues, oldValues)) {
       onReset();
+      options.value = [];
       await loadOptions();
     }
   },
