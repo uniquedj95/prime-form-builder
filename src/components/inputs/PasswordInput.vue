@@ -1,5 +1,5 @@
 <template>
-  <div class="input-container" :class="{ loading: isLoading }">
+  <div class="input-container" :class="{ loading: isLoading }" v-tooltip="model.tooltip">
     <IftaLabel v-if="model.label">
       <Password
         :id="model.id"

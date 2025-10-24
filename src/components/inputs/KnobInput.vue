@@ -1,5 +1,5 @@
 <template>
-  <div class="knob-container" :class="{ loading: isLoading }">
+  <div class="knob-container" :class="{ loading: isLoading }" v-tooltip="model.tooltip">
     <Knob
       :id="model.id"
       ref="inputRef"

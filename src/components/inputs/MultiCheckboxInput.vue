@@ -1,5 +1,5 @@
 <template>
-  <div class="multicheckbox-container">
+  <div class="multicheckbox-container" v-tooltip="model.tooltip">
     <Fieldset
       :class="['multicheckbox-fieldset', model.className, { 'p-invalid': model.error }]"
       :disabled="model.disabled"
@@ -7,10 +7,6 @@
       <template #legend>
         <InputLabel :model="model" class="p-2" />
       </template>
-
-      <Message variant="simple" severity="secondary" v-if="model.placeholder" class="mt-0 mb-3">
-        {{ model.placeholder }}
-      </Message>
 
       <div class="multicheckbox-group">
         <div v-for="option of options" :key="option.value" class="multicheckbox-option">

@@ -1,5 +1,5 @@
 <template>
-  <div class="select-container" :class="{ loading: isValueLoading }">
+  <div class="select-container" :class="{ loading: isValueLoading }" v-tooltip="model.tooltip">
     <!-- Multi-select with IftaLabel -->
     <IftaLabel v-if="model.multiple && model.label">
       <MultiSelect

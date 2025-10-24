@@ -1,13 +1,9 @@
 <template>
-  <div class="radio-container">
+  <div class="radio-container" v-tooltip="model.tooltip" :disabled="model.disabled">
     <InputLabel :model="model" :class="{ 'mb-4': !model.inline }" />
     <small v-if="model.error" class="p-error" style="display: block; margin-bottom: 0.5rem">
       {{ model.error }}
     </small>
-
-    <Message variant="simple" severity="secondary" v-if="model.placeholder" class="mt-0 mb-3">
-      {{ model.placeholder }}
-    </Message>
 
     <div class="radio-group">
       <div v-for="option of options" :key="option.value" class="radio-option">

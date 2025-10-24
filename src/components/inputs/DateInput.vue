@@ -1,5 +1,5 @@
 <template>
-  <div class="date-input-container">
+  <div class="date-input-container" v-tooltip="model.tooltip">
     <IftaLabel v-if="model.label">
       <DatePicker
         :id="model.id"

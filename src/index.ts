@@ -19,6 +19,7 @@ import ToggleSwitchInput from './components/inputs/ToggleSwitchInput.vue';
 import RatingInput from './components/inputs/RatingInput.vue';
 import SliderInput from './components/inputs/SliderInput.vue';
 import FormSection from './components/shared/SectionTitle.vue';
+import Tooltip from 'primevue/tooltip';
 import { GlobalConfig } from './types';
 
 import PrimeVue from 'primevue/config';
@@ -73,6 +74,7 @@ export const VForm: Plugin = {
     app.component('RatingInput', RatingInput);
     app.component('SliderInput', SliderInput);
     app.component('FormSection', FormSection);
+    app.directive('tooltip', Tooltip);
   },
 };
 

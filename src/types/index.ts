@@ -722,6 +722,13 @@ export interface FormField {
    * @type string
    */
   rangeColor?: string;
+
+  /**
+   * Tooltip text to display when hovering over the form field.
+   *
+   * @type string
+   */
+  tooltip?: string;
 }
 
 /**

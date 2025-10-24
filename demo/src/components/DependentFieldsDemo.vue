@@ -261,6 +261,7 @@ const formSchema: FormSchema = {
     type: 'RadioInput',
     label: 'Preferred Contact Method',
     value: 'email',
+    disabled: true,
     options: [
       { label: 'Email', value: 'email' },
       { label: 'Phone', value: 'phone' },

@@ -1,5 +1,5 @@
 <template>
-  <div class="rating-container" :class="{ loading: isLoading }">
+  <div class="rating-container" :class="{ loading: isLoading }" v-tooltip="model.tooltip">
     <InputLabel :model="model" class="mr-4" />
     <small v-if="model.error" class="p-error" style="display: block; margin-bottom: 0.5rem">
       {{ model.error }}

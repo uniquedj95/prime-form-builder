@@ -1,5 +1,5 @@
 <template>
-  <div class="textarea-container" :class="{ loading: isLoading }">
+  <div class="textarea-container" :class="{ loading: isLoading }" v-tooltip="model.tooltip">
     <IftaLabel v-if="model.label">
       <Textarea
         :id="model.id"

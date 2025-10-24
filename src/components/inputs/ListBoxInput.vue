@@ -1,5 +1,5 @@
 <template>
-  <div class="listbox-container" :class="{ loading: isValueLoading }">
+  <div class="listbox-container" :class="{ loading: isValueLoading }" v-tooltip="model.tooltip">
     <InputLabel :model="model" class="mb-4" />
     <small v-if="model.error" class="p-error" style="display: block; margin-bottom: 0.5rem">{{
       model.error

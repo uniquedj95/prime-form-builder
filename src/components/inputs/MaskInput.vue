@@ -1,5 +1,5 @@
 <template>
-  <div class="input-mask-container" :class="{ loading: isLoading }">
+  <div class="input-mask-container" :class="{ loading: isLoading }" v-tooltip="model.tooltip">
     <IftaLabel v-if="model.label">
       <InputMask
         :id="model.id"
