@@ -5,6 +5,10 @@
       {{ model.error }}
     </small>
 
+    <Message variant="simple" severity="secondary" v-if="model.placeholder" class="mt-0 mb-3">
+      {{ model.placeholder }}
+    </Message>
+
     <div class="radio-group">
       <div v-for="option of options" :key="option.value" class="radio-option">
         <RadioButton

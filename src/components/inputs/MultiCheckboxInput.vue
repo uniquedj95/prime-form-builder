@@ -8,6 +8,10 @@
         <InputLabel :model="model" class="p-2" />
       </template>
 
+      <Message variant="simple" severity="secondary" v-if="model.placeholder" class="mt-0 mb-3">
+        {{ model.placeholder }}
+      </Message>
+
       <div class="multicheckbox-group">
         <div v-for="option of options" :key="option.value" class="multicheckbox-option">
           <Checkbox
@@ -121,7 +125,7 @@ onMounted(initializeOptions);
 .multicheckbox-fieldset {
   border: 1px solid var(--p-surface-300);
   border-radius: var(--p-border-radius);
-  padding: 1.5rem 1rem 1rem;
+  padding: 1rem;
   position: relative;
   transition: border-color 0.2s;
   background: var(--p-surface-0);
