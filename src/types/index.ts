@@ -729,6 +729,22 @@ export interface FormField {
    * @type string
    */
   tooltip?: string;
+
+  /**
+   * The input mode for NumberInput type.
+   * Defines how the number should be formatted and displayed.
+   *
+   * @type 'decimal' | 'currency'
+   */
+  mode?: 'decimal' | 'currency';
+
+  /**
+   * The maximum number of digits allowed in the fraction part for NumberInput type.
+   * When mode is 'decimal', defaults to 2 if not specified.
+   *
+   * @type number
+   */
+  maxFractionDigits?: number;
 }
 
 /**

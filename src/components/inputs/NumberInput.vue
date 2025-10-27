@@ -12,6 +12,8 @@
         :disabled="model.disabled || isLoading"
         :min="typeof model.min === 'number' ? model.min : undefined"
         :max="typeof model.max === 'number' ? model.max : undefined"
+        :mode="model.mode"
+        :maxFractionDigits="maxFractions"
         fluid
         showButtons
         @focus="onFocus"
@@ -32,6 +34,8 @@
       :disabled="model.disabled || isLoading"
       :min="typeof model.min === 'number' ? model.min : undefined"
       :max="typeof model.max === 'number' ? model.max : undefined"
+      :mode="model.mode"
+      :maxFractionDigits="maxFractions"
       fluid
       showButtons
       @focus="onFocus"
@@ -61,6 +65,13 @@ const { resolvedValue, isLoading, error: valueError } = useFormFieldValue(model)
 
 // Initialize input with resolved value (number type)
 const input = ref<number | null>(null);
+
+const maxFractions = computed(() => {
+  if (model.value.mode === 'decimal' && !model.value.maxFractionDigits) {
+    return 2;
+  }
+  return model.value.maxFractionDigits;
+});
 
 // Watch for resolved value changes and update input
 watch(
