@@ -17,7 +17,7 @@
         :minlength="model.minLength"
         fluid
         @focus="onFocus"
-        @input="onValueUpdate"
+        @value-change="onValueUpdate"
         @blur="onValueUpdate"
       />
       <InputLabel :model="model" />
@@ -39,7 +39,7 @@
       :minlength="model.minLength"
       fluid
       @focus="onFocus"
-      @input="onValueUpdate"
+      @value-change="onValueUpdate"
       @blur="onValueUpdate"
     />
     <small v-if="model.error" class="p-error">{{ model.error }}</small>

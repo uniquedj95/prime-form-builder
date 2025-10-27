@@ -15,7 +15,7 @@
         fluid
         showButtons
         @focus="onFocus"
-        @input="onValueUpdate"
+        @value-change="onValueUpdate"
         @blur="onValueUpdate"
       />
       <InputLabel :model="model" />
@@ -35,7 +35,7 @@
       fluid
       showButtons
       @focus="onFocus"
-      @input="onValueUpdate"
+      @value-change="onValueUpdate"
       @blur="onValueUpdate"
     />
     <small v-if="model.error" class="p-error">{{ model.error }}</small>
