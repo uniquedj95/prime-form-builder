@@ -270,8 +270,8 @@ watch(
 
 // Initialize from model value
 watch(
-  () => model.value.value,
-  newValue => {
+  [() => model.value.value, options],
+  ([newValue]) => {
     if (model.value.multiple && Array.isArray(newValue)) {
       selectedValues.value = options.value.filter(opt =>
         newValue.some((v: any) => (typeof v === 'object' ? v.value === opt.value : v === opt.value))
