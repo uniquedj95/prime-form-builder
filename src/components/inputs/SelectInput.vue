@@ -271,7 +271,7 @@ watch(
 // Initialize from model value
 watch(
   [() => model.value.value, options],
-  ([newValue, _newOptions]) => {
+  ([newValue]) => {
     // Only newValue is processed; options changes trigger the callback to re-sync selected values.
     if (model.value.multiple && Array.isArray(newValue)) {
       selectedValues.value = options.value.filter(opt =>
