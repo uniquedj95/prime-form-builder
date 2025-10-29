@@ -13,6 +13,7 @@
         :min="typeof model.min === 'number' ? model.min : undefined"
         :max="typeof model.max === 'number' ? model.max : undefined"
         :mode="model.mode"
+        :use-grouping="model.numberGrouping"
         :maxFractionDigits="maxFractions"
         fluid
         showButtons
@@ -36,6 +37,7 @@
       :max="typeof model.max === 'number' ? model.max : undefined"
       :mode="model.mode"
       :maxFractionDigits="maxFractions"
+      :use-grouping="model.numberGrouping"
       fluid
       showButtons
       @focus="onFocus"
