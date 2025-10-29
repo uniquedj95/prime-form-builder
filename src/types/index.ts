@@ -342,16 +342,16 @@ export interface FormField {
   /**
    * The minimum value or length for the form input field.
    *
-   * @type number | string
+   * @type number
    */
-  min?: number | string;
+  min?: number;
 
   /**
    * The maximum value or length for the form input field.
    *
-   * @type number | string
+   * @type number
    */
-  max?: number | string;
+  max?: number;
 
   /**
    * The number of columns for textarea-type form input fields.
@@ -745,6 +745,13 @@ export interface FormField {
    * @type number
    */
   maxFractionDigits?: number;
+
+  /**
+   * Whether to use grouping separators (e.g., thousands separator) for NumberInput type.
+   *
+   * @type boolean
+   */
+  numberGrouping?: boolean;
 }
 
 /**
